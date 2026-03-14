@@ -1,0 +1,826 @@
+/* === 1. VARIABLES === */
+
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --text-muted: #999999;
+  --text-dim: #888888;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-hover: rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --chord-color: #000000;
+  --section-bg: transparent;
+  --chorus-bg: rgba(0, 0, 0, 0.02);
+  --radius: 4px;
+  --transition: 0.2s ease;
+  --font-ui: 'Inknut Antiqua', serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+[data-theme="dark"] {
+  --bg: #121212;
+  --text: #e0e0e0;
+  --text-muted: #777777;
+  --text-dim: #555555;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.25);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --chord-color: #e0e0e0;
+  --chorus-bg: rgba(255, 255, 255, 0.03);
+}
+
+/* === 2. RESET === */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  transition: background var(--transition), color var(--transition);
+  line-height: 1.5;
+  text-transform: lowercase;
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input {
+  font-family: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+/* === 3. HEADER === */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem clamp(1rem, 4dvw, 3rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-title {
+  font-size: clamp(0.9rem, 1.5dvw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  transition: border-color var(--transition);
+}
+
+.theme-toggle:hover {
+  border-color: var(--border-hover);
+}
+
+.icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: block; }
+
+/* === 4. CATÁLOGO === */
+
+.view {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 4dvw, 3rem);
+}
+
+.catalog-header {
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  font-size: clamp(0.7rem, 1dvw, 0.85rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.search-input:focus {
+  border-color: var(--border-hover);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.song-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.artist-group {
+  margin-bottom: 1.5rem;
+}
+
+.artist-name {
+  font-size: clamp(0.6rem, 0.9dvw, 0.75rem);
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.4rem;
+}
+
+.song-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition);
+  cursor: pointer;
+}
+
+.song-entry:hover {
+  border-bottom-color: var(--border);
+}
+
+.song-entry-title {
+  font-size: clamp(0.7rem, 1dvw, 0.85rem);
+  font-weight: 400;
+  flex: 1;
+}
+
+.song-entry-key {
+  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.song-entry-lang {
+  font-size: clamp(0.5rem, 0.7dvw, 0.6rem);
+  color: var(--text-dim);
+}
+
+.no-results {
+  color: var(--text-muted);
+  font-size: clamp(0.65rem, 0.9dvw, 0.8rem);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* === 5. VISTA CANCIÓN === */
+
+.song-header {
+  margin-bottom: 1.5rem;
+}
+
+.back-link {
+  font-size: clamp(0.6rem, 0.85dvw, 0.75rem);
+  color: var(--text-muted);
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  transition: color var(--transition);
+}
+
+.back-link:hover {
+  color: var(--text);
+}
+
+.song-title {
+  font-size: clamp(1rem, 2dvw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.3rem;
+}
+
+.song-meta {
+  font-size: clamp(0.6rem, 0.85dvw, 0.75rem);
+  color: var(--text-muted);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.song-meta span {
+  white-space: nowrap;
+}
+
+/* === 6. CONTROLES === */
+
+.controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.control-label {
+  font-size: clamp(0.45rem, 0.65dvw, 0.55rem);
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.control-btn {
+  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.control-btn:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.control-btn.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.control-value {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 0.85dvw, 0.75rem);
+  min-width: 1.5em;
+  text-align: center;
+}
+
+/* === 7. DIAGRAMAS DE ACORDES === */
+
+.chord-diagrams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.chord-diagrams:empty {
+  display: none;
+}
+
+.chord-diagram-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3rem;
+}
+
+.chord-diagram {
+  color: var(--text);
+}
+
+/* === 8. CONTENIDO DE CANCIÓN === */
+
+.song-content {
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1.1dvw, 0.95rem);
+  line-height: 1.8;
+  padding-bottom: 4rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section-chorus {
+  background: var(--chorus-bg);
+  border-left: 2px solid var(--border);
+  padding: 0.5rem 0.8rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.section-label {
+  font-family: var(--font-ui);
+  font-size: clamp(0.5rem, 0.7dvw, 0.6rem);
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+
+.song-line {
+  white-space: pre-wrap;
+  min-height: 1.2em;
+}
+
+.line-break {
+  height: 0.8em;
+}
+
+/* acordes como ruby */
+.chord-segment ruby {
+  ruby-position: over;
+}
+
+.chord-name {
+  font-family: var(--font-ui);
+  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  font-weight: 600;
+  color: var(--chord-color);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chord-name:hover {
+  text-decoration: underline;
+}
+
+/* dos capas (acordes + readings) */
+.song-line.two-layer {
+  display: flex;
+  flex-direction: column;
+}
+
+.chord-layer {
+  font-family: var(--font-ui);
+  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  font-weight: 600;
+  color: var(--chord-color);
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.chord-inline {
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--chord-color);
+}
+
+.chord-inline:hover {
+  text-decoration: underline;
+}
+
+.song-content .song-line > .chord-inline {
+  font-size: clamp(0.65rem, 0.9dvw, 0.8rem);
+  margin-right: 0.3em;
+}
+
+.chord-spacer .invisible {
+  visibility: hidden;
+}
+
+.lyric-layer {
+  white-space: pre-wrap;
+}
+
+/* readings (romaji/pinyin) */
+.reading-ruby {
+  ruby-position: over;
+}
+
+.reading-ruby rt {
+  font-size: 0.6em;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* === 9. POPUP DE ACORDE === */
+
+.chord-popup {
+  position: fixed;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.chord-popup-content {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 0.5rem;
+  pointer-events: auto;
+}
+
+/* === 10. FOOTER === */
+
+.site-brand {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.site-brand a {
+  font-family: var(--font-ui);
+  font-size: 0.5rem;
+  color: var(--text);
+  opacity: 0.3;
+  transition: opacity var(--transition);
+  text-decoration: none;
+}
+
+.site-brand a:hover {
+  opacity: 0.7;
+}
+
+/* === 11. RESPONSIVE === */
+
+@media (max-width: 768px) {
+  .controls-bar {
+    gap: 0.6rem;
+    padding: 0.6rem;
+  }
+
+  .control-group {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chord-diagrams {
+    gap: 0.4rem;
+    justify-content: center;
+  }
+
+  .song-content {
+    font-size: clamp(0.7rem, 3.5dvw, 0.9rem);
+  }
+
+  .editor-split {
+    grid-template-columns: 1fr;
+  }
+
+  .ed-preview {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    padding: 0.8rem 1rem;
+  }
+
+  .view {
+    padding: 1rem;
+  }
+
+  .controls-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .control-group {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* === 12. PERFIL === */
+
+.profile-wrapper {
+  position: relative;
+}
+
+.profile-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  transition: border-color var(--transition);
+}
+
+.profile-btn:hover {
+  border-color: var(--border-hover);
+}
+
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.4rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 0.8rem;
+  min-width: 180px;
+  z-index: 50;
+}
+
+.profile-dropdown.open {
+  display: block;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 0.5rem;
+  font-size: clamp(0.5rem, 0.7dvw, 0.6rem);
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.profile-field:last-child {
+  margin-bottom: 0;
+}
+
+.profile-field input,
+.profile-field select {
+  font-family: var(--font-ui);
+  font-size: clamp(0.6rem, 0.85dvw, 0.75rem);
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* === 13. FAVORITO Y EDITAR === */
+
+.song-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.song-header-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.favorite-btn {
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+
+.favorite-btn:hover {
+  border-color: var(--border-hover);
+}
+
+.favorite-btn.active {
+  color: #e25555;
+  border-color: #e25555;
+}
+
+.edit-btn {
+  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+
+.edit-btn:hover {
+  border-color: var(--border-hover);
+}
+
+/* === 14. CATÁLOGO SECCIONES === */
+
+.catalog-section-label {
+  font-size: clamp(0.55rem, 0.8dvw, 0.65rem);
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  padding: 0.8rem 0 0.3rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+}
+
+.badge-custom {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.new-tab-btn {
+  display: block;
+  text-align: center;
+  padding: 0.8rem;
+  margin-top: 1.5rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: clamp(0.6rem, 0.85dvw, 0.75rem);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.new-tab-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+
+/* === 15. EDITOR === */
+
+.editor-header {
+  margin-bottom: 1rem;
+}
+
+.editor-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.editor-meta-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.ed-input {
+  font-family: var(--font-ui);
+  font-size: clamp(0.65rem, 0.9dvw, 0.8rem);
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  width: 100%;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.ed-input:focus {
+  border-color: var(--border-hover);
+}
+
+.ed-input-sm {
+  width: auto;
+  flex: 1;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.editor-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+  min-height: 400px;
+}
+
+.ed-textarea {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1dvw, 0.85rem);
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  tab-size: 2;
+  min-height: 400px;
+}
+
+.ed-textarea:focus {
+  border-color: var(--border-hover);
+}
+
+.ed-preview {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.8rem;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.ed-action {
+  font-weight: 600;
+}
+
+.ed-action-danger {
+  color: #e25555;
+  border-color: #e25555;
+}
+
+.ed-action-danger:hover {
+  background: #e25555;
+  color: var(--bg);
+}
+
+.ed-help {
+  margin-bottom: 2rem;
+}
+
+.ed-help summary {
+  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.ed-help-content {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 0.85dvw, 0.75rem);
+  color: var(--text-muted);
+  line-height: 1.8;
+  padding: 0.5rem 0;
+  white-space: pre-wrap;
+}
+
+/* === 16. UTILIDADES === */
+
+@media (hover: hover) {
+  .song-entry:hover .song-entry-title {
+    text-decoration: underline;
+  }
+}
+
+/* animación de entrada */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.view {
+  animation: fade-in 0.3s ease;
+}
+
+/* scrollbar sutil */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}

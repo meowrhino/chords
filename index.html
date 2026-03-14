@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="acordes libres — guitarra, ukelele, bajo y piano">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+  <title>acordes</title>
+  <link rel="icon" href="favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // anti-flash: aplicar tema antes del render
+    (function() {
+      const t = localStorage.getItem('meowrhino-theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="#/" class="site-title">acordes</a>
+    <div class="header-actions">
+      <div class="profile-wrapper">
+        <button class="profile-btn" id="profileBtn" title="perfil" aria-label="perfil">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="5.5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>
+          </svg>
+        </button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <label class="profile-field">
+            <span>nombre</span>
+            <input type="text" id="profileName" placeholder="tu nombre" autocomplete="off">
+          </label>
+          <label class="profile-field">
+            <span>instrumento</span>
+            <select id="profileInstrument">
+              <option value="guitar">guitarra</option>
+              <option value="ukulele">ukelele</option>
+              <option value="bass">bajo</option>
+              <option value="piano">piano</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="cambiar tema" aria-label="cambiar tema">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="3"/>
+          <line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/>
+          <line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/>
+          <line x1="3.05" y1="3.05" x2="4.46" y2="4.46"/><line x1="11.54" y1="11.54" x2="12.95" y2="12.95"/>
+          <line x1="3.05" y1="12.95" x2="4.46" y2="11.54"/><line x1="11.54" y1="4.46" x2="12.95" y2="3.05"/>
+        </svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M13.5 8.5a5.5 5.5 0 0 1-7-7 5.5 5.5 0 1 0 7 7z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="app">
+    <!-- vista catálogo -->
+    <div id="catalogView" class="view">
+      <div class="catalog-header">
+        <input type="search" id="searchInput" class="search-input" placeholder="buscar canción o artista..." autocomplete="off">
+      </div>
+      <div id="songList" class="song-list"></div>
+    </div>
+
+    <!-- vista canción -->
+    <div id="songView" class="view" style="display:none;">
+      <div class="song-header">
+        <div class="song-header-top">
+          <a href="#/" class="back-link">&larr; catálogo</a>
+          <div class="song-header-actions">
+            <button class="favorite-btn" id="favoriteBtn" title="favorito">♡</button>
+            <button class="edit-btn" id="editBtn" title="editar" style="display:none;">editar</button>
+          </div>
+        </div>
+        <h1 id="songTitle" class="song-title"></h1>
+        <div id="songMeta" class="song-meta"></div>
+      </div>
+
+      <div class="controls-bar" id="controlsBar">
+        <div class="control-group">
+          <label class="control-label">instrumento</label>
+          <div class="control-buttons" id="instrumentPicker">
+            <button class="control-btn active" data-instrument="guitar">guitarra</button>
+            <button class="control-btn" data-instrument="ukulele">ukelele</button>
+            <button class="control-btn" data-instrument="bass">bajo</button>
+            <button class="control-btn" data-instrument="piano">piano</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">tono</label>
+          <div class="control-buttons">
+            <button class="control-btn" id="transposeDown">−</button>
+            <span class="control-value" id="transposeValue">0</span>
+            <button class="control-btn" id="transposeUp">+</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">capo</label>
+          <div class="control-buttons">
+            <button class="control-btn" id="capoDown">−</button>
+            <span class="control-value" id="capoValue">0</span>
+            <button class="control-btn" id="capoUp">+</button>
+          </div>
+        </div>
+
+        <div class="control-group" id="readingsControl" style="display:none;">
+          <label class="control-label" id="readingsLabel">romaji</label>
+          <div class="control-buttons">
+            <button class="control-btn" id="readingsToggle">off</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">scroll</label>
+          <div class="control-buttons">
+            <button class="control-btn" id="scrollToggle">off</button>
+            <button class="control-btn" id="scrollSlower" style="display:none;">−</button>
+            <span class="control-value" id="scrollSpeed" style="display:none;">3</span>
+            <button class="control-btn" id="scrollFaster" style="display:none;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="chordDiagrams" class="chord-diagrams"></div>
+      <div id="songContent" class="song-content"></div>
+    </div>
+
+    <!-- vista editor -->
+    <div id="editorView" class="view" style="display:none;">
+      <div class="editor-header">
+        <a href="#/" class="back-link">&larr; catálogo</a>
+        <h1 class="song-title">editor</h1>
+      </div>
+
+      <div class="editor-meta">
+        <input type="text" id="edTitle" placeholder="título" class="ed-input" autocomplete="off">
+        <input type="text" id="edArtist" placeholder="artista" class="ed-input" autocomplete="off">
+        <div class="editor-meta-row">
+          <input type="text" id="edKey" placeholder="tonalidad" class="ed-input ed-input-sm" autocomplete="off">
+          <input type="text" id="edCapo" placeholder="capo" class="ed-input ed-input-sm" autocomplete="off">
+          <select id="edLang" class="ed-input ed-input-sm">
+            <option value="">idioma</option>
+            <option value="es">es</option>
+            <option value="en">en</option>
+            <option value="ja">ja</option>
+            <option value="zh">zh</option>
+            <option value="fr">fr</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="editor-toolbar">
+        <button class="control-btn ed-insert" data-insert="[Am]">Am</button>
+        <button class="control-btn ed-insert" data-insert="[C]">C</button>
+        <button class="control-btn ed-insert" data-insert="[G]">G</button>
+        <button class="control-btn ed-insert" data-insert="[Dm]">Dm</button>
+        <button class="control-btn ed-insert" data-insert="{start_of_verse}&#10;">{sov}</button>
+        <button class="control-btn ed-insert" data-insert="&#10;{end_of_verse}">{eov}</button>
+        <button class="control-btn ed-insert" data-insert="{start_of_chorus}&#10;">{soc}</button>
+        <button class="control-btn ed-insert" data-insert="&#10;{end_of_chorus}">{eoc}</button>
+        <button class="control-btn ed-insert" data-insert="{r:}text{/r}">{r:}{/r}</button>
+      </div>
+
+      <div class="editor-split">
+        <textarea id="edContent" class="ed-textarea" placeholder="escribe tu tablatura en formato ChordPro..." spellcheck="false"></textarea>
+        <div id="edPreview" class="ed-preview song-content"></div>
+      </div>
+
+      <div class="editor-actions">
+        <button class="control-btn ed-action" id="edSave">guardar</button>
+        <button class="control-btn ed-action" id="edDownload">descargar .cho</button>
+        <button class="control-btn ed-action ed-action-danger" id="edDelete" style="display:none;">eliminar</button>
+        <button class="control-btn ed-action" id="importBtn">importar .cho</button>
+        <input type="file" id="importInput" accept=".cho,.txt" style="display:none;">
+      </div>
+
+      <details class="ed-help">
+        <summary>guía rápida ChordPro</summary>
+        <pre class="ed-help-content">
+[Am]texto         → acorde sobre texto
+{start_of_verse}  → inicio de verso
+{end_of_verse}    → fin de verso
+{start_of_chorus} → inicio de estribillo
+{end_of_chorus}   → fin de estribillo
+{start_of_bridge} → inicio de puente
+{end_of_bridge}   → fin de puente
+{start_of_intro}  → inicio de intro
+{end_of_intro}    → fin de intro
+{r:romaji}texto{/r} → romaji (japonés)
+{p:pinyin}texto{/p} → pinyin (chino)</pre>
+      </details>
+    </div>
+  </main>
+
+  <footer class="site-brand">
+    <a href="https://meowrhino.studio" target="_blank" rel="noopener">meowrhino.studio</a>
+  </footer>
+
+  <div id="chordPopup" class="chord-popup" style="display:none;">
+    <div class="chord-popup-content" id="chordPopupContent"></div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

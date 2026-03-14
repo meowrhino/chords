@@ -1015,3 +1015,91 @@ input {
   color: var(--text-dim);
   font-style: italic;
 }
+
+/* === FOLLOWS + FEED === */
+
+.header-link {
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  opacity: 0.6;
+  transition: opacity var(--transition);
+}
+
+.header-link:hover {
+  opacity: 1;
+}
+
+.follow-btn {
+  font-family: var(--font-ui);
+  font-size: 0.55rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.follow-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+
+.follow-btn.following {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.feed-header {
+  margin-bottom: 1.5rem;
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feed-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.feed-type {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.feed-title {
+  font-size: 0.7rem;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.feed-title:hover {
+  text-decoration: underline;
+}
+
+.feed-artist {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+.feed-date {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  margin-left: auto;
+}

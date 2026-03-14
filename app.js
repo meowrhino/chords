@@ -121,6 +121,11 @@ const els = {
   favoriteBtn: $('#favoriteBtn'),
   editBtn: $('#editBtn'),
   versionSelector: $('#versionSelector'),
+  followArtistBtn: $('#followArtistBtn'),
+  followSongBtn: $('#followSongBtn'),
+  feedView: $('#feedView'),
+  feedList: $('#feedList'),
+  feedLink: $('#feedLink'),
   commentsSection: $('#commentsSection'),
   commentForm: $('#commentForm'),
   commentUsername: $('#commentUsername'),
@@ -325,6 +330,9 @@ function renderSongView() {
   // versiones
   renderVersionSelector(song);
 
+  // follow buttons
+  updateFollowButtons(song);
+
   // instrumento activo en picker
   els.instrumentPicker.querySelectorAll('.control-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.instrument === state.instrument);
@@ -460,6 +468,150 @@ function showChordPopup(chordName, event) {
 
 function hideChordPopup() {
   els.chordPopup.style.display = 'none';
+}
+
+// === FOLLOWS + FEED ===
+
+function getUsername() {
+  return profile.load().name || '';
+}
+
+async function followTarget(targetType, target) {
+  const username = getUsername();
+  if (!username) { alert('configura tu nombre en el perfil primero'); return; }
+  await fetch(`${API_BASE}/api/follow`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, target_type: targetType, target }),
+  });
+}
+
+async function unfollowTarget(targetType, target) {
+  const username = getUsername();
+  if (!username) return;
+  await fetch(`${API_BASE}/api/follow`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, target_type: targetType, target }),
+  });
+}
+
+async function getFollowing() {
+  const username = getUsername();
+  if (!username) return [];
+  try {
+    const res = await fetch(`${API_BASE}/api/feed?username=${encodeURIComponent(username)}`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.feed || [];
+  } catch { return []; }
+}
+
+async function getFollowingList() {
+  const username = getUsername();
+  if (!username) return [];
+  try {
+    // We track follows locally since the API doesn't have a dedicated GET /api/following endpoint
+    return JSON.parse(localStorage.getItem('chords-following') || '[]');
+  } catch { return []; }
+}
+
+function saveFollowing(list) {
+  localStorage.setItem('chords-following', JSON.stringify(list));
+}
+
+function isFollowing(targetType, target) {
+  const list = getFollowingList();
+  // synchronous version using localStorage
+  const following = JSON.parse(localStorage.getItem('chords-following') || '[]');
+  return following.some(f => f.target_type === targetType && f.target === target);
+}
+
+async function toggleFollow(targetType, target, btn) {
+  const following = isFollowing(targetType, target);
+  const list = JSON.parse(localStorage.getItem('chords-following') || '[]');
+
+  if (following) {
+    await unfollowTarget(targetType, target);
+    const updated = list.filter(f => !(f.target_type === targetType && f.target === target));
+    saveFollowing(updated);
+    btn.textContent = targetType === 'artist' ? 'seguir artista' : 'seguir canción';
+    btn.classList.remove('following');
+  } else {
+    await followTarget(targetType, target);
+    list.push({ target_type: targetType, target });
+    saveFollowing(list);
+    btn.textContent = targetType === 'artist' ? 'siguiendo artista' : 'siguiendo canción';
+    btn.classList.add('following');
+  }
+}
+
+function updateFollowButtons(song) {
+  const username = getUsername();
+  const artist = song.meta.artist;
+  const slug = state.currentSong;
+
+  if (!username) {
+    els.followArtistBtn.style.display = 'none';
+    els.followSongBtn.style.display = 'none';
+    return;
+  }
+
+  if (artist) {
+    els.followArtistBtn.style.display = '';
+    const followingArtist = isFollowing('artist', artist);
+    els.followArtistBtn.textContent = followingArtist ? 'siguiendo artista' : 'seguir artista';
+    els.followArtistBtn.classList.toggle('following', followingArtist);
+  } else {
+    els.followArtistBtn.style.display = 'none';
+  }
+
+  els.followSongBtn.style.display = '';
+  const followingSong = isFollowing('song', slug);
+  els.followSongBtn.textContent = followingSong ? 'siguiendo canción' : 'seguir canción';
+  els.followSongBtn.classList.toggle('following', followingSong);
+}
+
+async function loadFeed() {
+  const username = getUsername();
+  if (!username) {
+    els.feedList.innerHTML = '<div class="no-results">configura tu nombre en el perfil para ver tu feed</div>';
+    return;
+  }
+
+  els.feedList.innerHTML = '<div class="no-results">cargando...</div>';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/feed?username=${encodeURIComponent(username)}`);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const feed = data.feed || [];
+
+    if (feed.length === 0) {
+      els.feedList.innerHTML = '<div class="no-results">sin novedades — sigue artistas o canciones para ver actividad aquí</div>';
+      return;
+    }
+
+    let html = '';
+    for (const item of feed) {
+      const date = new Date(item.created_at).toLocaleDateString('es');
+      html += `<div class="feed-item">`;
+      if (item.type === 'song') {
+        html += `<span class="feed-type">nueva canción</span>`;
+        html += `<a href="#/song/${esc(item.id)}" class="feed-title">${esc(item.title)}</a>`;
+        html += `<span class="feed-artist">${esc(item.artist)}</span>`;
+      } else {
+        html += `<span class="feed-type">comentario</span>`;
+        html += `<a href="#/song/${esc(item.id)}" class="feed-title">${esc(item.title)}</a>`;
+        html += `<span class="feed-artist">por ${esc(item.artist)}</span>`;
+      }
+      html += `<span class="feed-date">${esc(date)}</span>`;
+      html += `</div>`;
+    }
+    els.feedList.innerHTML = html;
+  } catch {
+    els.feedList.innerHTML = '<div class="no-results">error cargando feed</div>';
+  }
 }
 
 // === COMENTARIOS ===
@@ -931,8 +1083,15 @@ function route() {
   els.catalogView.style.display = 'none';
   els.songView.style.display = 'none';
   els.editorView.style.display = 'none';
+  els.feedView.style.display = 'none';
 
-  if (hash.startsWith('#/editor')) {
+  if (hash === '#/feed') {
+    els.feedView.style.display = '';
+    els.feedView.style.animation = 'none';
+    els.feedView.offsetHeight;
+    els.feedView.style.animation = '';
+    loadFeed();
+  } else if (hash.startsWith('#/editor')) {
     const slug = hash.length > 9 ? hash.slice(9) : null;
     els.editorView.style.display = '';
     els.editorView.style.animation = 'none';
@@ -966,6 +1125,16 @@ async function init() {
 
   els.searchInput.addEventListener('input', () => {
     renderCatalog(els.searchInput.value);
+  });
+
+  // follow buttons
+  els.followArtistBtn.addEventListener('click', () => {
+    if (!state.parsedSong?.meta?.artist) return;
+    toggleFollow('artist', state.parsedSong.meta.artist, els.followArtistBtn);
+  });
+  els.followSongBtn.addEventListener('click', () => {
+    if (!state.currentSong) return;
+    toggleFollow('song', state.currentSong, els.followSongBtn);
   });
 
   // comment submit

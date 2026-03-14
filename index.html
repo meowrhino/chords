@@ -27,6 +27,11 @@
   <header class="site-header">
     <a href="#/" class="site-title">acordes</a>
     <div class="header-actions">
+      <a href="#/feed" class="header-link" id="feedLink" title="feed">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 12a2 2 0 1 0 4 0 2 2 0 0 0-4 0"/><path d="M2 2v2a10 10 0 0 1 10 10h2"/><path d="M2 6v1a6 6 0 0 1 6 6h1"/>
+        </svg>
+      </a>
       <div class="profile-wrapper">
         <button class="profile-btn" id="profileBtn" title="perfil" aria-label="perfil">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -80,6 +85,8 @@
           <a href="#/" class="back-link">&larr; catálogo</a>
           <div class="song-header-actions">
             <button class="favorite-btn" id="favoriteBtn" title="favorito">♡</button>
+            <button class="follow-btn" id="followArtistBtn" title="seguir artista" style="display:none;">seguir artista</button>
+            <button class="follow-btn" id="followSongBtn" title="seguir canción" style="display:none;">seguir canción</button>
             <button class="edit-btn" id="editBtn" title="editar" style="display:none;">editar</button>
           </div>
         </div>
@@ -213,6 +220,14 @@
 {r:romaji}texto{/r} → romaji (japonés)
 {p:pinyin}texto{/p} → pinyin (chino)</pre>
       </details>
+    </div>
+    <!-- vista feed -->
+    <div id="feedView" class="view" style="display:none;">
+      <div class="feed-header">
+        <a href="#/" class="back-link">&larr; catálogo</a>
+        <h1 class="song-title">feed</h1>
+      </div>
+      <div id="feedList" class="feed-list"></div>
     </div>
   </main>
 

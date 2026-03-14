@@ -1328,5 +1328,68 @@
     "title": "Amanojaku",
     "artist": "164",
     "key": "D"
+  },
+  {
+    "file": "lia-tori-no-uta.cho",
+    "title": "鳥の詩 (Tori no Uta)",
+    "artist": "Lia",
+    "key": "Bm",
+    "lang": "ja"
+  },
+  {
+    "file": "kalafina-misterioso.cho",
+    "title": "misterioso",
+    "artist": "Kalafina",
+    "key": "G",
+    "lang": "ja"
+  },
+  {
+    "file": "jin-daze.cho",
+    "title": "daze",
+    "artist": "じん ft.メイリア from GARNiDELiA",
+    "key": "Bbm",
+    "lang": "ja"
+  },
+  {
+    "file": "jin-shounen-brave.cho",
+    "title": "少年ブレイヴ (Shounen Brave)",
+    "artist": "じん",
+    "key": "G",
+    "lang": "ja"
+  },
+  {
+    "file": "neru-terol.cho",
+    "title": "テロル (Terol)",
+    "artist": "Neru",
+    "key": "B",
+    "lang": "ja"
+  },
+  {
+    "file": "amaia-romero-magia-en-benidorm.cho",
+    "title": "Magia en Benidorm",
+    "artist": "Amaia Romero",
+    "key": "D",
+    "lang": "es"
+  },
+  {
+    "file": "lisa-akeboshi.cho",
+    "title": "明星 (Akeboshi)",
+    "artist": "LiSA",
+    "key": "Cm",
+    "lang": "ja"
+  },
+  {
+    "file": "yelle-top-fan.cho",
+    "title": "Top Fan",
+    "artist": "Yelle",
+    "key": "Gm",
+    "lang": "fr"
+  },
+  {
+    "file": "lily-allen-relapse.cho",
+    "title": "Relapse",
+    "artist": "Lily Allen",
+    "key": "F",
+    "lang": "en"
   }
 ]

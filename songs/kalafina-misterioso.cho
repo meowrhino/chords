@@ -1,0 +1,65 @@
+{title: misterioso}
+{artist: Kalafina}
+{key: G}
+{lang: ja}
+
+{start_of_chorus}
+[G]{r:kanata}彼方{/r}[D/F#]{r:he}へ{/r}
+{r:kimi}君{/r}[Em]{r:no}の{/r}{r:te}手{/r}{r:wo}を{/r}{r:to}取{/r}[G/D]{r:ri}り{/r}
+[Cm]{r:kokoro}心{/r}{r:da}だ{/r}{r:ke}け{/r}{r:ga}が{/r}[F]{r:shi}知っ{/r}{r:te}て{/r}{r:ru}る{/r}[G]{r:basho}場所{/r}{r:he}へ{/r}
+[G]misterioso[D/F#] {r:mai}舞{/r}[Em]{r:i}い{/r}{r:agaru}上がる{/r}[G/D]{r:yo}よ{/r}
+{r:ko}こ{/r}{r:no}の{/r}[Cm]{r:hoshi}星{/r}{r:ga}が{/r}{r:mi}見{/r}[F]{r:ta}た{/r}{r:yume}夢{/r}{r:no}の{/r}[Eb]{r:yo}よ{/r}{r:u}う{/r}{r:ni}に{/r}
+[F]{r:kagayaku}輝く{/r}[G]{r:sora}空{/r}
+{end_of_chorus}
+
+{start_of_verse}
+[B]{r:tooku}遠く{/r}{r:de}で{/r}{r:ko}呼{/r}[Em]{r:n}ん{/r}{r:de}で{/r}{r:ru}る{/r}[G/D]
+[Eb]{r:akogare}憧れ{/r}{r:no}の{/r}[F]{r:nokoshi}残し{/r}{r:ta}た{/r}[G]{r:kodama}木霊{/r}({r:e}エ{/r}{r:ko}コ{/r}{r:-}ー{/r})
+[B]{r:kanashimi}哀しみ{/r}{r:tana}棚{/r}{r:引}引{/r}[Em]{r:ka}か{/r}{r:se}せ{/r}{r:te}て{/r}[G/D]
+{r:michi}道{/r}[Eb]{r:no}の{/r}{r:nai}無い{/r}{r:mirai}未来{/r}[F]{r:he}へ{/r}{r:isogu}急ぐ{/r}[G]{r:yo}よ{/r}
+{end_of_verse}
+
+{start_of_interlude}
+[B] [Em] [G/D]
+[Eb] [F] [G]
+{end_of_interlude}
+
+{start_of_verse}
+{r:shin}新{/r}[B]{r:shi}し{/r}{r:i}い{/r}{r:pe-ji}頁{/r}{r:wo}を{/r}[Em]{r:hiraki}開き{/r}[G/D]
+{r:yo}世{/r}[Eb]{r:sakai}界{/r}{r:ha}は{/r}[F]{r:kimi}君{/r}{r:wo}を{/r}{r:ma}待っ{/r}{r:te}て{/r}{r:ru}る{/r}
+{end_of_verse}
+
+{start_of_bridge}
+[Em] [D] [G] [F#m7-5] [B]
+
+[Em]{r:akarui}明るい{/r}[D]{r:kokoro}心{/r}{r:de}で{/r}
+[G]{r:subete}全て{/r}{r:no}の{/r}[F#m7-5]{r:toki}時{/r}{r:wo}を{/r}{r:kudari}行{/r}[B]{r:ke}け{/r}{r:ru}る{/r}{r:na}な{/r}{r:ra}ら{/r}
+
+[C] [D] [G] [F]
+
+[Eb]{r:doko}何処{/r}{r:ka}か{/r}{r:he}へ{/r}{r:tsudui}続い{/r}[G]{r:te}て{/r}{r:ru}る{/r}{r:to}と{/r}[Eb]
+[D]{r:shinji}信じ{/r}{r:te}て{/r}
+{end_of_bridge}
+
+{start_of_verse}
+[Eb]{r:sora}空{/r}{r:ha}は{/r}{r:aoku}蒼く{/r}{r:takaku}高く{/r}
+[F]{r:osanai}幼い{/r}{r:kaze}風{/r}{r:ga}が{/r}[G]{r:hikaru}光る{/r}
+[Eb]{r:chiisana}小さな{/r}{r:suzu}鈴{/r}{r:no}の{/r}{r:yo}よ{/r}{r:u}う{/r}{r:ni}に{/r}
+{r:ma}ま{/r}[F]{r:da}だ{/r}{r:mi}見{/r}{r:nu}ぬ{/r}{r:fu}不{/r}[D]{r:思}思{/r}{r:gi}議{/r}[C]{r:no}の{/r}[Bsus4]{r:uta}唄{/r}[B]
+{end_of_verse}
+
+{start_of_chorus}
+[G]{r:naga}長{/r}[F#m7-5]{r:sugi}過ぎ{/r}{r:ta}た{/r}[B]{r:yoru}夜{/r}{r:no}の{/r}[Em]{r:hate}果て{/r}[G/D]{r:ni}に{/r}
+{r:yoake}夜明{/r}[Eb]{r:ke}け{/r}{r:wo}を{/r}{r:ko}呼{/r}[F]{r:bi}び{/r}{r:samasu}覚ます{/r}[G]chorus
+{r:do}ど{/r}[F#m7-5]{r:n}ん{/r}{r:na}な{/r}{r:ni}に{/r}[B]{r:hakana}儚{/r}[Em]{r:ku}く{/r}{r:te}て{/r}[G/D]{r:mo}も{/r}
+{r:hajime}始{/r}[Eb]{r:ma}ま{/r}{r:ri}り{/r}{r:no}の{/r}{r:toki}時{/r}{r:wo}を{/r}[Dsus4]{r:tsuge}告げ{/r}[D]{r:te}て{/r}
+{end_of_chorus}
+
+{start_of_chorus}
+[G]{r:sekai}世界{/r}[D/F#]{r:ha}は{/r}{r:ma}ま{/r}{r:da}だ{/r}[Em]{r:kimi}君{/r}{r:no}の{/r}{r:ta}た{/r}[G/D]{r:me}め{/r}
+[Cm]{r:yorokobi}歓び{/r}{r:wo}を{/r}[F]{r:kakushi}隠し{/r}{r:te}て{/r}{r:i}い{/r}[G]{r:ru}る{/r}{r:ka}か{/r}{r:ra}ら{/r}
+[G]misterioso[D/F#] {r:mai}舞{/r}[Em]{r:i}い{/r}{r:agaru}上がる{/r}[G/D]{r:yo}よ{/r}
+{r:oi}追い{/r}[Cm]{r:su}す{/r}{r:ga}が{/r}{r:ru}る{/r}[F]{r:namida}涙{/r}{r:no}の{/r}{r:mukai}向{/r}[Eb]{r:ko}こ{/r}{r:u}う{/r}{r:he}へ{/r}
+[F]{r:mabushii}眩しい{/r}
+[G]{r:ashita}明日{/r}{r:he}へ{/r}
+{end_of_chorus}

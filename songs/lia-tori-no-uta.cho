@@ -1,0 +1,69 @@
+{title: 鳥の詩}
+{artist: Lia}
+{key: Bm}
+{lang: ja}
+
+{start_of_intro}
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9] [Bm]
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9]
+{end_of_intro}
+
+{start_of_verse}
+[Bm]{r:kieru}消える{/r}{r:hi}飛{/r}[Gmaj7]{r:kudari}行{/r}{r:ki}機{/r}{r:kumo}雲{/r}[A]{r:boku}僕{/r}{r:ta}た{/r}{r:chi}ち{/r}{r:ha}は{/r}{r:mi}見{/r}[Badd9]{r:oku}送っ{/r}[Bm]{r:ta}た{/r}[Badd9]
+[Bm]{r:mabushiku}眩しく{/r}[Gmaj7]{r:te}て{/r}{r:nige}逃げ{/r}{r:ta}た{/r}[A]{r:i}い{/r}{r:tsu}つ{/r}{r:da}だ{/r}{r:tt}っ{/r}{r:te}て{/r}[Badd9]{r:yowaku}弱く{/r}{r:te}て{/r}[Bm] {r:a}あ{/r}[Badd9]{r:no}の{/r}{r:hi}日{/r}[Bm]{r:ka}か{/r}{r:ra}ら{/r}
+[Gmaj7]{r:kawara}変わら{/r}{r:zu}ず{/r}[A]{r:i}い{/r}{r:tsu}つ{/r}{r:ma}ま{/r}{r:de}で{/r}{r:mo}も{/r}{r:hen}変{/r}[Badd9]{r:wa}わ{/r}{r:ra}ら{/r}{r:zu}ず{/r}[Bm]{r:ni}に{/r}[Badd9]
+[Bm]{r:i}い{/r}{r:ra}ら{/r}{r:re}れ{/r}{r:na}な{/r}[Gmaj7]{r:ka}か{/r}{r:tt}っ{/r}{r:ta}た{/r}{r:ko}こ{/r}{r:to}と{/r}[A]{r:kuyashiku}悔しく{/r}{r:te}て{/r}[Badd9]{r:yubi}指{/r}[Bm]{r:wo}を{/r}[Badd9]{r:hanare}離{/r}[Bm]{r:su}す{/r}
+{end_of_verse}
+
+{start_of_chorus}
+[E]{r:a}あ{/r}{r:no}の{/r}{r:tori}鳥{/r}[F#]{r:ha}は{/r}{r:ma}ま{/r}{r:da}だ{/r}{r:u}う{/r}{r:ma}ま{/r}[G#m]{r:ku}く{/r}{r:tobe}飛べ{/r}{r:na}な{/r}{r:i}い{/r}{r:ke}け{/r}{r:do}ど{/r}
+[E]{r:i}い{/r}{r:tsu}つ{/r}{r:ka}か{/r}{r:ha}は{/r}[F#]{r:kaze}風{/r}{r:wo}を{/r}{r:ki}切っ{/r}[G#m]{r:te}て{/r}{r:shiru}知る{/r}
+[E]{r:todoke}届{/r}{r:ka}か{/r}{r:na}な{/r}[F#]{r:i}い{/r}{r:basho}場所{/r}{r:ga}が{/r}{r:ma}ま{/r}[G#m]{r:da}だ{/r}{r:tooku}遠く{/r}{r:ni}に{/r}{r:a}あ{/r}{r:ru}る{/r}
+[E]{r:negai}願い{/r}{r:da}だ{/r}[F#]{r:ke}け{/r}{r:hime}秘め{/r}{r:te}て{/r}{r:mi}見{/r}[G#m]{r:tsu}つ{/r}{r:me}め{/r}{r:te}て{/r}{r:ru}る{/r}
+{end_of_chorus}
+
+{start_of_bridge}
+{r:ko}子{/r}[Gbmaj7]{r:kyou}供{/r}{r:ta}た{/r}{r:chi}ち{/r}{r:ha}は{/r}{r:natsu}夏{/r}{r:no}の{/r}[Fm7]{r:senro}線路{/r}{r:aruku}歩く{/r}
+[Ebm7]{r:fuku}吹く{/r}{r:kaze}風{/r}{r:ni}に{/r}{r:moto}素{/r}[Fm7]{r:ashi}足{/r}{r:wo}を{/r}{r:sa}さ{/r}{r:ra}ら{/r}{r:shi}し{/r}[Bbm7]{r:te}て{/r}
+[Gbmaj7]{r:tooku}遠く{/r}{r:ni}に{/r}{r:ha}は{/r}{r:you}幼{/r}[Fm7]{r:ka}か{/r}{r:tt}っ{/r}{r:ta}た{/r}{r:hibi}日々{/r}{r:wo}を{/r}
+[Amaj7]{r:ryoute}両手{/r}{r:ni}に{/r}{r:ha}は{/r}{r:tobi}飛び{/r}[B]{r:tatsu}立つ{/r}{r:kibou}希望{/r}[G#]{r:wo}を{/r}
+{end_of_bridge}
+
+{start_of_chorus}
+{r:kieru}消える{/r}{r:hi}飛{/r}[Gmaj7]{r:kudari}行{/r}{r:ki}機{/r}{r:kumo}雲{/r}[A]{r:oikake}追いかけ{/r}{r:te}て{/r}{r:tsui}追{/r}[Badd9]{r:i}い{/r}{r:ka}か{/r}{r:ke}け{/r}[Bm]{r:te}て{/r}[Badd9]
+[Bm]{r:ko}こ{/r}{r:no}の{/r}{r:oka}丘{/r}[Gmaj7]{r:wo}を{/r}{r:koe}越え{/r}{r:ta}た{/r}[A]{r:a}あ{/r}{r:no}の{/r}{r:hi}日{/r}{r:ka}か{/r}{r:ra}ら{/r}{r:hen}変{/r}[Badd9]{r:wa}わ{/r}{r:ra}ら{/r}[Bm]{r:zu}ず{/r} {r:i}い{/r}[Badd9]{r:tsu}つ{/r}{r:ma}ま{/r}[Bm]{r:de}で{/r}{r:mo}も{/r}
+[Gmaj7]{r:ma}ま{/r}{r:tt}っ{/r}{r:su}す{/r}{r:gu}ぐ{/r}{r:ni}に{/r}[A]{r:boku}僕{/r}{r:ta}た{/r}{r:chi}ち{/r}{r:ha}は{/r}{r:a}あ{/r}[Badd9]{r:ru}る{/r}{r:yo}よ{/r}{r:u}う{/r}[Bm]{r:ni}に{/r}[Badd9]
+[Bm]{r:wa}わ{/r}{r:ta}た{/r}{r:tsu}つ{/r}{r:mi}み{/r}[Gmaj7]{r:no}の{/r}{r:yo}よ{/r}{r:u}う{/r}{r:na}な{/r}[A]{r:tsuyo}強{/r}{r:sa}さ{/r}{r:wo}を{/r}{r:mori}守{/r}[Badd9]{r:re}れ{/r}{r:ru}る{/r}[Bm]{r:yo}よ{/r} {r:ki}き{/r}[Badd9]{r:}っ{/r}[Bm]{r:to}と{/r}
+{end_of_chorus}
+
+{start_of_interlude}
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9] [Bm]
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9] [Bm]
+{end_of_interlude}
+
+{start_of_verse}
+[E]{r:a}あ{/r}{r:no}の{/r}{r:sora}空{/r}[F#]{r:wo}を{/r}{r:mawaru}回る{/r}[G#m]{r:kazaguruma}風車{/r}{r:no}の{/r}{r:hane}羽根{/r}{r:ta}た{/r}{r:chi}ち{/r}{r:ha}は{/r}
+[E]{r:i}い{/r}{r:tsu}つ{/r}{r:ma}ま{/r}{r:de}で{/r}[F#]{r:mo}も{/r}{r:onaji}同じ{/r}[G#m]{r:yumemiru}夢見る{/r}
+[E]{r:todoke}届{/r}{r:ka}か{/r}{r:na}な{/r}[F#]{r:i}い{/r}{r:basho}場所{/r}{r:wo}を{/r}{r:zu}ず{/r}[G#m]{r:tt}っ{/r}{r:to}と{/r}{r:mitsume}見つめ{/r}{r:te}て{/r}{r:ru}る{/r}
+[E]{r:negai}願い{/r}{r:wo}を{/r}[F#]{r:hime}秘め{/r}{r:ta}た{/r}{r:tori}鳥{/r}[G#m]{r:no}の{/r}{r:yume}夢{/r}{r:wo}を{/r}
+{end_of_verse}
+
+{start_of_bridge}
+{r:fu}振{/r}[Gbmaj7]{r:ri}り{/r}{r:kaeru}返る{/r}{r:yake}灼け{/r}{r:ta}た{/r}[Fm7]{r:senro}線路{/r}{r:oou}覆う{/r}[Ebm7]{r:nyuudougumo}入道雲{/r}[Fm7]{r:katachi}形{/r}{r:wo}を{/r}{r:kae}変え{/r}{r:te}て{/r}[Bbm7]{r:mo}も{/r}
+[Gbmaj7]{r:bokura}僕ら{/r}{r:ha}は{/r}{r:oboe}覚え{/r}[Fm7]{r:te}て{/r}{r:i}い{/r}{r:te}て{/r}{r:do}ど{/r}{r:u}う{/r}{r:ka}か{/r}[Amaj7]{r:kisetsu}季節{/r}{r:ga}が{/r}{r:zan}残{/r}[B]{r:shi}し{/r}{r:ta}た{/r}{r:kinou}昨日{/r}[G#]{r:wo}を{/r}
+{end_of_bridge}
+
+{start_of_chorus}
+{r:kieru}消える{/r}{r:hi}飛{/r}[Gmaj7]{r:kudari}行{/r}{r:ki}機{/r}{r:kumo}雲{/r}[A]{r:boku}僕{/r}{r:ta}た{/r}{r:chi}ち{/r}{r:ha}は{/r}{r:mi}見{/r}[Badd9]{r:oku}送っ{/r}[Bm]{r:ta}た{/r}[Badd9]
+[Bm]{r:mabushiku}眩しく{/r}[Gmaj7]{r:te}て{/r}{r:nige}逃げ{/r}{r:ta}た{/r}[A]{r:i}い{/r}{r:tsu}つ{/r}{r:da}だ{/r}{r:tt}っ{/r}{r:te}て{/r}[Badd9]{r:yowaku}弱く{/r}{r:te}て{/r}[Bm] {r:a}あ{/r}[Badd9]{r:no}の{/r}{r:hi}日{/r}[Bm]{r:ka}か{/r}{r:ra}ら{/r}
+[Gmaj7]{r:kawara}変わら{/r}{r:zu}ず{/r}[A]{r:i}い{/r}{r:tsu}つ{/r}{r:ma}ま{/r}{r:de}で{/r}{r:mo}も{/r}{r:hen}変{/r}[Badd9]{r:wa}わ{/r}{r:ra}ら{/r}{r:zu}ず{/r}[Bm]{r:ni}に{/r}[Badd9]
+[Bm]{r:i}い{/r}{r:ra}ら{/r}{r:re}れ{/r}{r:na}な{/r}[Gmaj7]{r:ka}か{/r}{r:tt}っ{/r}{r:ta}た{/r}{r:ko}こ{/r}{r:to}と{/r}[A]{r:kuyashiku}悔しく{/r}{r:te}て{/r}[Badd9]{r:yubi}指{/r}[Bm]{r:wo}を{/r}[Badd9]{r:hanare}離{/r}[Bm]{r:su}す{/r}
+{end_of_chorus}
+
+{start_of_outro}
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9] [Bm]
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9] [Bm]
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9] [Bm]
+[Gmaj7] [Aadd9] [A] [Badd9] [Bm] [Badd9] [Bm]
+[Badd9] [Bm] [Badd9] [Bm]
+{end_of_outro}

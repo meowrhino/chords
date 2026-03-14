@@ -984,6 +984,39 @@ function initEditor() {
     });
   }
 
+  // importar desde URL
+  const importUrlBtn = $('#importUrlBtn');
+  const importUrlInput = $('#importUrlInput');
+  if (importUrlBtn && importUrlInput) {
+    importUrlBtn.addEventListener('click', async () => {
+      const url = importUrlInput.value.trim();
+      if (!url) return;
+      importUrlBtn.textContent = 'importando...';
+      importUrlBtn.disabled = true;
+      try {
+        const res = await fetch(`${API_BASE}/api/scrape`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'error al importar');
+        els.edTitle.value = data.title || '';
+        els.edArtist.value = data.artist || '';
+        els.edKey.value = data.key || '';
+        els.edLang.value = data.lang || '';
+        els.edContent.value = data.content || '';
+        updateEditorPreview();
+        importUrlInput.value = '';
+      } catch (e) {
+        alert('Error: ' + e.message);
+      } finally {
+        importUrlBtn.textContent = 'importar URL';
+        importUrlBtn.disabled = false;
+      }
+    });
+  }
+
   // insertar snippets
   for (const btn of $$('.ed-insert')) {
     btn.addEventListener('click', () => {

@@ -5,6 +5,7 @@
 //   With arg: processes a specific file
 
 const kuromoji = require('kuromoji');
+const { pinyin } = require('pinyin-pro');
 const { readFileSync, writeFileSync, readdirSync } = require('fs');
 const { join } = require('path');
 
@@ -221,27 +222,89 @@ function processLine(line, tokenizer) {
   return result;
 }
 
+// Check if char is Chinese
+function isChinese(ch) {
+  const code = ch.charCodeAt(0);
+  return (code >= 0x4E00 && code <= 0x9FFF) ||
+         (code >= 0x3400 && code <= 0x4DBF);
+}
+
+// Process a line of Chinese lyrics to add pinyin tags
+function processChineseLine(line) {
+  if (line.match(/^\{(title|artist|key|capo|lang|start_|end_)/)) return line;
+  if (!line.trim()) return line;
+  if (line.includes('{p:')) return line;
+  if (!line.replace(/\[.*?\]/g, '').replace(/[\s]/g, '')) return line;
+
+  const segments = [];
+  let remaining = line;
+  const chordRegex = /\[([^\]]+)\]/;
+
+  while (remaining) {
+    const match = remaining.match(chordRegex);
+    if (!match) {
+      segments.push({ type: 'text', value: remaining });
+      break;
+    }
+    if (match.index > 0) {
+      segments.push({ type: 'text', value: remaining.substring(0, match.index) });
+    }
+    segments.push({ type: 'chord', value: match[0] });
+    remaining = remaining.substring(match.index + match[0].length);
+  }
+
+  const result = segments.map(seg => {
+    if (seg.type === 'chord') return seg.value;
+
+    const text = seg.value;
+    let output = '';
+    let i = 0;
+
+    while (i < text.length) {
+      const ch = text[i];
+      if (isChinese(ch)) {
+        const py = pinyin(ch, { toneType: 'symbol', type: 'array' })[0] || ch;
+        output += `{p:${py}}${ch}{/p}`;
+      } else {
+        output += ch;
+      }
+      i++;
+    }
+    return output;
+  }).join('');
+
+  return result;
+}
+
 // Process a .cho file
 function processFile(filePath, tokenizer) {
   const content = readFileSync(filePath, 'utf-8');
 
-  // Check if it's Japanese
-  const langMatch = content.match(/\{lang:\s*ja\}/);
-  if (!langMatch) {
-    console.log(`  Skipping (not Japanese): ${filePath}`);
+  // Detect language
+  const isJa = /\{lang:\s*ja\}/.test(content);
+  const isZh = /\{lang:\s*zh\}/.test(content);
+
+  if (!isJa && !isZh) {
+    console.log(`  Skipping (not ja/zh): ${filePath}`);
     return false;
   }
 
-  // Check if already has romaji
-  if (content.includes('{r:')) {
+  // Check if already annotated
+  if (isJa && content.includes('{r:')) {
     console.log(`  Skipping (already has romaji): ${filePath}`);
     return false;
   }
+  if (isZh && content.includes('{p:')) {
+    console.log(`  Skipping (already has pinyin): ${filePath}`);
+    return false;
+  }
 
-  console.log(`  Processing: ${filePath}`);
+  console.log(`  Processing (${isJa ? 'ja' : 'zh'}): ${filePath}`);
 
   const lines = content.split('\n');
-  const processed = lines.map(line => processLine(line, tokenizer));
+  const processed = isJa
+    ? lines.map(line => processLine(line, tokenizer))
+    : lines.map(line => processChineseLine(line));
   const output = processed.join('\n');
 
   writeFileSync(filePath, output, 'utf-8');

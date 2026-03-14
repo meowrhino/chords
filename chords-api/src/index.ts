@@ -10,6 +10,7 @@ import {
   checkRateLimit, sanitizeText, generateTripcode,
   parseUsername, generateSlug,
 } from './middleware';
+import { scrapeUrl } from './scraper';
 
 type Bindings = { DB: D1Database };
 const app = new Hono<{ Bindings: Bindings }>();
@@ -232,6 +233,24 @@ app.get('/api/feed', async (c) => {
   if (!username) return c.json({ error: 'username required' }, 400);
   const feed = await getFeed(c.env.DB, username);
   return c.json({ feed });
+});
+
+// === SCRAPER ===
+
+app.post('/api/scrape', async (c) => {
+  const ip = c.req.header('cf-connecting-ip') || 'unknown';
+  const rl = checkRateLimit(ip);
+  if (!rl.allowed) return c.json({ error: 'rate limited', retryAfter: rl.retryAfter }, 429);
+
+  const body = await c.req.json<{ url: string }>();
+  if (!body.url) return c.json({ error: 'url required' }, 400);
+
+  try {
+    const result = await scrapeUrl(body.url);
+    return c.json(result);
+  } catch (e: any) {
+    return c.json({ error: e.message || 'scrape failed' }, 400);
+  }
 });
 
 // === ADMIN ===

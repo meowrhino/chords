@@ -74,6 +74,7 @@
     <div id="catalogView" class="view">
       <div class="catalog-header">
         <input type="search" id="searchInput" class="search-input" placeholder="buscar canción o artista..." autocomplete="off">
+        <p class="site-statement">acordes libres — sin anuncios, sin cuentas, para siempre. tus tablaturas son tuyas.</p>
       </div>
       <div id="songList" class="song-list"></div>
     </div>
@@ -210,6 +211,11 @@
       <div class="editor-split">
         <textarea id="edContent" class="ed-textarea" placeholder="escribe tu tablatura en formato ChordPro..." spellcheck="false"></textarea>
         <div id="edPreview" class="ed-preview song-content"></div>
+      </div>
+
+      <div class="editor-import-url">
+        <input type="url" id="importUrlInput" class="ed-input" placeholder="pega una URL de acordes (ufret, ultimate guitar, acordesweb...)" autocomplete="off">
+        <button class="control-btn ed-action" id="importUrlBtn">importar URL</button>
       </div>
 
       <div class="editor-actions">

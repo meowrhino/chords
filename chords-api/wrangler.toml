@@ -5,4 +5,4 @@ compatibility_date = "2024-06-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "chords-db"
-database_id = "placeholder-create-with-wrangler"
+database_id = "2fee64ed-0d47-4bb2-98a1-949707fad3dc"

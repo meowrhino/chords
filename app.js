@@ -6,7 +6,7 @@ import { transposeSong, normalizeChordName } from './engine/transpose.js';
 import { chordDiagram } from './engine/chord-svg.js';
 import { lookupChord } from './engine/chords-db.js';
 
-const API_BASE = 'https://chords-api.meowrhino.workers.dev';
+const API_BASE = 'https://chords-api.manuellatourf.workers.dev';
 
 // === PERFIL (localStorage) ===
 

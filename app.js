@@ -118,6 +118,7 @@ const els = {
   themeToggle: $('#themeToggle'),
   favoriteBtn: $('#favoriteBtn'),
   editBtn: $('#editBtn'),
+  versionSelector: $('#versionSelector'),
   edTitle: $('#edTitle'),
   edArtist: $('#edArtist'),
   edKey: $('#edKey'),
@@ -313,6 +314,9 @@ function renderSongView() {
   // botón editar (solo custom)
   els.editBtn.style.display = state.isCustomSong ? '' : 'none';
 
+  // versiones
+  renderVersionSelector(song);
+
   // instrumento activo en picker
   els.instrumentPicker.querySelectorAll('.control-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.instrument === state.instrument);
@@ -345,6 +349,31 @@ function renderSongView() {
 
   // chord click/hover listeners
   setupChordInteraction();
+}
+
+function renderVersionSelector(song) {
+  const all = getMergedCatalog();
+  const title = (song.meta.title || '').toLowerCase();
+  const artist = (song.meta.artist || '').toLowerCase();
+  if (!title || !artist) { els.versionSelector.style.display = 'none'; return; }
+
+  const versions = all.filter(s =>
+    s.title.toLowerCase() === title && s.artist.toLowerCase() === artist
+  );
+
+  if (versions.length <= 1) { els.versionSelector.style.display = 'none'; return; }
+
+  const currentSlug = state.currentSong;
+  let html = '<span class="version-label">versión:</span>';
+  versions.forEach((v, i) => {
+    const slug = v.file.replace('.cho', '');
+    const label = v.custom ? 'tuya' : `v${i + 1}`;
+    const cls = slug === currentSlug ? 'version-btn active' : 'version-btn';
+    html += `<a href="#/song/${esc(slug)}" class="${cls}">${esc(label)}</a>`;
+  });
+
+  els.versionSelector.innerHTML = html;
+  els.versionSelector.style.display = '';
 }
 
 function renderChordDiagrams(song) {

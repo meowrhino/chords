@@ -6,6 +6,8 @@ import { transposeSong, normalizeChordName } from './engine/transpose.js';
 import { chordDiagram } from './engine/chord-svg.js';
 import { lookupChord } from './engine/chords-db.js';
 
+const API_BASE = 'https://chords-api.meowrhino.workers.dev';
+
 // === PERFIL (localStorage) ===
 
 const profile = {
@@ -119,6 +121,12 @@ const els = {
   favoriteBtn: $('#favoriteBtn'),
   editBtn: $('#editBtn'),
   versionSelector: $('#versionSelector'),
+  commentsSection: $('#commentsSection'),
+  commentForm: $('#commentForm'),
+  commentUsername: $('#commentUsername'),
+  commentContent: $('#commentContent'),
+  commentSubmit: $('#commentSubmit'),
+  commentsList: $('#commentsList'),
   edTitle: $('#edTitle'),
   edArtist: $('#edArtist'),
   edKey: $('#edKey'),
@@ -349,6 +357,9 @@ function renderSongView() {
 
   // chord click/hover listeners
   setupChordInteraction();
+
+  // comentarios
+  initComments(state.currentSong);
 }
 
 function renderVersionSelector(song) {
@@ -449,6 +460,160 @@ function showChordPopup(chordName, event) {
 
 function hideChordPopup() {
   els.chordPopup.style.display = 'none';
+}
+
+// === COMENTARIOS ===
+
+async function loadComments(slug) {
+  try {
+    const res = await fetch(`${API_BASE}/api/songs/${encodeURIComponent(slug)}/comments`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.comments || [];
+  } catch {
+    return [];
+  }
+}
+
+async function loadReplies(commentId) {
+  try {
+    const res = await fetch(`${API_BASE}/api/comments/${commentId}/replies`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.replies || [];
+  } catch {
+    return [];
+  }
+}
+
+async function postComment(slug, username, content, parentId) {
+  const body = { username, content };
+  if (parentId) body.parent_id = parentId;
+  const res = await fetch(`${API_BASE}/api/songs/${encodeURIComponent(slug)}/comments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'error al comentar');
+  }
+}
+
+async function reportComment(commentId) {
+  await fetch(`${API_BASE}/api/comments/${commentId}/report`, { method: 'POST' });
+}
+
+function renderComments(comments) {
+  if (comments.length === 0) {
+    els.commentsList.innerHTML = '<div class="no-comments">sin comentarios aún</div>';
+    return;
+  }
+
+  let html = '';
+  for (const c of comments) {
+    html += renderCommentHTML(c);
+  }
+  els.commentsList.innerHTML = html;
+  bindCommentActions();
+}
+
+function renderCommentHTML(c) {
+  const date = new Date(c.created_at).toLocaleDateString('es');
+  let html = `<div class="comment" data-id="${c.id}">`;
+  html += `<div class="comment-header">`;
+  html += `<span class="comment-author">${esc(c.username)}</span>`;
+  if (c.tripcode) html += `<span class="comment-tripcode">!${esc(c.tripcode)}</span>`;
+  html += `<span class="comment-date">${esc(date)}</span>`;
+  html += `</div>`;
+  html += `<div class="comment-body">${esc(c.content)}</div>`;
+  html += `<div class="comment-actions">`;
+  if (c.reply_count > 0) {
+    html += `<button class="comment-action" data-action="replies" data-id="${c.id}">respuestas (${c.reply_count})</button>`;
+  }
+  html += `<button class="comment-action" data-action="reply" data-id="${c.id}">responder</button>`;
+  html += `<button class="comment-action" data-action="report" data-id="${c.id}">reportar</button>`;
+  html += `</div>`;
+  html += `<div class="comment-replies" id="replies-${c.id}"></div>`;
+  html += `</div>`;
+  return html;
+}
+
+function renderReplyHTML(c) {
+  const date = new Date(c.created_at).toLocaleDateString('es');
+  let html = `<div class="comment" data-id="${c.id}">`;
+  html += `<div class="comment-header">`;
+  html += `<span class="comment-author">${esc(c.username)}</span>`;
+  if (c.tripcode) html += `<span class="comment-tripcode">!${esc(c.tripcode)}</span>`;
+  html += `<span class="comment-date">${esc(date)}</span>`;
+  html += `</div>`;
+  html += `<div class="comment-body">${esc(c.content)}</div>`;
+  html += `<div class="comment-actions">`;
+  html += `<button class="comment-action" data-action="report" data-id="${c.id}">reportar</button>`;
+  html += `</div>`;
+  html += `</div>`;
+  return html;
+}
+
+function bindCommentActions() {
+  for (const btn of els.commentsList.querySelectorAll('.comment-action')) {
+    btn.addEventListener('click', async (e) => {
+      const action = btn.dataset.action;
+      const id = parseInt(btn.dataset.id);
+
+      if (action === 'replies') {
+        const repliesEl = $(`#replies-${id}`);
+        if (repliesEl.children.length > 0) {
+          repliesEl.innerHTML = '';
+          return;
+        }
+        const replies = await loadReplies(id);
+        repliesEl.innerHTML = replies.map(renderReplyHTML).join('');
+      } else if (action === 'reply') {
+        const repliesEl = $(`#replies-${id}`);
+        if (repliesEl.querySelector('.reply-form')) return;
+        const savedName = profile.load().name || '';
+        repliesEl.insertAdjacentHTML('beforeend', `
+          <div class="reply-form">
+            <input type="text" class="comment-input reply-username" placeholder="nombre#secreto" value="${esc(savedName)}" autocomplete="off">
+            <textarea class="comment-textarea reply-content" placeholder="responder..." maxlength="1000"></textarea>
+            <button class="control-btn comment-submit reply-submit">enviar</button>
+          </div>
+        `);
+        const form = repliesEl.querySelector('.reply-form');
+        form.querySelector('.reply-submit').addEventListener('click', async () => {
+          const username = form.querySelector('.reply-username').value.trim();
+          const content = form.querySelector('.reply-content').value.trim();
+          if (!username || !content) return;
+          try {
+            await postComment(state.currentSong, username, content, id);
+            form.remove();
+            const replies = await loadReplies(id);
+            repliesEl.innerHTML = replies.map(renderReplyHTML).join('');
+            // update reply count
+            const countBtn = btn.closest('.comment').querySelector('[data-action="replies"]');
+            if (countBtn) countBtn.textContent = `respuestas (${replies.length})`;
+          } catch (err) {
+            alert(err.message);
+          }
+        });
+      } else if (action === 'report') {
+        if (!confirm('¿reportar este comentario?')) return;
+        await reportComment(id);
+        btn.textContent = 'reportado';
+        btn.disabled = true;
+      }
+    });
+  }
+}
+
+async function initComments(slug) {
+  els.commentsSection.style.display = '';
+  const savedName = profile.load().name || '';
+  if (savedName) els.commentUsername.value = savedName;
+
+  const comments = await loadComments(slug);
+  renderComments(comments);
 }
 
 // === CONTROLES ===
@@ -801,6 +966,22 @@ async function init() {
 
   els.searchInput.addEventListener('input', () => {
     renderCatalog(els.searchInput.value);
+  });
+
+  // comment submit
+  els.commentSubmit.addEventListener('click', async () => {
+    const username = els.commentUsername.value.trim();
+    const content = els.commentContent.value.trim();
+    if (!username || !content) return;
+    if (!state.currentSong) return;
+    try {
+      await postComment(state.currentSong, username, content);
+      els.commentContent.value = '';
+      const comments = await loadComments(state.currentSong);
+      renderComments(comments);
+    } catch (err) {
+      alert(err.message);
+    }
   });
 
   // cerrar popup al hacer click fuera

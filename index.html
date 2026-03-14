@@ -137,6 +137,16 @@
 
       <div id="chordDiagrams" class="chord-diagrams"></div>
       <div id="songContent" class="song-content"></div>
+
+      <div id="commentsSection" class="comments-section" style="display:none;">
+        <h2 class="comments-title">comentarios</h2>
+        <div class="comment-form" id="commentForm">
+          <input type="text" id="commentUsername" class="comment-input" placeholder="nombre#secreto" autocomplete="off">
+          <textarea id="commentContent" class="comment-textarea" placeholder="escribe un comentario..." maxlength="1000"></textarea>
+          <button class="control-btn comment-submit" id="commentSubmit">comentar</button>
+        </div>
+        <div id="commentsList" class="comments-list"></div>
+      </div>
     </div>
 
     <!-- vista editor -->

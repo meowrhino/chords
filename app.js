@@ -126,6 +126,12 @@ const els = {
   feedView: $('#feedView'),
   feedList: $('#feedList'),
   feedLink: $('#feedLink'),
+  artistView: $('#artistView'),
+  artistName: $('#artistName'),
+  artistMeta: $('#artistMeta'),
+  artistBio: $('#artistBio'),
+  artistSongs: $('#artistSongs'),
+  followArtistProfileBtn: $('#followArtistProfileBtn'),
   commentsSection: $('#commentsSection'),
   commentForm: $('#commentForm'),
   commentUsername: $('#commentUsername'),
@@ -223,7 +229,7 @@ function renderCatalog(filter = '') {
   html += `<div class="catalog-section-label">todas</div>`;
   for (const artist of sortedArtists) {
     html += `<div class="artist-group">`;
-    html += `<div class="artist-name">${esc(artist)}</div>`;
+    html += `<a href="#/artist/${encodeURIComponent(artist)}" class="artist-name artist-link">${esc(artist)}</a>`;
     for (const song of groups[artist]) {
       html += songEntryHTML(song);
     }
@@ -312,7 +318,7 @@ function renderSongView() {
   // header
   els.songTitle.textContent = song.meta.title || state.currentSong;
   const metaParts = [];
-  if (song.meta.artist) metaParts.push(`<span>${esc(song.meta.artist)}</span>`);
+  if (song.meta.artist) metaParts.push(`<a href="#/artist/${encodeURIComponent(song.meta.artist)}" class="artist-link">${esc(song.meta.artist)}</a>`);
   if (song.meta.key) metaParts.push(`<span>tonalidad: ${esc(song.meta.key)}</span>`);
   if (state.capo > 0) metaParts.push(`<span>capo: ${state.capo}</span>`);
   if (song.meta.tempo) metaParts.push(`<span>${song.meta.tempo} bpm</span>`);
@@ -611,6 +617,65 @@ async function loadFeed() {
     els.feedList.innerHTML = html;
   } catch {
     els.feedList.innerHTML = '<div class="no-results">error cargando feed</div>';
+  }
+}
+
+// === ARTISTA ===
+
+async function loadArtistProfile(artistName) {
+  els.artistName.textContent = artistName;
+  els.artistBio.textContent = '';
+  els.artistMeta.innerHTML = '';
+
+  // Try to load from API
+  let user = null;
+  try {
+    const res = await fetch(`${API_BASE}/api/users/${encodeURIComponent(artistName)}`);
+    if (res.ok) {
+      const data = await res.json();
+      user = data.user;
+    }
+  } catch {}
+
+  if (user) {
+    const meta = [];
+    if (user.instrument) meta.push(`<span>${esc(user.instrument)}</span>`);
+    if (user.is_artist) meta.push(`<span class="badge-verified">artista verificado</span>`);
+    els.artistMeta.innerHTML = meta.join('');
+    if (user.bio) els.artistBio.textContent = user.bio;
+  }
+
+  // Follow button
+  const username = getUsername();
+  if (username) {
+    els.followArtistProfileBtn.style.display = '';
+    const following = isFollowing('artist', artistName);
+    els.followArtistProfileBtn.textContent = following ? 'siguiendo' : 'seguir';
+    els.followArtistProfileBtn.classList.toggle('following', following);
+    els.followArtistProfileBtn.onclick = () => toggleFollow('artist', artistName, els.followArtistProfileBtn);
+  } else {
+    els.followArtistProfileBtn.style.display = 'none';
+  }
+
+  // Songs by this artist from catalog
+  const all = getMergedCatalog();
+  const songs = all.filter(s => s.artist.toLowerCase() === artistName.toLowerCase());
+
+  if (songs.length === 0) {
+    els.artistSongs.innerHTML = '<div class="no-results">sin canciones</div>';
+  } else {
+    let html = `<div class="catalog-section-label">canciones (${songs.length})</div>`;
+    for (const song of songs) {
+      html += songEntryHTML(song);
+    }
+    els.artistSongs.innerHTML = html;
+    // bind clicks
+    for (const entry of els.artistSongs.querySelectorAll('.song-entry')) {
+      entry.addEventListener('click', () => {
+        const file = entry.dataset.file;
+        location.hash = `#/song/${file.replace('.cho', '')}`;
+      });
+    }
   }
 }
 
@@ -1084,8 +1149,16 @@ function route() {
   els.songView.style.display = 'none';
   els.editorView.style.display = 'none';
   els.feedView.style.display = 'none';
+  els.artistView.style.display = 'none';
 
-  if (hash === '#/feed') {
+  if (hash.startsWith('#/artist/')) {
+    const name = decodeURIComponent(hash.slice(9));
+    els.artistView.style.display = '';
+    els.artistView.style.animation = 'none';
+    els.artistView.offsetHeight;
+    els.artistView.style.animation = '';
+    loadArtistProfile(name);
+  } else if (hash === '#/feed') {
     els.feedView.style.display = '';
     els.feedView.style.animation = 'none';
     els.feedView.offsetHeight;

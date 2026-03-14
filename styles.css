@@ -1103,3 +1103,46 @@ input {
   color: var(--text-dim);
   margin-left: auto;
 }
+
+/* === ARTIST PROFILE === */
+
+.artist-link {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.artist-link:hover {
+  text-decoration: underline;
+}
+
+.artist-header {
+  margin-bottom: 1.5rem;
+}
+
+.artist-meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.artist-bio {
+  font-size: 0.7rem;
+  color: var(--text);
+  margin-top: 0.5rem;
+  line-height: 1.6;
+}
+
+.artist-songs {
+  margin-top: 1rem;
+}
+
+.badge-verified {
+  font-size: 0.55rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius);
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 600;
+}

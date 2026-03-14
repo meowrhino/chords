@@ -132,6 +132,10 @@ const els = {
   artistBio: $('#artistBio'),
   artistSongs: $('#artistSongs'),
   followArtistProfileBtn: $('#followArtistProfileBtn'),
+  chordPanel: $('#chordPanel'),
+  chordPanelToggle: $('#chordPanelToggle'),
+  chordPanelClose: $('#chordPanelClose'),
+  chordPanelContent: $('#chordPanelContent'),
   commentsSection: $('#commentsSection'),
   commentForm: $('#commentForm'),
   commentUsername: $('#commentUsername'),
@@ -427,6 +431,33 @@ function renderChordDiagrams(song) {
   }
 }
 
+function renderChordPanel(song) {
+  els.chordPanelContent.innerHTML = '';
+  for (const chordName of song.allChords) {
+    const normalized = normalizeChordName(chordName);
+    const data = lookupChord(normalized, state.instrument);
+    if (!data) continue;
+    const card = document.createElement('div');
+    card.className = 'chord-diagram-card';
+    const svg = chordDiagram(chordName, data, state.instrument);
+    if (svg) card.appendChild(svg);
+    els.chordPanelContent.appendChild(card);
+  }
+}
+
+function toggleChordPanel() {
+  const open = els.chordPanel.style.display !== 'none';
+  els.chordPanel.style.display = open ? 'none' : '';
+  els.chordPanelToggle.classList.toggle('active', !open);
+  els.chordPanelToggle.textContent = open ? 'fijar' : 'ocultar';
+  if (!open && state.parsedSong) {
+    const song = state.transpose !== 0
+      ? transposeSong(state.parsedSong, state.transpose)
+      : state.parsedSong;
+    renderChordPanel(song);
+  }
+}
+
 function setupChordInteraction() {
   // click en nombres de acordes en el contenido
   const chordEls = els.songContent.querySelectorAll('.chord-name, .chord-inline');
@@ -502,33 +533,11 @@ async function unfollowTarget(targetType, target) {
   });
 }
 
-async function getFollowing() {
-  const username = getUsername();
-  if (!username) return [];
-  try {
-    const res = await fetch(`${API_BASE}/api/feed?username=${encodeURIComponent(username)}`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.feed || [];
-  } catch { return []; }
-}
-
-async function getFollowingList() {
-  const username = getUsername();
-  if (!username) return [];
-  try {
-    // We track follows locally since the API doesn't have a dedicated GET /api/following endpoint
-    return JSON.parse(localStorage.getItem('chords-following') || '[]');
-  } catch { return []; }
-}
-
 function saveFollowing(list) {
   localStorage.setItem('chords-following', JSON.stringify(list));
 }
 
 function isFollowing(targetType, target) {
-  const list = getFollowingList();
-  // synchronous version using localStorage
   const following = JSON.parse(localStorage.getItem('chords-following') || '[]');
   return following.some(f => f.target_type === targetType && f.target === target);
 }
@@ -608,8 +617,8 @@ async function loadFeed() {
         html += `<span class="feed-artist">${esc(item.artist)}</span>`;
       } else {
         html += `<span class="feed-type">comentario</span>`;
-        html += `<a href="#/song/${esc(item.id)}" class="feed-title">${esc(item.title)}</a>`;
-        html += `<span class="feed-artist">por ${esc(item.artist)}</span>`;
+        html += `<a href="#/song/${esc(item.id)}" class="feed-title">${esc(item.id.replace(/-/g, ' '))}</a>`;
+        html += `<span class="feed-artist">${esc(item.artist)}: "${esc(item.title.slice(0, 60))}"</span>`;
       }
       html += `<span class="feed-date">${esc(date)}</span>`;
       html += `</div>`;
@@ -718,7 +727,9 @@ async function postComment(slug, username, content, parentId) {
 }
 
 async function reportComment(commentId) {
-  await fetch(`${API_BASE}/api/comments/${commentId}/report`, { method: 'POST' });
+  try {
+    await fetch(`${API_BASE}/api/comments/${commentId}/report`, { method: 'POST' });
+  } catch { /* silently fail on network error */ }
 }
 
 function renderComments(comments) {
@@ -798,20 +809,22 @@ function bindCommentActions() {
           </div>
         `);
         const form = repliesEl.querySelector('.reply-form');
-        form.querySelector('.reply-submit').addEventListener('click', async () => {
+        const submitBtn = form.querySelector('.reply-submit');
+        submitBtn.addEventListener('click', async () => {
           const username = form.querySelector('.reply-username').value.trim();
           const content = form.querySelector('.reply-content').value.trim();
           if (!username || !content) return;
+          submitBtn.disabled = true;
           try {
             await postComment(state.currentSong, username, content, id);
             form.remove();
             const replies = await loadReplies(id);
             repliesEl.innerHTML = replies.map(renderReplyHTML).join('');
-            // update reply count
             const countBtn = btn.closest('.comment').querySelector('[data-action="replies"]');
             if (countBtn) countBtn.textContent = `respuestas (${replies.length})`;
           } catch (err) {
             alert(err.message);
+            submitBtn.disabled = false;
           }
         });
       } else if (action === 'report') {
@@ -900,6 +913,10 @@ function initControls() {
     els.scrollSpeed.textContent = state.scrollSpeed;
     if (state.autoScroll) { stopAutoScroll(); startAutoScroll(); }
   });
+
+  // chord panel toggle
+  els.chordPanelToggle.addEventListener('click', toggleChordPanel);
+  els.chordPanelClose.addEventListener('click', toggleChordPanel);
 }
 
 function startAutoScroll() {
@@ -1143,6 +1160,9 @@ function route() {
   stopAutoScroll();
   state.autoScroll = false;
   hideChordPopup();
+  els.chordPanel.style.display = 'none';
+  els.chordPanelToggle.classList.remove('active');
+  els.chordPanelToggle.textContent = 'fijar';
 
   // ocultar todas las vistas
   els.catalogView.style.display = 'none';
@@ -1216,6 +1236,7 @@ async function init() {
     const content = els.commentContent.value.trim();
     if (!username || !content) return;
     if (!state.currentSong) return;
+    els.commentSubmit.disabled = true;
     try {
       await postComment(state.currentSong, username, content);
       els.commentContent.value = '';
@@ -1223,6 +1244,8 @@ async function init() {
       renderComments(comments);
     } catch (err) {
       alert(err.message);
+    } finally {
+      els.commentSubmit.disabled = false;
     }
   });
 

@@ -214,9 +214,22 @@
       </div>
 
       <div class="editor-import-url">
-        <input type="url" id="importUrlInput" class="ed-input" placeholder="pega una URL de acordes (ufret, ultimate guitar, acordesweb...)" autocomplete="off">
+        <input type="url" id="importUrlInput" class="ed-input" placeholder="pega una URL (ufret, UG, acordesweb, cifraclub, la-cuerda, e-chords...)" autocomplete="off">
         <button class="control-btn ed-action" id="importUrlBtn">importar URL</button>
       </div>
+
+      <details class="editor-import-cookie">
+        <summary>cookies de sesión (para sitios de pago)</summary>
+        <p class="ed-hint">si la URL es de un sitio de pago al que estás suscrito, pega aquí tu cookie de sesión (DevTools → Application → Cookies → copia el valor del header <code>Cookie</code>). se guarda solo en este navegador.</p>
+        <input type="text" id="importCookieInput" class="ed-input" placeholder="cf_clearance=...; PHPSESSID=...; etc." autocomplete="off">
+      </details>
+
+      <details class="editor-import-raw">
+        <summary>pegar texto crudo (sirve para sitios de pago)</summary>
+        <p class="ed-hint">copia el bloque entero de la canción desde cualquier sitio (después de hacer login si es de pago) y pégalo aquí. lo convertiré a formato ChordPro inline.</p>
+        <textarea id="importRawInput" class="ed-textarea ed-textarea-sm" placeholder="pega aquí el texto con acordes encima de las letras..." spellcheck="false"></textarea>
+        <button class="control-btn ed-action" id="importRawBtn">convertir y rellenar</button>
+      </details>
 
       <div class="editor-actions">
         <button class="control-btn ed-action" id="edSave">guardar</button>

@@ -811,6 +811,47 @@ input {
   flex: 1;
 }
 
+.editor-import-raw,
+.editor-import-cookie {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  border: 1px dashed var(--text-muted);
+  border-radius: 4px;
+}
+
+.editor-import-raw summary,
+.editor-import-cookie summary {
+  font-size: clamp(0.6rem, 0.85dvw, 0.75rem);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.editor-import-raw[open] summary,
+.editor-import-cookie[open] summary {
+  margin-bottom: 0.5rem;
+}
+
+.editor-import-raw .ed-hint,
+.editor-import-cookie .ed-hint {
+  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  color: var(--text-muted);
+  margin: 0 0 0.4rem 0;
+  line-height: 1.4;
+}
+
+.editor-import-cookie code {
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0 0.2rem;
+  border-radius: 2px;
+}
+
+.ed-textarea-sm {
+  min-height: 140px;
+  margin-bottom: 0.4rem;
+}
+
 .editor-actions {
   display: flex;
   flex-wrap: wrap;

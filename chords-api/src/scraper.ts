@@ -1,5 +1,7 @@
-// URL scraper for chord sites
-// Fetches a URL, parses the HTML, and returns ChordPro content
+// URL scraper for chord sites.
+// Site-specific HTML extraction → shared raw-to-ChordPro converter.
+// @ts-ignore — JS module, bundled at deploy.
+import { convertRawToChordPro } from '../../engine/raw-to-chordpro.js';
 
 interface ScrapeResult {
   title: string;
@@ -19,6 +21,14 @@ const ALLOWED_DOMAINS = [
   'www.chordsworld.com',
   'ukutabs.com',
   'www.ukutabs.com',
+  'cifraclub.com',
+  'www.cifraclub.com',
+  'cifraclub.com.br',
+  'www.cifraclub.com.br',
+  'la-cuerda.net',
+  'www.la-cuerda.net',
+  'e-chords.com',
+  'www.e-chords.com',
 ];
 
 function getDomain(url: string): string {
@@ -29,82 +39,22 @@ function getDomain(url: string): string {
   }
 }
 
-// Merge chord-above-lyrics format into inline ChordPro
-function mergeChordLines(text: string): string {
-  const lines = text.split('\n');
-  const result: string[] = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
-
-    // Check if this line is only chords (letters, #, b, /, spaces, numbers)
-    const isChordLine = line.trim().length > 0 &&
-      /^[\sA-Ga-g#bmajdinsus/\d\(\)°ø+\-]+$/.test(line) &&
-      /[A-G]/.test(line);
-
-    // Check if next line has actual lyrics
-    const nextHasLyrics = nextLine.trim().length > 0 &&
-      !/^[\sA-Ga-g#bmajdinsus/\d\(\)°ø+\-]+$/.test(nextLine);
-
-    if (isChordLine && nextHasLyrics) {
-      // Merge chord positions into lyric line
-      const chords = extractChordPositions(line);
-      const merged = insertChordsIntoLyrics(chords, nextLine);
-      result.push(merged);
-      i++; // skip the lyric line
-    } else if (isChordLine && !nextHasLyrics) {
-      // Chord-only line — convert to [Chord] [Chord] format
-      const chords = extractChordPositions(line);
-      result.push(chords.map(c => `[${c.chord}]`).join(' '));
-    } else {
-      result.push(line);
-    }
-  }
-
-  return result.join('\n');
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ');
 }
 
-function extractChordPositions(line: string): { pos: number; chord: string }[] {
-  const chords: { pos: number; chord: string }[] = [];
-  const regex = /([A-G][#b]?(?:m|maj|min|dim|aug|sus|add|7|9|11|13|6|2|4|\/[A-G][#b]?)*(?:\d*))/g;
-  let match;
-  while ((match = regex.exec(line)) !== null) {
-    chords.push({ pos: match.index, chord: match[1] });
-  }
-  return chords;
-}
-
-function insertChordsIntoLyrics(
-  chords: { pos: number; chord: string }[],
-  lyrics: string
-): string {
-  if (chords.length === 0) return lyrics;
-
-  // Insert chords at positions, right-to-left to preserve indices
-  let result = lyrics;
-  const sorted = [...chords].sort((a, b) => b.pos - a.pos);
-
-  for (const { pos, chord } of sorted) {
-    const insertPos = Math.min(pos, result.length);
-    result = result.slice(0, insertPos) + `[${chord}]` + result.slice(insertPos);
-  }
-
-  return result;
-}
-
-// === Site-specific parsers ===
+// === Site-specific HTML → raw text ===
 
 function parseUfret(html: string): ScrapeResult {
-  // Extract title from <h1>
   const titleMatch = html.match(/<h1[^>]*>([^<]+)<\/h1>/);
   const title = titleMatch ? titleMatch[1].trim() : '';
 
-  // Extract artist from title tag
   const artistMatch = html.match(/<title>[^/]+\/\s*(.+?)\s*ギター/);
   const artist = artistMatch ? artistMatch[1].trim() : '';
 
-  // Extract chord data from ufret_chord_datas array
   const dataMatch = html.match(/var\s+ufret_chord_datas\s*=\s*(\[[\s\S]*?\]);/);
   if (!dataMatch) throw new Error('Could not find chord data on ufret page');
 
@@ -115,107 +65,70 @@ function parseUfret(html: string): ScrapeResult {
     throw new Error('Failed to parse ufret chord data');
   }
 
-  const content = chordLines.map(l => l.replace(/\r/g, '')).join('\n');
-
-  return { title, artist, lang: 'ja', content };
+  const raw = chordLines.map(l => l.replace(/\r/g, '')).join('\n');
+  return { title, artist, lang: 'ja', content: convertRawToChordPro(raw) };
 }
 
 function parseUltimateGuitar(html: string): ScrapeResult {
-  // Try js-store approach
   const storeMatch = html.match(/data-content="([^"]+)"/);
-  let content = '';
+  let raw = '';
   let title = '';
   let artist = '';
 
   if (storeMatch) {
     try {
-      const decoded = storeMatch[1].replace(/&quot;/g, '"').replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-      const data = JSON.parse(decoded);
-      const tab = data?.store?.page?.data?.tab_view?.wiki_tab?.content ||
-                  data?.store?.page?.data?.tab?.content || '';
-      content = tab.replace(/\[tab\]/g, '').replace(/\[\/tab\]/g, '')
-        .replace(/\[ch\]/g, '[').replace(/\[\/ch\]/g, ']');
+      const data = JSON.parse(decodeEntities(storeMatch[1]));
+      raw = data?.store?.page?.data?.tab_view?.wiki_tab?.content ||
+            data?.store?.page?.data?.tab?.content || '';
       title = data?.store?.page?.data?.tab?.song_name || '';
       artist = data?.store?.page?.data?.tab?.artist_name || '';
     } catch { /* fallback below */ }
   }
 
-  if (!content) {
-    // Fallback: extract from rendered page text
+  if (!raw) {
     const titleMatch = html.match(/<title>([^-]+)-\s*([^|]+)/);
     if (titleMatch) {
       title = titleMatch[1].trim();
       artist = titleMatch[2].trim().replace(/\s*Chords.*/, '');
     }
-
-    // Try to find pre-formatted chord content
     const preMatch = html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/);
-    if (preMatch) {
-      content = preMatch[1].replace(/<[^>]+>/g, '');
-    }
+    if (preMatch) raw = preMatch[1].replace(/<[^>]+>/g, '');
   }
 
-  // Convert section markers like [Verse 1] to ChordPro
-  content = content
-    .replace(/\[Intro\]/gi, '{start_of_intro}')
-    .replace(/\[Verse[^\]]*\]/gi, '{start_of_verse}')
-    .replace(/\[Pre-?Chorus[^\]]*\]/gi, '{start_of_verse}')
-    .replace(/\[Chorus[^\]]*\]/gi, '{start_of_chorus}')
-    .replace(/\[Bridge[^\]]*\]/gi, '{start_of_bridge}')
-    .replace(/\[Outro[^\]]*\]/gi, '{start_of_verse}')
-    .replace(/\[Instrumental[^\]]*\]/gi, '{start_of_intro}')
-    .replace(/\[Post-?Chorus[^\]]*\]/gi, '{start_of_verse}');
-
-  // Merge chord-above-lyrics format
-  content = mergeChordLines(content);
-
-  return { title, artist, content };
+  if (!raw) throw new Error('Could not extract chord content from Ultimate Guitar');
+  return { title, artist, content: convertRawToChordPro(raw) };
 }
 
 function parseAcordesWeb(html: string): ScrapeResult {
-  // Title from <title>
   const titleMatch = html.match(/<title>[^:]*:\s*\(([^)]+)\)/);
   const title = titleMatch ? titleMatch[1].trim() : '';
 
-  // Extract from meta or title
   const artistTitleMatch = html.match(/<title>[^(]*\(([^)]+)\)/i);
   const artist = artistTitleMatch ? artistTitleMatch[1].trim() : '';
 
-  // Content from <pre>
   const preMatch = html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/);
   if (!preMatch) throw new Error('No chord content found');
 
-  let content = preMatch[1].replace(/<[^>]+>/g, '').trim();
-  // Remove "Primero en AcordesWeb" watermark
-  content = content.replace(/Primero en #?AcordesWeb\.com\s*/gi, '');
-
-  content = mergeChordLines(content);
-
-  return { title, artist, lang: 'es', content };
+  const raw = decodeEntities(preMatch[1].replace(/<[^>]+>/g, '')).trim();
+  return { title, artist, lang: 'es', content: convertRawToChordPro(raw) };
 }
 
 function parseChordsWorld(html: string): ScrapeResult {
-  // Title from page
   const titleMatch = html.match(/<title>([^-]+)-\s*([^C]+)Chords/);
   const artist = titleMatch ? titleMatch[1].trim() : '';
   const title = titleMatch ? titleMatch[2].trim() : '';
 
-  // Extract content from entry-content
   const contentMatch = html.match(/<div[^>]*class="entry-content"[^>]*>([\s\S]*?)<\/div>/);
   if (!contentMatch) throw new Error('No chord content found');
 
-  // Clean HTML tags but preserve chord spans
-  let content = contentMatch[1]
-    .replace(/<c-2[^>]*>([^<]*)<\/c-2>/g, '[$1]') // chord spans
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .trim();
+  const raw = decodeEntities(
+    contentMatch[1]
+      .replace(/<c-2[^>]*>([^<]*)<\/c-2>/g, '[$1]')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+  ).trim();
 
-  return { title, artist, lang: 'fr', content };
+  return { title, artist, lang: 'fr', content: convertRawToChordPro(raw) };
 }
 
 function parseUkuTabs(html: string): ScrapeResult {
@@ -223,66 +136,97 @@ function parseUkuTabs(html: string): ScrapeResult {
   const title = titleMatch ? titleMatch[1].trim() : '';
   const artist = titleMatch ? titleMatch[2].trim().replace(/\s*on UkuTabs.*/, '') : '';
 
-  // Find chord content
   const preMatch = html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/);
-  let content = '';
+  let raw = '';
+  if (preMatch) raw = preMatch[1].replace(/<[^>]+>/g, '');
+  if (!raw) throw new Error('No chord content found');
 
-  if (preMatch) {
-    content = preMatch[1].replace(/<[^>]+>/g, '');
-  } else {
-    // Try finding in body text
-    const bodyMatch = html.match(/Intro:[\s\S]*?(?=This arrangement|UkuTabs|$)/);
-    if (bodyMatch) content = bodyMatch[0];
-  }
+  return { title, artist, lang: 'en', content: convertRawToChordPro(raw) };
+}
 
-  // Convert section markers
-  content = content
-    .replace(/^(Intro|Verse \d*|Pre-Chorus|Chorus|Bridge|Outro|Post-Chorus):?\s*$/gm, (_, section) => {
-      const s = section.toLowerCase().replace(/\s+\d+/, '');
-      if (s === 'intro') return '{start_of_intro}';
-      if (s === 'chorus') return '{start_of_chorus}';
-      if (s === 'bridge') return '{start_of_bridge}';
-      return '{start_of_verse}';
-    });
+function parseCifraClub(html: string): ScrapeResult {
+  // CifraClub envuelve los chords en spans <b>…</b> y la letra en pre.cifra_cnt
+  const titleMatch = html.match(/<h1[^>]*class="t1"[^>]*>([^<]+)<\/h1>/) ||
+                     html.match(/<h1[^>]*>([^<]+)<\/h1>/);
+  const title = titleMatch ? titleMatch[1].trim() : '';
 
-  content = mergeChordLines(content);
+  const artistMatch = html.match(/<h2[^>]*class="t3"[^>]*>(?:<a[^>]*>)?([^<]+)/) ||
+                      html.match(/<h2[^>]*>(?:<a[^>]*>)?([^<]+)/);
+  const artist = artistMatch ? artistMatch[1].trim() : '';
 
-  return { title, artist, lang: 'en', content };
+  const preMatch = html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/);
+  if (!preMatch) throw new Error('No chord content found in CifraClub page');
+
+  const raw = decodeEntities(
+    preMatch[1]
+      .replace(/<b>([^<]*)<\/b>/g, '[$1]')
+      .replace(/<[^>]+>/g, '')
+  ).trim();
+
+  // Detectar idioma por TLD
+  const lang = /cifraclub\.com\.br/i.test(html.slice(0, 1000)) ? 'pt' : 'es';
+  return { title, artist, lang, content: convertRawToChordPro(raw) };
+}
+
+function parseLaCuerda(html: string): ScrapeResult {
+  const titleMatch = html.match(/<h1[^>]*>([^<]+)<\/h1>/);
+  const title = titleMatch ? titleMatch[1].trim() : '';
+
+  const artistMatch = html.match(/<title>[^|]*\|\s*([^|]+?)\s*[-|]/);
+  const artist = artistMatch ? artistMatch[1].trim() : '';
+
+  const preMatch = html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/);
+  if (!preMatch) throw new Error('No chord content found');
+
+  const raw = decodeEntities(preMatch[1].replace(/<[^>]+>/g, '')).trim();
+  return { title, artist, lang: 'es', content: convertRawToChordPro(raw) };
+}
+
+function parseEChords(html: string): ScrapeResult {
+  const titleMatch = html.match(/<h1[^>]*>([^<]+)<\/h1>/);
+  const title = titleMatch ? titleMatch[1].trim() : '';
+
+  const artistMatch = html.match(/<h2[^>]*>(?:<a[^>]*>)?([^<]+)/);
+  const artist = artistMatch ? artistMatch[1].trim() : '';
+
+  const preMatch = html.match(/<pre[^>]*id="core"[^>]*>([\s\S]*?)<\/pre>/) ||
+                   html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/);
+  if (!preMatch) throw new Error('No chord content found');
+
+  const raw = decodeEntities(preMatch[1].replace(/<[^>]+>/g, '')).trim();
+  return { title, artist, content: convertRawToChordPro(raw) };
 }
 
 function parseGeneric(html: string): ScrapeResult {
   const titleMatch = html.match(/<title>([^<]+)<\/title>/);
   const title = titleMatch ? titleMatch[1].trim() : 'Unknown';
 
-  // Try to find <pre> content with chords
   const preMatch = html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/);
   if (preMatch) {
-    let content = preMatch[1].replace(/<[^>]+>/g, '');
-    content = mergeChordLines(content);
-    return { title, artist: '', content };
+    const raw = decodeEntities(preMatch[1].replace(/<[^>]+>/g, ''));
+    return { title, artist: '', content: convertRawToChordPro(raw) };
   }
-
   throw new Error('Could not extract chord content from this page');
 }
 
-export async function scrapeUrl(url: string): Promise<ScrapeResult> {
+export async function scrapeUrl(url: string, cookie?: string): Promise<ScrapeResult> {
   const domain = getDomain(url);
 
   if (!ALLOWED_DOMAINS.some(d => domain === d || domain === 'www.' + d)) {
     throw new Error(`Domain not supported: ${domain}. Supported: ${ALLOWED_DOMAINS.join(', ')}`);
   }
 
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; AcordesBot/1.0)',
-      'Accept': 'text/html',
-    },
-  });
+  const headers: Record<string, string> = {
+    // UA realista — algunos sitios bloquean bots y queremos paridad con un navegador.
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+  };
+  if (cookie && cookie.trim()) headers['Cookie'] = cookie.trim();
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch URL: ${response.status}`);
-  }
+  const response = await fetch(url, { headers });
 
+  if (!response.ok) throw new Error(`Failed to fetch URL: ${response.status}`);
   const html = await response.text();
 
   if (domain.includes('ufret.jp')) return parseUfret(html);
@@ -290,6 +234,9 @@ export async function scrapeUrl(url: string): Promise<ScrapeResult> {
   if (domain.includes('acordesweb.com')) return parseAcordesWeb(html);
   if (domain.includes('chordsworld.com')) return parseChordsWorld(html);
   if (domain.includes('ukutabs.com')) return parseUkuTabs(html);
+  if (domain.includes('cifraclub.com')) return parseCifraClub(html);
+  if (domain.includes('la-cuerda.net')) return parseLaCuerda(html);
+  if (domain.includes('e-chords.com')) return parseEChords(html);
 
   return parseGeneric(html);
 }

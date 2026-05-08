@@ -5,6 +5,7 @@ import { renderSong } from './engine/ruby-render.js';
 import { transposeSong, normalizeChordName } from './engine/transpose.js';
 import { chordDiagram } from './engine/chord-svg.js';
 import { lookupChord } from './engine/chords-db.js';
+import { convertRawToChordPro } from './engine/raw-to-chordpro.js';
 
 const API_BASE = 'https://chords-api.manuellatourf.workers.dev';
 
@@ -987,17 +988,27 @@ function initEditor() {
   // importar desde URL
   const importUrlBtn = $('#importUrlBtn');
   const importUrlInput = $('#importUrlInput');
+  const importCookieInput = $('#importCookieInput');
+  // Restaurar cookie guardada en localStorage
+  if (importCookieInput) {
+    const saved = localStorage.getItem('chords-scrape-cookie');
+    if (saved) importCookieInput.value = saved;
+    importCookieInput.addEventListener('input', () => {
+      localStorage.setItem('chords-scrape-cookie', importCookieInput.value);
+    });
+  }
   if (importUrlBtn && importUrlInput) {
     importUrlBtn.addEventListener('click', async () => {
       const url = importUrlInput.value.trim();
       if (!url) return;
+      const cookie = importCookieInput ? importCookieInput.value.trim() : '';
       importUrlBtn.textContent = 'importando...';
       importUrlBtn.disabled = true;
       try {
         const res = await fetch(`${API_BASE}/api/scrape`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url }),
+          body: JSON.stringify({ url, cookie: cookie || undefined }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'error al importar');
@@ -1013,6 +1024,29 @@ function initEditor() {
       } finally {
         importUrlBtn.textContent = 'importar URL';
         importUrlBtn.disabled = false;
+      }
+    });
+  }
+
+  // pegar texto crudo (paid sites, copia manual)
+  const importRawBtn = $('#importRawBtn');
+  const importRawInput = $('#importRawInput');
+  if (importRawBtn && importRawInput) {
+    importRawBtn.addEventListener('click', () => {
+      const raw = importRawInput.value;
+      if (!raw.trim()) return;
+      try {
+        const converted = convertRawToChordPro(raw);
+        // Si el editor ya tiene contenido, anexar; si no, reemplazar
+        if (els.edContent.value.trim()) {
+          els.edContent.value = els.edContent.value.replace(/\n*$/, '\n\n') + converted;
+        } else {
+          els.edContent.value = converted;
+        }
+        importRawInput.value = '';
+        updateEditorPreview();
+      } catch (e) {
+        alert('Error al convertir: ' + (e.message || e));
       }
     });
   }

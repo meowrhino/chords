@@ -242,11 +242,11 @@ app.post('/api/scrape', async (c) => {
   const rl = checkRateLimit(ip);
   if (!rl.allowed) return c.json({ error: 'rate limited', retryAfter: rl.retryAfter }, 429);
 
-  const body = await c.req.json<{ url: string }>();
+  const body = await c.req.json<{ url: string; cookie?: string }>();
   if (!body.url) return c.json({ error: 'url required' }, 400);
 
   try {
-    const result = await scrapeUrl(body.url);
+    const result = await scrapeUrl(body.url, body.cookie);
     return c.json(result);
   } catch (e: any) {
     return c.json({ error: e.message || 'scrape failed' }, 400);

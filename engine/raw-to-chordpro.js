@@ -67,11 +67,43 @@ export function extractChordPositions(line) {
   return out;
 }
 
+// Si hay una letra MAYÚSCULA cerca de `pos` en `lyrics`, devuelve su índice
+// (convención: el transcriptor marca la sílaba que lleva el acorde
+// poniéndola en mayúscula — "yo te aMo" → acorde sobre "Mo").
+// Ventana ±SNAP_WINDOW; empate → más cercano, luego preferir izquierda
+// (inicio de sílaba). Devuelve `pos` si no encuentra nada.
+const SNAP_WINDOW = 2;
+function snapToUppercase(lyrics, pos) {
+  if (pos < 0 || pos >= lyrics.length) return pos;
+  // Si ya estamos sobre una mayúscula, no movemos.
+  const here = lyrics[pos];
+  if (here >= 'A' && here <= 'Z') return pos;
+  for (let d = 1; d <= SNAP_WINDOW; d++) {
+    // izquierda primero (inicio de sílaba)
+    const left = pos - d;
+    if (left >= 0) {
+      const c = lyrics[left];
+      if (c >= 'A' && c <= 'Z') return left;
+    }
+    const right = pos + d;
+    if (right < lyrics.length) {
+      const c = lyrics[right];
+      if (c >= 'A' && c <= 'Z') return right;
+    }
+  }
+  return pos;
+}
+
 // Inserta los chords en sus posiciones dentro de la línea de letra.
 export function insertChordsIntoLyrics(chords, lyrics) {
   if (!chords.length) return lyrics;
+  // Ajustar cada posición a la mayúscula cercana (si la hay).
+  const snapped = chords.map(({ pos, chord }) => ({
+    pos: snapToUppercase(lyrics, pos),
+    chord,
+  }));
   // Ordenar de derecha a izquierda para preservar índices al insertar.
-  const sorted = [...chords].sort((a, b) => b.pos - a.pos);
+  const sorted = snapped.sort((a, b) => b.pos - a.pos);
   let result = lyrics;
   for (const { pos, chord } of sorted) {
     const insertPos = Math.max(0, Math.min(pos, result.length));

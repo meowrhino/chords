@@ -1,8 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "chords",
+  "main": "src/index.ts",
   "compatibility_date": "2026-05-18",
   "assets": {
-    "directory": "./"
-  }
+    "directory": "./",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "chords-db",
+      "database_id": "2fee64ed-0d47-4bb2-98a1-949707fad3dc"
+    }
+  ]
 }

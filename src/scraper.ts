@@ -1,7 +1,7 @@
 // URL scraper for chord sites.
 // Site-specific HTML extraction → shared raw-to-ChordPro converter.
 // @ts-ignore — JS module, bundled at deploy.
-import { convertRawToChordPro } from '../../engine/raw-to-chordpro.js';
+import { convertRawToChordPro } from '../engine/raw-to-chordpro.js';
 
 interface ScrapeResult {
   title: string;

@@ -7,7 +7,7 @@ import { chordDiagram } from './engine/chord-svg.js';
 import { lookupChord } from './engine/chords-db.js';
 import { convertRawToChordPro } from './engine/raw-to-chordpro.js';
 
-const API_BASE = 'https://chords-api.manuellatourf.workers.dev';
+const API_BASE = 'https://api.chords.meowrhino.studio';
 
 // === PERFIL (localStorage) ===
 

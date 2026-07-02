@@ -169,6 +169,28 @@ async function loadCatalog() {
     state.catalog = [];
     console.warn('no se pudo cargar el catálogo:', e);
   }
+
+  // canciones publicadas por cualquier visitante en la base de datos pública,
+  // que no vinieron ya incluidas en el repo estático
+  try {
+    const dbRes = await fetch(`${API_BASE}/api/songs?limit=200`);
+    if (dbRes.ok) {
+      const { songs } = await dbRes.json();
+      const staticSlugs = new Set(state.catalog.map(s => s.file.replace(/\.cho$/, '')));
+      const dbEntries = (songs || [])
+        .filter(s => !s.parent_slug && !staticSlugs.has(s.slug))
+        .map(s => ({
+          file: `${s.slug}.cho`,
+          title: s.title,
+          artist: s.artist,
+          key: s.key_signature || '',
+          lang: s.lang || '',
+        }));
+      state.catalog = [...state.catalog, ...dbEntries];
+    }
+  } catch (e) {
+    console.warn('no se pudo cargar el catálogo de la base de datos:', e);
+  }
 }
 
 function getMergedCatalog() {
@@ -290,9 +312,17 @@ async function loadSong(slug) {
       state.isCustomSong = true;
     } else {
       const res = await fetch(`songs/${slug}.cho`);
-      if (!res.ok) throw new Error(`${res.status}`);
-      text = await res.text();
-      state.isCustomSong = false;
+      if (res.ok) {
+        text = await res.text();
+        state.isCustomSong = false;
+      } else {
+        // no está en el catálogo estático — buscar en la base de datos pública
+        const dbRes = await fetch(`${API_BASE}/api/songs/${encodeURIComponent(slug)}`);
+        if (!dbRes.ok) throw new Error(`${res.status}`);
+        const { song: dbSong } = await dbRes.json();
+        text = dbSong.cho_content;
+        state.isCustomSong = false;
+      }
     }
     state.parsedSong = parseChordPro(text);
     state.currentSong = slug;
@@ -381,26 +411,47 @@ function renderSongView() {
   initComments(state.currentSong);
 }
 
-function renderVersionSelector(song) {
+async function renderVersionSelector(song) {
   const all = getMergedCatalog();
   const title = (song.meta.title || '').toLowerCase();
   const artist = (song.meta.artist || '').toLowerCase();
-  if (!title || !artist) { els.versionSelector.style.display = 'none'; return; }
+  const currentSlug = state.currentSong;
 
-  const versions = all.filter(s =>
-    s.title.toLowerCase() === title && s.artist.toLowerCase() === artist
-  );
+  const localVersions = (title && artist
+    ? all.filter(s => s.title.toLowerCase() === title && s.artist.toLowerCase() === artist)
+    : []
+  ).map((v, i) => ({ slug: v.file.replace('.cho', ''), label: v.custom ? 'tuya' : `v${i + 1}` }));
+
+  // versiones reales en la base de datos (mismo slug, distinto contenido)
+  let dbVersions = [];
+  try {
+    const res = await fetch(`${API_BASE}/api/songs/${encodeURIComponent(currentSlug)}`);
+    if (res.ok) {
+      const { versions } = await res.json();
+      dbVersions = (versions || []).map(v => ({
+        slug: v.slug,
+        label: v.version > 1 ? `v${v.version}` : 'original',
+      }));
+    }
+  } catch { /* sin conexión — solo se muestran las versiones locales */ }
+
+  // el fetch es async: si mientras tanto se navegó a otra canción, no pisar la UI
+  if (state.currentSong !== currentSlug) return;
+
+  const seen = new Set();
+  const versions = [...localVersions, ...dbVersions].filter(v => {
+    if (seen.has(v.slug)) return false;
+    seen.add(v.slug);
+    return true;
+  });
 
   if (versions.length <= 1) { els.versionSelector.style.display = 'none'; return; }
 
-  const currentSlug = state.currentSong;
   let html = '<span class="version-label">versión:</span>';
-  versions.forEach((v, i) => {
-    const slug = v.file.replace('.cho', '');
-    const label = v.custom ? 'tuya' : `v${i + 1}`;
-    const cls = slug === currentSlug ? 'version-btn active' : 'version-btn';
-    html += `<a href="#/song/${esc(slug)}" class="${cls}">${esc(label)}</a>`;
-  });
+  for (const v of versions) {
+    const cls = v.slug === currentSlug ? 'version-btn active' : 'version-btn';
+    html += `<a href="#/song/${esc(v.slug)}" class="${cls}">${esc(v.label)}</a>`;
+  }
 
   els.versionSelector.innerHTML = html;
   els.versionSelector.style.display = '';
@@ -489,16 +540,17 @@ function showChordPopup(chordName, event) {
   const popup = els.chordPopup;
   popup.style.display = 'block';
 
-  // posicionar cerca del cursor
+  // posicionar cerca del cursor, encima del acorde para no tapar la letra de abajo
   const rect = event.target.getBoundingClientRect();
   let x = rect.left;
-  let y = rect.bottom + 4;
+  let y = rect.top - 4;
 
   // ajustar si sale de la pantalla
   const pw = 120;
   const ph = 140;
   if (x + pw > window.innerWidth) x = window.innerWidth - pw - 8;
-  if (y + ph > window.innerHeight) y = rect.top - ph - 4;
+  if (y - ph < 0) y = rect.bottom + 4;
+  else y -= ph;
 
   popup.style.left = `${x}px`;
   popup.style.top = `${y}px`;
@@ -1111,20 +1163,79 @@ function generateSlug(title, artist) {
   return raw || 'sin-titulo';
 }
 
-function saveFromEditor() {
+async function saveFromEditor() {
   const title = els.edTitle.value.trim();
   if (!title) { alert('escribe un título'); return; }
+  const artist = els.edArtist.value.trim();
+  const key = els.edKey.value.trim();
+  const lang = els.edLang.value.trim();
   const cho = buildChoText();
-  const slug = state.editingSlug || generateSlug(title, els.edArtist.value);
-  profile.saveCustomSong(slug, cho, {
-    title,
-    artist: els.edArtist.value.trim(),
-    key: els.edKey.value.trim(),
-    lang: els.edLang.value.trim(),
-  });
+  const slug = state.editingSlug || generateSlug(title, artist);
+
+  // caché local inmediata (borrador / respaldo sin conexión)
+  profile.saveCustomSong(slug, cho, { title, artist, key, lang });
   state.editingSlug = slug;
   els.edDelete.style.display = '';
+
+  const originalLabel = els.edSave.textContent;
+  els.edSave.textContent = 'publicando...';
+  els.edSave.disabled = true;
+  try {
+    const result = await publishSong(slug, { title, artist, key, lang }, cho);
+    if (result.isNew) alert('canción publicada en la base de datos pública.');
+    else if (!result.unchanged) alert('publicada como nueva versión de esta canción.');
+  } catch (e) {
+    alert('se guardó en tu navegador, pero no se pudo publicar en la base de datos: ' + e.message);
+  } finally {
+    els.edSave.textContent = originalLabel;
+    els.edSave.disabled = false;
+  }
+
   location.hash = `#/song/${slug}`;
+}
+
+// publica en la base de datos compartida (D1): crea la canción si no existe,
+// o añade una nueva versión si el slug ya existe con contenido distinto
+async function publishSong(slug, meta, choContent) {
+  const username = getUsername() || undefined;
+
+  const createRes = await fetch(`${API_BASE}/api/songs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: meta.title, artist: meta.artist, cho_content: choContent,
+      key: meta.key || undefined, lang: meta.lang || undefined, username,
+    }),
+  });
+
+  if (createRes.status === 201) return { isNew: true };
+
+  if (createRes.status === 409) {
+    const existing = await createRes.json().catch(() => ({}));
+    const existingSlug = existing.slug || slug;
+
+    const getRes = await fetch(`${API_BASE}/api/songs/${encodeURIComponent(existingSlug)}`);
+    if (getRes.ok) {
+      const { song } = await getRes.json();
+      if (song.cho_content === choContent) return { isNew: false, unchanged: true };
+    }
+
+    const versionRes = await fetch(`${API_BASE}/api/songs/${encodeURIComponent(existingSlug)}/version`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cho_content: choContent, key: meta.key || undefined, lang: meta.lang || undefined, username,
+      }),
+    });
+    if (!versionRes.ok) {
+      const err = await versionRes.json().catch(() => ({}));
+      throw new Error(err.error || `error ${versionRes.status} al publicar la versión`);
+    }
+    return { isNew: false };
+  }
+
+  const err = await createRes.json().catch(() => ({}));
+  throw new Error(err.error || `error ${createRes.status} al publicar`);
 }
 
 function downloadFromEditor() {

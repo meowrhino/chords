@@ -1,5 +1,15 @@
 // chordpro.js — parser de formato ChordPro con extensiones para romaji/pinyin
 
+// forma aproximada de un nombre de acorde real: nota raíz + calidad opcional + bajo opcional.
+// se usa para distinguir acordes de etiquetas de sección copiadas entre corchetes desde otras
+// webs (p.ej. "[Pre-Chorus]", "[Verse 2: Artista]"), que de otro modo se tratarían como acordes
+// (ver validación contra los ~440 acordes reales usados en songs/*.cho antes de fijar el patrón).
+const CHORD_SHAPE_RE = /^[A-G](#|b)?((maj|min|dim|aug|sus|add|dom|m)?[#b-]?[0-9]{0,2}){0,4}(\((maj|min|dim|aug|sus|add|dom|m)?[#b-]?[0-9]{1,2}\))?(\/([A-G](#|b)?|[0-9]{1,2}))?\+?°?ø?$/i;
+
+function isChordShape(text) {
+  return CHORD_SHAPE_RE.test(text.trim());
+}
+
 /**
  * parsea un archivo ChordPro en un objeto estructurado
  *
@@ -163,6 +173,24 @@ function parseLine(line, allChords) {
   while (i < line.length) {
     // acorde [Chord]
     if (line[i] === '[') {
+      const closeBracket = line.indexOf(']', i);
+      if (closeBracket === -1) {
+        currentText += line[i];
+        i++;
+        continue;
+      }
+
+      const bracketContent = line.slice(i + 1, closeBracket);
+
+      if (!isChordShape(bracketContent)) {
+        // no tiene forma de acorde real — es una etiqueta de sección copiada
+        // entre corchetes (p.ej. "[Pre-Chorus]", "[Verse 2: Artista]"), no un acorde;
+        // se conserva como texto literal en vez de generar un acorde fantasma
+        currentText += line.slice(i, closeBracket + 1);
+        i = closeBracket + 1;
+        continue;
+      }
+
       // guardar segmento anterior si hay texto
       if (currentText || currentReadings.length > 0 || currentChord) {
         if (currentText || currentReadings.length > 0) {
@@ -176,14 +204,7 @@ function parseLine(line, allChords) {
         currentChord = null;
       }
 
-      const closeBracket = line.indexOf(']', i);
-      if (closeBracket === -1) {
-        currentText += line[i];
-        i++;
-        continue;
-      }
-
-      currentChord = line.slice(i + 1, closeBracket);
+      currentChord = bracketContent;
       allChords.add(currentChord);
       i = closeBracket + 1;
       continue;

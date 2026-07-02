@@ -371,10 +371,12 @@ input {
   flex-direction: column;
   align-items: center;
   padding: 0.3rem;
+  text-transform: none;
 }
 
 .chord-diagram {
   color: var(--text);
+  text-transform: none;
 }
 
 /* === 8. CONTENIDO DE CANCIÓN === */
@@ -426,6 +428,7 @@ input {
   color: var(--chord-color);
   cursor: pointer;
   white-space: nowrap;
+  text-transform: none;
 }
 
 .chord-name:hover {
@@ -445,6 +448,7 @@ input {
   color: var(--chord-color);
   line-height: 1.4;
   white-space: pre-wrap;
+  text-transform: none;
 }
 
 .chord-inline {
@@ -452,6 +456,7 @@ input {
   font-family: var(--font-ui);
   font-weight: 600;
   color: var(--chord-color);
+  text-transform: none;
 }
 
 .chord-inline:hover {

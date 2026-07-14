@@ -7,11 +7,13 @@
     "directory": "./",
     "binding": "ASSETS"
   },
+  // BD compartida con twoitter: las tablas de chords van prefijadas (chords_*).
+  // chords-db quedó huérfana y se puede borrar del dashboard.
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "chords-db",
-      "database_id": "2fee64ed-0d47-4bb2-98a1-949707fad3dc"
+      "database_name": "twoitter-db",
+      "database_id": "9fec7a62-ec30-4b2d-9eeb-4e1e0caf5552"
     }
   ]
 }

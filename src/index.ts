@@ -262,7 +262,7 @@ app.post('/api/admin/verify-artist', async (c) => {
   }
 
   const body = await c.req.json<{ username: string }>();
-  await c.env.DB.prepare('UPDATE users SET is_artist = 1 WHERE username = ?')
+  await c.env.DB.prepare('UPDATE chords_users SET is_artist = 1 WHERE username = ?')
     .bind(body.username).run();
   return c.json({ ok: true });
 });

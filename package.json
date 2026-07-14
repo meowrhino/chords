@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "db:migrate:local": "wrangler d1 execute chords-db --local --file=schema.sql",
-    "db:migrate": "wrangler d1 execute chords-db --file=schema.sql"
+    "db:migrate:local": "wrangler d1 execute twoitter-db --local --file=schema.sql",
+    "db:migrate": "wrangler d1 execute twoitter-db --remote --file=schema.sql"
   }
 }

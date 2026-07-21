@@ -29,6 +29,8 @@ const ALLOWED_DOMAINS = [
   'www.la-cuerda.net',
   'e-chords.com',
   'www.e-chords.com',
+  'chordu.com',
+  'www.chordu.com',
 ];
 
 function getDomain(url: string): string {
@@ -197,6 +199,51 @@ function parseEChords(html: string): ScrapeResult {
   return { title, artist, content: convertRawToChordPro(raw) };
 }
 
+function parseChordu(html: string): ScrapeResult {
+  // ChordU es una app Next.js: los acordes/letra viven en el JSON de __NEXT_DATA__.
+  // chordObject = { "<beat>": "<Chord>" }; lyricsObject = { "<line>": "letra con [beat]" }.
+  // Cada [beat] en la letra referencia una key de chordObject → lo sustituimos por [Chord].
+  const dataMatch = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  if (!dataMatch) throw new Error('Could not find ChordU page data');
+
+  let pageProps: any;
+  try {
+    pageProps = JSON.parse(dataMatch[1])?.props?.pageProps;
+  } catch {
+    throw new Error('Failed to parse ChordU page data');
+  }
+  const store = pageProps?._initialStoreState;
+  const chords = store?.chordObject;
+  const lyrics = store?.lyricsObject;
+  if (!chords || !lyrics) throw new Error('No chord/lyric data found on ChordU page');
+
+  // Título / artista desde el <title>: "Artist - Title Chords - ChordU"
+  const titleTag = (html.match(/<title>([^<]+)<\/title>/)?.[1] || '')
+    .replace(/\s*Chords\s*-\s*ChordU\s*$/i, '').trim();
+  const dashIdx = titleTag.indexOf(' - ');
+  const artist = dashIdx > -1 ? titleTag.slice(0, dashIdx).trim() : '';
+  const title = dashIdx > -1 ? titleTag.slice(dashIdx + 3).trim() : titleTag;
+
+  // key desde el meta description: "... key of Eb with capo 0 ..."
+  const key = pageProps?._metaData?.d?.match?.(/key of\s+([A-G][#b]?m?)/i)?.[1]
+    || html.match(/key of\s+([A-G][#b]?m?)/i)?.[1] || undefined;
+
+  // Reconstruir línea a línea (cada entrada de lyricsObject = una línea de la display).
+  const lineKeys = Object.keys(lyrics).sort((a, b) => Number(a) - Number(b));
+  const out: string[] = [];
+  for (const lk of lineKeys) {
+    let ln = String(lyrics[lk])
+      .replace(/<br\s*\/?>/gi, ' ')                       // los <br> internos son separadores suaves
+      .replace(/\[(\d+)\]/g, (_m, n) => chords[n] ? `[${chords[n]}]` : '')  // beat → acorde
+      .replace(/\s*\.\.\.\s*/g, ' ')                       // beats sin letra (placeholders)
+      .replace(/[ \t]+/g, ' ')
+      .trim();
+    out.push(ln);
+  }
+  const content = out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  return { title, artist, key, content };  // lang lo elige el usuario en el editor
+}
+
 function parseGeneric(html: string): ScrapeResult {
   const titleMatch = html.match(/<title>([^<]+)<\/title>/);
   const title = titleMatch ? titleMatch[1].trim() : 'Unknown';
@@ -237,6 +284,7 @@ export async function scrapeUrl(url: string, cookie?: string): Promise<ScrapeRes
   if (domain.includes('cifraclub.com')) return parseCifraClub(html);
   if (domain.includes('la-cuerda.net')) return parseLaCuerda(html);
   if (domain.includes('e-chords.com')) return parseEChords(html);
+  if (domain.includes('chordu.com')) return parseChordu(html);
 
   return parseGeneric(html);
 }

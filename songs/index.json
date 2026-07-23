@@ -1411,6 +1411,14 @@
     "file": "sekai-no-owari-rpg.cho",
     "title": "RPG",
     "artist": "SEKAI NO OWARI",
-    "lang": "ja"
+    "lang": "ja",
+    "version_label": "acordes completos"
+  },
+  {
+    "file": "sekai-no-owari-rpg-simple.cho",
+    "title": "RPG",
+    "artist": "SEKAI NO OWARI",
+    "lang": "ja",
+    "version_label": "acordes simples"
   }
 ]

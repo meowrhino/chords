@@ -443,7 +443,12 @@ async function renderVersionSelector(song) {
   const localVersions = (title && artist
     ? all.filter(s => s.title.toLowerCase() === title && s.artist.toLowerCase() === artist)
     : []
-  ).map((v, i) => ({ slug: v.file.replace('.cho', ''), label: v.custom ? 'tuya' : `v${i + 1}` }));
+  // index.json puede traer "version_label" para que el selector diga algo útil
+  // ("acordes simples") en vez de v1/v2, que no dice nada de qué las diferencia.
+  ).map((v, i) => ({
+    slug: v.file.replace('.cho', ''),
+    label: v.custom ? 'tuya' : (v.version_label || `v${i + 1}`),
+  }));
 
   // versiones reales en la base de datos (mismo slug, distinto contenido)
   let dbVersions = [];

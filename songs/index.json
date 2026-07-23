@@ -89,13 +89,17 @@
   },
   {
     "file": "supercell-kimi-no-shiranai-monogatari.cho",
-    "title": "Kimi No Shiranai Monogatari",
-    "artist": "Supercell"
+    "title": "Kimi No Shiranai Monogatari 君の知らない物語",
+    "artist": "Supercell",
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "supercell-bokura-no-ashiato.cho",
-    "title": "Bokura No Ashiato",
-    "artist": "Supercell"
+    "title": "Bokura No Ashiato 僕らのあしあと",
+    "artist": "Supercell",
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "egoist-departures.cho",
@@ -407,8 +411,10 @@
   },
   {
     "file": "supercell-utakata-hanabi.cho",
-    "title": "Utakata Hanabi",
-    "artist": "Supercell"
+    "title": "Utakata Hanabi うたかた花火",
+    "artist": "Supercell",
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "marina-marina-and-the-diamonds-froot.cho",
@@ -705,9 +711,11 @@
   },
   {
     "file": "aimer-rokutousei-no-yoru.cho",
-    "title": "Rokutousei No Yoru",
+    "title": "Rokutousei No Yoru 六等星の夜",
     "artist": "Aimer",
-    "fav": true
+    "fav": true,
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "aimer-hoshikuzu-venus.cho",
@@ -1090,7 +1098,9 @@
   {
     "file": "aimer-escalate.cho",
     "title": "Escalate",
-    "artist": "Aimer"
+    "artist": "Aimer",
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "pearly-drops-call-for-help.cho",
@@ -1192,7 +1202,9 @@
     "file": "supercell-the-bravery.cho",
     "title": "The Bravery",
     "artist": "Supercell",
-    "key": "Eb"
+    "key": "Eb",
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "yelle-mon-pays.cho",
@@ -1440,5 +1452,61 @@
     "artist": "Yelle",
     "key": "Ab",
     "lang": "fr"
+  },
+  {
+    "file": "aimer-inochi-ni-fusawashii.cho",
+    "title": "命にふさわしい",
+    "artist": "Aimer",
+    "lang": "ja"
+  },
+  {
+    "file": "supercell-hero.cho",
+    "title": "Hero ヒーロー",
+    "artist": "supercell",
+    "lang": "ja",
+    "fav": true
+  },
+  {
+    "file": "aimer-escalate-kanji.cho",
+    "title": "Escalate",
+    "artist": "Aimer",
+    "lang": "ja",
+    "version_label": "kanji"
+  },
+  {
+    "file": "aimer-rokutousei-no-yoru-kanji.cho",
+    "title": "Rokutousei No Yoru 六等星の夜",
+    "artist": "Aimer",
+    "lang": "ja",
+    "version_label": "kanji"
+  },
+  {
+    "file": "supercell-bokura-no-ashiato-kanji.cho",
+    "title": "Bokura No Ashiato 僕らのあしあと",
+    "artist": "Supercell",
+    "lang": "ja",
+    "version_label": "kanji"
+  },
+  {
+    "file": "supercell-utakata-hanabi-kanji.cho",
+    "title": "Utakata Hanabi うたかた花火",
+    "artist": "Supercell",
+    "lang": "ja",
+    "version_label": "kanji"
+  },
+  {
+    "file": "supercell-the-bravery-kanji.cho",
+    "title": "The Bravery",
+    "artist": "Supercell",
+    "lang": "ja",
+    "fav": true,
+    "version_label": "kanji"
+  },
+  {
+    "file": "supercell-kimi-no-shiranai-monogatari-kanji.cho",
+    "title": "Kimi No Shiranai Monogatari 君の知らない物語",
+    "artist": "Supercell",
+    "lang": "ja",
+    "version_label": "kanji"
   }
 ]

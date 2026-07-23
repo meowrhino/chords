@@ -706,7 +706,8 @@
   {
     "file": "aimer-rokutousei-no-yoru.cho",
     "title": "Rokutousei No Yoru",
-    "artist": "Aimer"
+    "artist": "Aimer",
+    "fav": true
   },
   {
     "file": "aimer-hoshikuzu-venus.cho",
@@ -1398,5 +1399,12 @@
     "artist": "Kotani Kinya",
     "key": "Eb",
     "lang": "ja"
+  },
+  {
+    "file": "daoko-owaranai-sekai-de.cho",
+    "title": "終わらない世界で",
+    "artist": "DAOKO",
+    "lang": "ja",
+    "fav": true
   }
 ]

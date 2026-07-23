@@ -35,6 +35,18 @@ const profile = {
   isFavorite(slug) {
     return this.favorites().includes(slug);
   },
+  // Los favoritos viven en localStorage (son tuyos, por dispositivo), pero
+  // songs/index.json puede traer algunos marcados con "fav": true como semilla.
+  // Se siembran UNA sola vez: a partir de ahí mandas tú y si quitas uno, no vuelve.
+  seedFavorites(catalog) {
+    if (localStorage.getItem('chords-favorites-seeded')) return;
+    const seeds = catalog.filter(s => s.fav).map(s => s.file.replace(/\.cho$/, ''));
+    if (seeds.length) {
+      const favs = this.favorites();
+      this.saveFavorites([...new Set([...favs, ...seeds])]);
+    }
+    localStorage.setItem('chords-favorites-seeded', '1');
+  },
   history() {
     return JSON.parse(localStorage.getItem('chords-history') || '[]');
   },
@@ -191,6 +203,8 @@ async function loadCatalog() {
   } catch (e) {
     console.warn('no se pudo cargar el catálogo de la base de datos:', e);
   }
+
+  profile.seedFavorites(state.catalog);
 }
 
 function getMergedCatalog() {
@@ -201,8 +215,11 @@ function getMergedCatalog() {
 function renderCatalog(filter = '') {
   const f = filter.toLowerCase();
   const all = getMergedCatalog();
+  // También busca en s.file: los .cho japoneses llevan el título en romaji en el
+  // nombre, así que "owaranai" encuentra 終わらない世界で aunque no sepas escribirlo.
   const filtered = all.filter(s =>
-    !f || s.title.toLowerCase().includes(f) || s.artist.toLowerCase().includes(f)
+    !f || s.title.toLowerCase().includes(f) || s.artist.toLowerCase().includes(f) ||
+    s.file.toLowerCase().includes(f)
   );
 
   let html = '';
@@ -280,9 +297,18 @@ function renderSongSection(label, songs) {
   return html;
 }
 
+function setFavoriteBtn(isFav) {
+  els.favoriteBtn.textContent = isFav ? '★' : '☆';
+  els.favoriteBtn.classList.toggle('active', isFav);
+  els.favoriteBtn.title = isFav ? 'quitar de favoritos' : 'añadir a favoritos';
+}
+
 function songEntryHTML(song) {
+  const isFav = profile.isFavorite(song.file.replace(/\.cho$/, ''));
   let html = `<div class="song-entry" data-file="${esc(song.file)}"${song.custom ? ' data-custom="1"' : ''}>`;
-  html += `<span class="song-entry-title">${esc(song.title)}`;
+  html += `<span class="song-entry-title">`;
+  if (isFav) html += `<span class="star-fav" title="favorita">★</span> `;
+  html += esc(song.title);
   if (song.custom) html += ` <span class="badge-custom">(tuya)</span>`;
   html += `</span>`;
   if (song.key) html += `<span class="song-entry-key">${esc(song.key)}</span>`;
@@ -360,10 +386,7 @@ function renderSongView() {
   els.songMeta.innerHTML = metaParts.join('');
 
   // favorito
-  const isFav = profile.isFavorite(state.currentSong);
-  els.favoriteBtn.textContent = isFav ? '♥' : '♡';
-  els.favoriteBtn.classList.toggle('active', isFav);
-  els.favoriteBtn.title = isFav ? 'quitar de favoritos' : 'añadir a favoritos';
+  setFavoriteBtn(profile.isFavorite(state.currentSong));
 
   // botón editar (solo custom)
   els.editBtn.style.display = state.isCustomSong ? '' : 'none';
@@ -1317,10 +1340,7 @@ function initProfileUI() {
   // favorito
   els.favoriteBtn.addEventListener('click', () => {
     if (!state.currentSong) return;
-    const isFav = profile.toggleFavorite(state.currentSong);
-    els.favoriteBtn.textContent = isFav ? '♥' : '♡';
-    els.favoriteBtn.classList.toggle('active', isFav);
-    els.favoriteBtn.title = isFav ? 'quitar de favoritos' : 'añadir a favoritos';
+    setFavoriteBtn(profile.toggleFavorite(state.currentSong));
   });
 
   // editar canción custom

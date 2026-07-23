@@ -223,34 +223,67 @@ function parseChordu(html) {
     throw new Error('Failed to parse ChordU page data');
   }
   const store = pageProps?._initialStoreState;
-  const chords = store?.chordObject;
-  const lyrics = store?.lyricsObject;
-  if (!chords || !lyrics) throw new Error('No chord/lyric data found on ChordU page');
+  const chords = store?.chordObject || {};
+  const lyrics = store?.lyricsObject || {};
+  // OJO: {} es truthy. Comprobar las CLAVES, si no una página sin letra pasaba el
+  // filtro y devolvía una canción vacía en silencio en vez de avisar.
+  const hasChords = Object.keys(chords).length > 0;
+  const hasLyrics = Object.keys(lyrics).length > 0;
+  if (!hasChords && !hasLyrics) throw new Error('No chord/lyric data found on ChordU page');
 
-  // Título / artista desde el <title>: "Artist - Title Chords - ChordU"
-  const titleTag = (html.match(/<title>([^<]+)<\/title>/)?.[1] || '')
-    .replace(/\s*Chords\s*-\s*ChordU\s*$/i, '').trim();
-  const dashIdx = titleTag.indexOf(' - ');
-  const artist = dashIdx > -1 ? titleTag.slice(0, dashIdx).trim() : '';
-  const title = dashIdx > -1 ? titleTag.slice(dashIdx + 3).trim() : titleTag;
+  // Metadatos del store, que son más fiables que rascar el <title>
+  // ("YELLE - Romeo (Lyric Video)" + ma:"Yelle" → artista Yelle, título Romeo).
+  const trackName = String(store?.trackName || '');
+  let artist = String(store?.ma || '').trim();
+  let title = trackName;
+  if (artist && title.toLowerCase().startsWith(artist.toLowerCase() + ' - ')) {
+    title = title.slice(artist.length + 3);
+  } else if (title.includes(' - ')) {
+    const i = title.indexOf(' - ');
+    if (!artist) artist = title.slice(0, i).trim();
+    title = title.slice(i + 3);
+  }
+  title = title.replace(/\s*\((?:official\s+)?(?:lyric|music)?\s*video\)\s*$/i, '')
+               .replace(/\s*\((?:official\s+)?audio\)\s*$/i, '').trim();
 
-  // key desde el meta description: "... key of Eb with capo 0 ..."
-  const key = pageProps?._metaData?.d?.match?.(/key of\s+([A-G][#b]?m?)/i)?.[1]
+  if (!title) {
+    const titleTag = (html.match(/<title>([^<]+)<\/title>/)?.[1] || '')
+      .replace(/\s*Chords\s*-\s*ChordU\s*$/i, '').trim();
+    const dashIdx = titleTag.indexOf(' - ');
+    artist = artist || (dashIdx > -1 ? titleTag.slice(0, dashIdx).trim() : '');
+    title = dashIdx > -1 ? titleTag.slice(dashIdx + 3).trim() : titleTag;
+  }
+
+  const key = store?.trackKey || store?.originalTrackKey
+    || pageProps?._metaData?.d?.match?.(/key of\s+([A-G][#b]?m?)/i)?.[1]
     || html.match(/key of\s+([A-G][#b]?m?)/i)?.[1] || undefined;
 
-  // Reconstruir línea a línea (cada entrada de lyricsObject = una línea de la display).
-  const lineKeys = Object.keys(lyrics).sort((a, b) => Number(a) - Number(b));
-  const out = [];
-  for (const lk of lineKeys) {
-    const ln = String(lyrics[lk])
+  let content;
+  if (hasLyrics) {
+    // Cada entrada de lyricsObject = una línea de la display.
+    const lineKeys = Object.keys(lyrics).sort((a, b) => Number(a) - Number(b));
+    content = lineKeys.map(lk => String(lyrics[lk])
       .replace(/<br\s*\/?>/gi, ' ')                       // los <br> internos son separadores suaves
       .replace(/\[(\d+)\]/g, (_m, n) => chords[n] ? `[${chords[n]}]` : '')  // beat → acorde
       .replace(/\s*\.\.\.\s*/g, ' ')                       // beats sin letra (placeholders)
       .replace(/[ \t]+/g, ' ')
-      .trim();
-    out.push(ln);
+      .trim()
+    ).join('\n');
+  } else {
+    // Sin letra: ChordU solo tiene la línea temporal de acordes, así que sale un
+    // cifrado de solo acordes. Se agrupa por trackBpl (los beats por línea que usa
+    // la propia display de ChordU, "bpl16"), para que las líneas caigan a compás.
+    const bpl = Number(String(store?.trackBpl || '').replace(/\D/g, '')) || 16;
+    const beats = Object.keys(chords).map(Number).sort((a, b) => a - b);
+    const lines = [];
+    for (const b of beats) {
+      const row = Math.floor((b - 1) / bpl);
+      // 'N' es "sin acorde" en ChordU → N.C.
+      (lines[row] ||= []).push(chords[b] === 'N' ? 'N.C.' : chords[b]);
+    }
+    content = lines.map(l => (l || []).map(c => `[${c}]`).join(' ')).join('\n');
   }
-  const content = out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+
   return { title, artist, key, content };  // lang lo elige el usuario en el editor
 }
 

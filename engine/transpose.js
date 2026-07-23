@@ -11,8 +11,19 @@ const FLAT_KEYS = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Dm', 'Gm', 'Cm', 'Fm', 'B
  * @param {string} chord - e.g. "F#m7", "Bbmaj7", "C/G"
  * @returns {{ root: string, quality: string, bass?: string } | null}
  */
+/**
+ * Alteraciones Unicode → ASCII. Algunas fuentes (ufret entre ellas) escriben
+ * "B♭/C" con el bemol tipográfico U+266D en vez de la "b" de toda la vida.
+ * Sin esto parseChord() devolvía null y el acorde se quedaba SIN transponer
+ * mientras los demás sí se movían: un cifrado mal en silencio.
+ */
+export function normalizeAccidentals(s) {
+  return typeof s === 'string' ? s.replace(/♭/g, 'b').replace(/♯/g, '#') : s;
+}
+
 export function parseChord(chord) {
   if (!chord || typeof chord !== 'string') return null;
+  chord = normalizeAccidentals(chord);
 
   // separar slash chord (bajo)
   let bass = null;

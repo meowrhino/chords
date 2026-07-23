@@ -1420,5 +1420,18 @@
     "artist": "SEKAI NO OWARI",
     "lang": "ja",
     "version_label": "acordes simples"
+  },
+  {
+    "file": "penguin-research-spotlight.cho",
+    "title": "スポットライト",
+    "artist": "PENGUIN RESEARCH",
+    "lang": "ja",
+    "fav": true
+  },
+  {
+    "file": "aimer-omoide-wa-kireide.cho",
+    "title": "思い出は奇麗で",
+    "artist": "Aimer",
+    "lang": "ja"
   }
 ]

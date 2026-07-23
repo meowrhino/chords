@@ -37,15 +37,29 @@ const profile = {
   },
   // Los favoritos viven en localStorage (son tuyos, por dispositivo), pero
   // songs/index.json puede traer algunos marcados con "fav": true como semilla.
-  // Se siembran UNA sola vez: a partir de ahí mandas tú y si quitas uno, no vuelve.
+  //
+  // Se guarda QUÉ semillas se han aplicado, no un simple "ya sembré". Con un
+  // booleano, una canción marcada fav más tarde no llegaba nunca a un navegador
+  // ya sembrado. Así cada semilla se aplica exactamente una vez: las nuevas
+  // entran, y una que hayas quitado a mano no vuelve.
   seedFavorites(catalog) {
-    if (localStorage.getItem('chords-favorites-seeded')) return;
-    const seeds = catalog.filter(s => s.fav).map(s => s.file.replace(/\.cho$/, ''));
-    if (seeds.length) {
-      const favs = this.favorites();
-      this.saveFavorites([...new Set([...favs, ...seeds])]);
+    const KEY = 'chords-favorites-seeded';
+    const raw = localStorage.getItem(KEY);
+    let applied;
+    try {
+      applied = new Set(JSON.parse(raw) || []);
+    } catch {
+      // migración desde el booleano '1': damos por aplicadas las que ya son
+      // favoritas, para no resucitar las que el usuario hubiera quitado.
+      applied = new Set(raw ? this.favorites() : []);
     }
-    localStorage.setItem('chords-favorites-seeded', '1');
+
+    const seeds = catalog.filter(s => s.fav).map(s => s.file.replace(/\.cho$/, ''));
+    const fresh = seeds.filter(slug => !applied.has(slug));
+    if (fresh.length) {
+      this.saveFavorites([...new Set([...this.favorites(), ...fresh])]);
+    }
+    localStorage.setItem(KEY, JSON.stringify([...new Set([...applied, ...seeds])]));
   },
   history() {
     return JSON.parse(localStorage.getItem('chords-history') || '[]');

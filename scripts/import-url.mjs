@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Importa una canción desde una URL a songs/ en un solo comando.
 //
-//   node scripts/import-url.mjs <url> [--fav] [--key Eb] [--lang ja] [--slug foo] [--dry]
+//   node scripts/import-url.mjs <url> [--fav] [--key Eb] [--lang ja] [--slug foo]
+//                                     [--title "RPG"] [--artist "…"] [--dry]
 //
 // Hace: fetch → parser del sitio → .cho con cabecera → entrada en index.json →
 //       anotación romaji/pinyin si es ja/zh.
@@ -58,6 +59,9 @@ async function main() {
   if (!res.ok) throw new Error(`fetch falló: ${res.status}`);
 
   const song = parseByDomain(domain, await res.text());
+  // Overrides: algunos sitios devuelven el título mal capitalizado (UG da "Rpg")
+  if (opts.title) song.title = opts.title;
+  if (opts.artist) song.artist = opts.artist;
   const lang = opts.lang || song.lang || '';
   const key = opts.key || song.key || '';
   console.log(`  título: ${song.title}\n  artista: ${song.artist}\n  idioma: ${lang || '—'}  key: ${key || '—'}`);

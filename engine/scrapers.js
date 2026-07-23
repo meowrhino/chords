@@ -28,11 +28,19 @@ export const ALLOWED_DOMAINS = [
   'www.chordu.com',
 ];
 
+const NAMED_ENTITIES = {
+  quot: '"', apos: "'", nbsp: ' ', lt: '<', gt: '>',
+  ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’',
+  mdash: '—', ndash: '–', hellip: '…', amp: '&',
+};
+
+// Una sola pasada a propósito: replace() no reescanea lo ya sustituido, así que
+// "&amp;lt;" se queda en "&lt;" y no se decodifica dos veces hasta "<".
 function decodeEntities(s) {
   return s
-    .replace(/&quot;/g, '"').replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ');
+    .replace(/&#(\d+);/g, (_m, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_m, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&([a-z]+);/gi, (m, name) => NAMED_ENTITIES[name.toLowerCase()] ?? m);
 }
 
 // === Parsers por sitio ===
@@ -96,7 +104,11 @@ function parseUltimateGuitar(html) {
   }
 
   if (!raw) throw new Error('Could not extract chord content from Ultimate Guitar');
-  return { title, artist, content: convertRawToChordPro(raw) };
+
+  // Decodificar ANTES de colocar acordes: UG alinea la línea de acordes contra el
+  // texto ya renderizado, así que "&ldquo;" ocupa 1 columna, no 7. Si se convierte
+  // después, los acordes acaban clavados dentro de la entidad ("&[A]ldquo;").
+  return { title, artist, content: convertRawToChordPro(decodeEntities(raw)) };
 }
 
 function parseAcordesWeb(html) {

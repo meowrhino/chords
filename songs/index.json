@@ -445,11 +445,6 @@
     "key": "Bm"
   },
   {
-    "file": "clean-bandit-baby.cho",
-    "title": "Baby",
-    "artist": "Clean Bandit"
-  },
-  {
     "file": "grimes-violence.cho",
     "title": "Violence",
     "artist": "Grimes",
@@ -1508,5 +1503,11 @@
     "artist": "Supercell",
     "lang": "ja",
     "version_label": "kanji"
+  },
+  {
+    "file": "clean-bandit-baby.cho",
+    "title": "Baby",
+    "artist": "Clean Bandit",
+    "lang": "en"
   }
 ]

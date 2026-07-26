@@ -1,79 +1,51 @@
 {title:Baby}
 {artist:Clean Bandit}
+{lang:en}
 
-Capo on 3rd fret
-
+{capo:3}
 {start_of_intro}
-{start_of_verse}
-  Se que te gusto a ti todavia
+  [Am]Se que te gusto a ti todavia
 
 Tres, dos, uno
-
-
 {start_of_verse}
+[Am]Standing here in an empty room
+[Em]I saw you there and my blood ran cold
+[Am]Take me back to that long September
+[Em]Don't know how I ever let you go
+[Am]I was young, didn't know 'bout love
+[Em]You were wild, couldn't get enough
+[Am]Gave my heart to another lover
+[Em]Don't know how I ever let you go
 {start_of_verse}
-Standing here in an empty room
-I [Em]saw you there and my blood ran cold
-{start_of_verse}
-Take me back to that long September
-{start_of_verse}
-Don't know how I ever let you go
-{start_of_verse}
-I was young, didn't know 'bout love
-{start_of_verse}
-You were wild, couldn't get enough
-{start_of_verse}
-Gave my heart to another lover
-{start_of_verse}
-Don't know how I ever let you go
-
-
-[Pre-Chorus]
 [Am]Find me in anothe[E7]r place and time
 If [C]only, if only[G] you were mine
 But [C]I'm already[E7] someone else[Am]'s [G]baby
-
-
 {start_of_chorus}
 Guess I had my last [Dm]chan[G]ce
 And now this is our last [C]dance
 [Am]You fell through the cracks in m[Dm]y hands
 Hard to say it's [E7]over
 But [Am]I'm already s[E7]omeone else's (C'mon)
-
-
-[Post-Chorus]
+{start_of_verse}
 [Dm]Baby[G], ahh
 [C]Baby,[Am] ahh
 [Dm]Baby[E7], ahh
+[Am]I'm already someone else's
 {start_of_verse}
-I'm already someone else's
-
-
-{start_of_verse}
-{start_of_verse}
-All caught up in the way we were
-I [Em]feel your hands getting close to mine
-{start_of_verse}
-Don't say the words that I love to hear
+[Am]All caught up in the way we were
+[Em]I feel your hands getting close to mine
+[Am]Don't say the words that I love to hear
 The [Em]beat goes on and I close my eyes
-{start_of_verse}
-I was young, didn't know 'bout love
-{start_of_verse}
-You were wild, couldn't get enough
-{start_of_verse}
-Let's leave things the way they were
+[Am]I was young, didn't know 'bout love
+[Em]You were wild, couldn't get enough
+[Am]Let's leave things the way they were
 You'll [Em]stay with me like a lullaby
-
-
 {start_of_verse}
 Hey
-[Am]  Se que te gusto a ti to[E7]davia por mucho que digas
-[Am]  Ademas puedo ver en tus ojos qu[E7]e no solo quieres quedar como amigos
-[C]  Tienes mi corazó[E7]n, eres mi obsesión
-[C]  Soy tuyo pa' sie[E7]mpre
-
-
+  [Am]Se que te gusto a ti to[E7]davia por mucho que digas
+  [Am]Ademas puedo ver en tus ojos qu[E7]e no solo quieres quedar como amigos
+  [C]Tienes mi coraz&[E7]oacute;n, eres mi obsesi&oacute;n
+  [C]Soy tuyo pa' sie[E7]mpre
 {start_of_chorus}
 Guess I had my last [Dm]chan[G]ce
 And now this is our last [C]danc[Am]e
@@ -85,31 +57,24 @@ You'll [G]always be the one who got [C]away[Am]
 We both know that deep down you feel the [Dm]same
 Hard to say it's [E7]over
 But [Am]I'm already [E7]someone else's (C'mon)
-
-
-[Post-Chorus]
+{start_of_verse}
 [Dm]Baby[G], ahh (Eso no es amor)
 [C]Baby,[Am] ahh (Mereces mejor)
 [Dm]Baby[E7], ahh (Quiero tu calor)
 [Am]I'm already [E7]someone else's
-
-
 {start_of_bridge}
-[Dm]  Wish I met you at[G] another place and time
-[C]  If only, if o[Am]nly you were mine
-[Dm]  This love story end[E7]s for you and I
+  [Dm]Wish I met you at[G] another place and time
+  [C]If only, if o[Am]nly you were mine
+  [Dm]This love story end[E7]s for you and I
 'Cause [Am]I'm already [E7]someone else's
-
-
-[Post-Chorus]
+{start_of_verse}
 [Dm]Baby[G], ahh (Y lo digo otra vez)
 [C]Baby,[Am] ahh (Mereces mucho mejor, mucho mejor)
 [Dm]Baby[E7], ahh (Lo que tienes con el no es amor, no)
 [Am]I'm already [E7]someone else's
-
-
-{start_of_verse}
-[Dm]Baby[G], ahh (Cada noche mas te extraño, cada dia sin ti me hace daño)
+{start_of_outro}
+[Dm]Baby[G], ahh (Cada noche mas te extra&ntilde;o, cada dia sin ti me hace da&ntilde;o)
 [C]Baby,[Am] ahh (Sabes que mereces mejor, lo que sientes por el ya no es amor)
-B[Dm]aby[E7], ahh (Por mucho que digas somos mas que amigos)
+[Dm]Baby[E7], ahh (Por mucho que digas somos mas que amigos)
 [Am]I'm already s[E7]omeone els[Am]e's   (Y el tiempo se acaba en cuatro, tres, dos, uno)
+

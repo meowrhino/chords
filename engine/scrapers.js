@@ -6,26 +6,20 @@
 
 import { convertRawToChordPro } from './raw-to-chordpro.js';
 
+// Dominios BASE: isAllowedDomain acepta también cualquier subdominio
+// (www., tabs., es., pt., …) — UG usa es.ultimate-guitar.com para el sitio
+// en español y antes quedaba fuera de la lista.
 export const ALLOWED_DOMAINS = [
   'ufret.jp',
-  'tabs.ultimate-guitar.com',
-  'www.ultimate-guitar.com',
+  'ultimate-guitar.com',
   'acordesweb.com',
-  'www.acordesweb.com',
   'chordsworld.com',
-  'www.chordsworld.com',
   'ukutabs.com',
-  'www.ukutabs.com',
   'cifraclub.com',
-  'www.cifraclub.com',
   'cifraclub.com.br',
-  'www.cifraclub.com.br',
   'la-cuerda.net',
-  'www.la-cuerda.net',
   'e-chords.com',
-  'www.e-chords.com',
   'chordu.com',
-  'www.chordu.com',
 ];
 
 const NAMED_ENTITIES = {
@@ -318,7 +312,7 @@ export function parseByDomain(domain, html) {
 }
 
 export function isAllowedDomain(domain) {
-  return ALLOWED_DOMAINS.some(d => domain === d || domain === 'www.' + d);
+  return ALLOWED_DOMAINS.some(d => domain === d || domain.endsWith('.' + d));
 }
 
 /** Cabeceras de navegador — algunos sitios bloquean bots y queremos paridad. */

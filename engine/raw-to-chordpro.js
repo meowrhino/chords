@@ -157,7 +157,9 @@ export function stripBoilerplate(text) {
     .replace(/Primero en #?AcordesWeb\.com/gi, '')
     .replace(/^\s*Tabbed by:[^\n]*$/gim, '')
     .replace(/^\s*E-?mail:[^\n]*$/gim, '')
-    .replace(/^\s*Capo:?\s*\d+[^\n]*$/gim, (m) => m) // mantener info de capo
+    // "Capo on 3rd fret" / "Capo: 3" / "Capo 3" → directiva {capo:3}, que el
+    // parser entiende y la app aplica sola al control de capo
+    .replace(/^\s*Capo\s*(?:on)?\s*:?\s*(\d+)(?:st|nd|rd|th)?[^\n]*$/gim, '{capo:$1}')
     .replace(/cifraclub\.com(?:\.br)?/gi, '')
     .replace(/la-cuerda\.net/gi, '');
 }

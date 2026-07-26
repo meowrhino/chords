@@ -503,6 +503,7 @@ function renderChordDiagrams(song) {
   els.chordDiagrams.innerHTML = '';
 
   for (const chordName of song.allChords) {
+    if (/^N\.?C\.?$/i.test(chordName)) continue;   // N.C. no tiene diagrama posible
     const normalized = normalizeChordName(chordName);
     const data = lookupChord(normalized, state.instrument);
 

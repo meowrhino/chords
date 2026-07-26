@@ -7,41 +7,41 @@
 {lang:ja}
 
 {start_of_chorus}
-{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:ao}青{/r}{r:ku}く{/r}[G#m][C#m]{r:sumi}澄み{/r}{r:watari}渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mokushi}目指{/r}{r:shi}し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
-{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mo}も{/r}{r:u}う{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
+{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:aoku}青く{/r}[G#m][C#m]{r:sumiwatari}澄み渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mezashi}目指し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
+{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mou}もう{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
 {start_of_verse}
-{r:dai}大{/r}[E]{r:setsu}切{/r}[B]{r:na}な{/r}[E]{r:nani}何{/r}{r:ka}か{/r}{r:ga}が{/r}[A]{r:koware}壊れ{/r}[E]{r:ta}た{/r} [B]{r:a}あ{/r}{r:no}の{/r}{r:yoru}夜{/r}{r:ni}に{/r}
-{r:boku}僕{/r}[G#m][G#7]{r:wa}は{/r}[C#m]{r:hoshi}星{/r}{r:wo}を{/r}[A]{r:sagashi}探し{/r}[B]{r:te}て{/r} [E]{r:ichi}一{/r}{r:hito}人{/r}{r:de}で{/r}{r:arui}歩い{/r}{r:te}て{/r}{r:i}い{/r}{r:ta}た{/r}
-[E]{r:peru}ペル{/r}{r:se}セ{/r}{r:usu}ウス{/r}[B]{r:za}座{/r}[E]{r:ryuu}流{/r}{r:hoshi}星{/r}[A]{r:gun}群{/r} {r:kimi}君{/r}[E]{r:mo}も{/r}{r:mi}見{/r}[B]{r:te}て{/r}{r:tada}ただ{/r}{r:rou}ろう{/r}{r:ka}か{/r}
+{r:dai}大{/r}[E]{r:setsu}切{/r}[B]{r:na}な{/r}[E]{r:nani}何{/r}{r:ka}か{/r}{r:ga}が{/r}[A]{r:koware}壊れ{/r}[E]{r:ta}た{/r} [B]{r:ano}あの{/r}{r:yoru}夜{/r}{r:ni}に{/r}
+{r:boku}僕{/r}[G#m][G#7]{r:wa}は{/r}[C#m]{r:hoshi}星{/r}{r:wo}を{/r}[A]{r:sagashi}探し{/r}[B]{r:te}て{/r} [E]{r:ichi}一{/r}{r:nin}人{/r}{r:de}で{/r}{r:arui}歩い{/r}{r:te}て{/r}{r:i}い{/r}{r:ta}た{/r}
+[E]{r:peruseusu}ペルセウス{/r}[B]{r:za}座{/r}[E]{r:ryuusei}流星{/r}[A]{r:gun}群{/r} {r:kimi}君{/r}[E]{r:mo}も{/r}{r:mi}見{/r}[B]{r:te}て{/r}{r:ta}た{/r}{r:daro}だろ{/r}{r:u}う{/r}{r:ka}か{/r}
 {r:boku}僕{/r}[G#m][G#7]{r:wa}は{/r}[C#m]{r:genki}元気{/r}{r:de}で{/r}{r:ya}やっ{/r}{r:teru}てる{/r}{r:yo}よ{/r} [A][B]{r:kimi}君{/r}{r:wa}は{/r}{r:ima}今{/r}「[E]{r:doko}ドコ{/r}」{r:ni}に{/r}{r:iru}いる{/r}{r:no}の{/r}
 {start_of_bridge}
 「[A]{r:houhou}方法{/r}」{r:toyuu}という{/r}[F#m]{r:akuma}悪魔{/r}[E][B]{r:nitori}にとり{/r}{r:憑}憑{/r}[C#m]{r:kare}かれ{/r}{r:nai}ない{/r}{r:de}で{/r}
-「[A]{r:me}目{/r}{r:mato}的{/r}」[E]{r:toi}とい{/r}{r:u}う{/r} [F#m]{r:daiji}大事{/r}[G#m]{r:na}な{/r}[A]{r:mono}もの{/r}[B]{r:wo}を{/r} {r:思}思{/r}[C]{r:i}い{/r}[D]{r:dashi}出し{/r}{r:te}て{/r} 
+「[A]{r:mokuteki}目的{/r}」[E]{r:toyuu}という{/r} [F#m]{r:daiji}大事{/r}[G#m]{r:na}な{/r}[A]{r:mono}もの{/r}[B]{r:wo}を{/r} {r:思}思{/r}[C]{r:i}い{/r}[D]{r:dashi}出し{/r}{r:te}て{/r} 
 {start_of_chorus}
-{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:ao}青{/r}{r:ku}く{/r}[G#m][C#m]{r:sumi}澄み{/r}{r:watari}渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mokushi}目指{/r}{r:shi}し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
-{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r} [E]{r:mo}も{/r}{r:u}う{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
-{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:ao}青{/r}{r:ku}く{/r}[G#m][C#m]{r:sumi}澄み{/r}{r:watari}渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mokushi}目指{/r}{r:shi}し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
-{r:kowaku}怖く{/r}[C#m]{r:te}て{/r}[G#7][E]{r:mo}も{/r}[F#m]{r:dai}大{/r}{r:take}丈{/r}[A]{r:otto}夫{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mo}も{/r}{r:u}う{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
+{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:aoku}青く{/r}[G#m][C#m]{r:sumiwatari}澄み渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mezashi}目指し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
+{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r} [E]{r:mou}もう{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
+{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:aoku}青く{/r}[G#m][C#m]{r:sumiwatari}澄み渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mezashi}目指し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
+{r:kowaku}怖く{/r}[C#m]{r:te}て{/r}[G#7][E]{r:mo}も{/r}[F#m]{r:dai}大{/r}{r:take}丈{/r}[A]{r:otto}夫{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mou}もう{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
 {start_of_verse}
-{r:dai}大{/r}[E]{r:setsu}切{/r}[B]{r:na}な{/r}[E]{r:nani}何{/r}{r:ka}か{/r}{r:ga}が{/r}[A]{r:koware}壊れ{/r}[E]{r:ta}た{/r} [B]{r:a}あ{/r}{r:no}の{/r}{r:yoru}夜{/r}{r:ni}に{/r}
+{r:dai}大{/r}[E]{r:setsu}切{/r}[B]{r:na}な{/r}[E]{r:nani}何{/r}{r:ka}か{/r}{r:ga}が{/r}[A]{r:koware}壊れ{/r}[E]{r:ta}た{/r} [B]{r:ano}あの{/r}{r:yoru}夜{/r}{r:ni}に{/r}
 {r:boku}僕{/r}[G#m][G#7]{r:wa}は{/r}[C#m]{r:kimi}君{/r}{r:wo}を{/r}[A]{r:sagashi}探し{/r}{r:te}て{/r} [B]{r:ichi}一{/r}[E]{r:hito}人{/r}{r:de}で{/r}{r:arui}歩い{/r}{r:te}て{/r}{r:i}い{/r}{r:ta}た{/r}
 {r:ano}あの{/r}[E]{r:hi}日{/r}[B]{r:kara}から{/r}[E]{r:bokura}僕ら{/r}{r:wa}は{/r}[A]{r:ichi}一{/r}{r:nin}人{/r}[E]{r:de}で{/r}[B]{r:umi}海{/r}{r:wo}を{/r}{r:mezasu}目指す{/r}
-「[G#m][G#7]{r:yaku}約{/r}{r:taba}束{/r}[C#m]{r:no}の{/r} {r:a}あ{/r}{r:no}の{/r}[A]{r:basho}場所{/r}{r:de}で{/r}[B][E]{r:kanarazu}必ず{/r}{r:ma}ま{/r}{r:ta}た{/r}{r:ao}逢お{/r}{r:u}う{/r}。」{r:to}と{/r}
+「[G#m][G#7]{r:yakusoku}約束{/r}[C#m]{r:no}の{/r} {r:ano}あの{/r}[A]{r:basho}場所{/r}{r:de}で{/r}[B][E]{r:kanarazu}必ず{/r}{r:mata}また{/r}{r:ao}逢お{/r}{r:u}う{/r}。」{r:to}と{/r}
 {start_of_bridge}
 「[A]{r:seken}世間{/r}」{r:toyuu}という{/r}[F#m]{r:akuma}悪魔{/r}[E]{r:ni}に{/r}[B]{r:madowa}惑わ{/r}[C#m]{r:sa}さ{/r}{r:re}れ{/r}{r:nai}ない{/r}{r:de}で{/r}
-[A]{r:ji}自{/r}{r:bun}分{/r}{r:dake}だけ{/r}{r:ga}が{/r}[E]{r:kime}決め{/r}{r:ta}た{/r}「[F#m][G#m]{r:kotae}答{/r}」[A][B]{r:wo}を{/r} {r:思}思{/r}{r:i}い{/r}[C][D]{r:dashi}出し{/r}{r:te}て{/r} 
+[A]{r:jibun}自分{/r}{r:dake}だけ{/r}{r:ga}が{/r}[E]{r:kime}決め{/r}{r:ta}た{/r}「[F#m][G#m]{r:kotae}答{/r}」[A][B]{r:wo}を{/r} {r:omoi}思い{/r}[C][D]{r:dashi}出し{/r}{r:te}て{/r} 
 {start_of_chorus}
-{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:ao}青{/r}{r:ku}く{/r}[G#m][C#m]{r:sumi}澄み{/r}{r:watari}渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mokushi}目指{/r}{r:shi}し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
-{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r} [E]{r:mo}も{/r}{r:u}う{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
-{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:ao}青{/r}{r:ku}く{/r}[G#m][C#m]{r:sumi}澄み{/r}{r:watari}渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mokushi}目指{/r}{r:shi}し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
-{r:kowaku}怖く{/r}[C#m]{r:te}て{/r}[G#7][E]{r:mo}も{/r}[F#m]{r:dai}大{/r}{r:take}丈{/r}[A]{r:otto}夫{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mo}も{/r}{r:u}う{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
+{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:aoku}青く{/r}[G#m][C#m]{r:sumiwatari}澄み渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mezashi}目指し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
+{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r} [E]{r:mou}もう{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
+{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:aoku}青く{/r}[G#m][C#m]{r:sumiwatari}澄み渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mezashi}目指し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
+{r:kowaku}怖く{/r}[C#m]{r:te}て{/r}[G#7][E]{r:mo}も{/r}[F#m]{r:dai}大{/r}{r:take}丈{/r}[A]{r:otto}夫{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mou}もう{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
 {start_of_verse}
 “[A]{r:kirameki}煌めき{/r}”[F#m]{r:no}の{/r}{r:you}よう{/r}[E]{r:na}な{/r} {r:hito}人{/r}[B]{r:nama}生{/r}[C#m]{r:no}の{/r}{r:naka}中{/r}{r:de}で{/r}
-[A]{r:kimi}君{/r}{r:ni}に{/r}[E]{r:de}出{/r}{r:逢}逢{/r}{r:ete}えて{/r}{r:boku}僕{/r}[F#m]{r:wa}は{/r}[G#m][A]{r:hon}本{/r}[B]{r:tou}当{/r}{r:ni}に{/r}[C][D]{r:yoka}よかっ{/r}{r:ta}た{/r}
+[A]{r:kimi}君{/r}{r:ni}に{/r}[E]{r:deae}出逢え{/r}{r:te}て{/r}{r:boku}僕{/r}[F#m]{r:wa}は{/r}[G#m][A]{r:hon}本{/r}[B]{r:tou}当{/r}{r:ni}に{/r}[C][D]{r:yoka}よかっ{/r}{r:ta}た{/r}
 {r:machi}街{/r}{r:wo}を{/r}[A][B]{r:nuke}抜け{/r}[G#m][C#m]{r:umi}海{/r}{r:ni}に{/r}{r:de}出{/r}[A]{r:tara}たら{/r} [B]{r:tsugi}次{/r}[E]{r:wa}は{/r}{r:doko}どこ{/r}{r:wo}を{/r}{r:mezaso}目指そ{/r}{r:u}う{/r}{r:ka}か{/r}
-{r:bokura}僕ら{/r}[C#m]{r:wa}は{/r}[G#7][E]{r:mata}また{/r}[F#m][A]{r:dekake}出かけ{/r}{r:you}よう{/r}[B][E]{r:itoshii}愛しい{/r}{r:kono}この{/r}{r:chikyuu}地球{/r}({r:se}せ{/r}{r:kai}かい{/r}){r:wo}を{/r}
+{r:bokura}僕ら{/r}[C#m]{r:wa}は{/r}[G#7][E]{r:mata}また{/r}[F#m][A]{r:dekakeyo}出かけよ{/r}{r:u}う{/r}[B][E]{r:itoshii}愛しい{/r}{r:kono}この{/r}{r:chikyuu}地球{/r}({r:se}せ{/r}{r:kai}かい{/r}){r:wo}を{/r}
 {start_of_chorus}
-{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:ao}青{/r}{r:ku}く{/r}[G#m][C#m]{r:sumi}澄み{/r}{r:watari}渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mokushi}目指{/r}{r:shi}し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
-{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r} [E]{r:mo}も{/r}{r:u}う{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
-{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:ao}青{/r}{r:ku}く{/r}[G#m][C#m]{r:sumi}澄み{/r}{r:watari}渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mokushi}目指{/r}{r:shi}し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
-{r:kowaku}怖く{/r}[C#m]{r:te}て{/r}[G#7][E]{r:mo}も{/r}[F#m]{r:dai}大{/r}{r:take}丈{/r}[A]{r:otto}夫{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mo}も{/r}{r:u}う{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
+{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:aoku}青く{/r}[G#m][C#m]{r:sumiwatari}澄み渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mezashi}目指し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
+{r:kowai}怖い{/r}[C#m][G#7]{r:mono}もの{/r}[E][F#m]{r:nante}なんて{/r}[A]{r:nai}ない{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r} [E]{r:mou}もう{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}
+{r:sora}空{/r}{r:wa}は{/r}[A][B]{r:aoku}青く{/r}[G#m][C#m]{r:sumiwatari}澄み渡り{/r} [A]{r:umi}海{/r}[B]{r:wo}を{/r}[E]{r:mezashi}目指し{/r}{r:te}て{/r}{r:aruku}歩く{/r}
+{r:kowaku}怖く{/r}[C#m]{r:te}て{/r}[G#7][E]{r:mo}も{/r}[F#m]{r:dai}大{/r}{r:take}丈{/r}[A]{r:otto}夫{/r}[B]{r:bokura}僕ら{/r}{r:wa}は{/r}[E]{r:mou}もう{/r}{r:ichi}一{/r}{r:nin}人{/r}{r:ja}じゃ{/r}{r:nai}ない{/r}

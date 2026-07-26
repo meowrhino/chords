@@ -11,6 +11,10 @@
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
   --chord-color: #000000;
   --star: #e8a800;
+  /* colores físicos del piano: NO siguen el tema (un piano tiene las blancas
+     claras y las negras oscuras también en modo oscuro) */
+  --piano-white: #ffffff;
+  --piano-black: #1c1c1c;
   --section-bg: transparent;
   --chorus-bg: rgba(0, 0, 0, 0.02);
   --radius: 4px;
@@ -30,6 +34,8 @@
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.35);
   --chord-color: #e0e0e0;
   --star: #ffc93c;
+  --piano-white: #dcdcdc;
+  --piano-black: #101010;
   --chorus-bg: rgba(255, 255, 255, 0.03);
 }
 
@@ -412,6 +418,8 @@ input {
 .song-line {
   white-space: pre-wrap;
   min-height: 1.2em;
+  /* aire entre líneas: con los acordes en ruby encima, sin esto quedaba empastado */
+  line-height: 1.9;
 }
 
 .line-break {
@@ -425,8 +433,10 @@ input {
 
 .chord-name {
   font-family: var(--font-ui);
-  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  /* antes 0.55–0.7rem: a ese tamaño la serif con # y extensiones se emborrona */
+  font-size: clamp(0.72rem, 1.05dvw, 0.92rem);
   font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--chord-color);
   cursor: pointer;
   white-space: nowrap;
@@ -445,10 +455,12 @@ input {
 
 .chord-layer {
   font-family: var(--font-ui);
-  font-size: clamp(0.55rem, 0.8dvw, 0.7rem);
+  font-size: clamp(0.72rem, 1.05dvw, 0.92rem);
   font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--chord-color);
-  line-height: 1.4;
+  line-height: 1.5;
+  margin-bottom: 0.1em;
   white-space: pre-wrap;
   text-transform: none;
 }
@@ -466,8 +478,8 @@ input {
 }
 
 .song-content .song-line > .chord-inline {
-  font-size: clamp(0.65rem, 0.9dvw, 0.8rem);
-  margin-right: 0.3em;
+  font-size: clamp(0.78rem, 1.1dvw, 0.98rem);
+  margin-right: 0.35em;
 }
 
 .chord-spacer .invisible {

@@ -692,6 +692,15 @@ export const PIANO = {
   'madd9':  { keys: [0, 3, 7, 14] },
   '11':     { keys: [0, 4, 7, 10, 14, 17] },
   'm11':    { keys: [0, 3, 7, 10, 14, 17] },
+  // ampliación tras el barrido del catálogo (mM7, 13, 6/9, add11, 7 alterados…)
+  'mmaj7':  { keys: [0, 3, 7, 11] },
+  '13':     { keys: [0, 4, 7, 10, 14, 21] },
+  '6/9':    { keys: [0, 4, 7, 9, 14] },
+  'add11':  { keys: [0, 4, 7, 17] },
+  'maj11':  { keys: [0, 4, 7, 11, 14, 17] },
+  '7b9':    { keys: [0, 4, 7, 10, 13] },
+  '7b5':    { keys: [0, 4, 6, 10] },
+  'aug7':   { keys: [0, 4, 8, 10] },
 };
 
 // ---------------------------------------------------------------------------
@@ -715,6 +724,59 @@ const ENHARMONIC_MAP = {
   'Gb': 'F#', 'F#': 'Gb',
   'Ab': 'G#', 'G#': 'Ab',
   'Bb': 'A#', 'A#': 'Bb',
+};
+
+// raíces teóricas que el catálogo trae a veces (B#, E#…) → tecla real
+const ROOT_FIXES = { 'B#': 'C', 'E#': 'F', 'Cb': 'B', 'Fb': 'E' };
+
+// Grafías equivalentes de la MISMA calidad (no cambian ninguna nota).
+// Salidas de un barrido real del catálogo: EM, CM7, A#m7-5, F#sus, G2, AmM7…
+const QUALITY_ALIASES = {
+  'M': '', 'maj': '', 'Maj': '', 'MAJ': '',
+  'M7': 'maj7', 'Maj7': 'maj7', 'MA7': 'maj7',
+  'M9': 'maj9', 'Maj9': 'maj9',
+  'min': 'm', 'min7': 'm7', 'min9': 'm9', 'min11': 'm11', 'min6': 'm6',
+  'm7-5': 'm7b5', 'm7(b5)': 'm7b5', 'min7b5': 'm7b5', 'ø': 'm7b5',
+  '7-5': '7b5', '7+5': 'aug7', '7#5': 'aug7', '+': 'aug',
+  'sus': 'sus4', '7sus': '7sus4',
+  '2': 'sus2', 'add2': 'add9',
+  'mM7': 'mmaj7', 'mMaj7': 'mmaj7', 'mmaj7': 'mmaj7', 'minmaj7': 'mmaj7',
+  '69': '6/9', '6add9': '6/9',
+  'add#11': 'add11',
+  'dom7': '7',
+};
+
+// Cadena de simplificación para instrumentos de trastes: si no hay forma exacta
+// en la BD, se degrada a la extensión más cercana DE LA MISMA FAMILIA
+// (nunca cruza mayor↔menor). G13 → G9 → G7; Cadd9 → C. El popup sigue mostrando
+// el nombre pedido; la forma es la aproximación tocable más próxima.
+const SIMPLIFY = {
+  'maj13': 'maj9', 'maj11': 'maj9', 'maj9': 'maj7', 'maj7': '',
+  '13': '9', '11': '9', '9': '7', '7b9': '7', '7#9': '7', '7b5': '7', '7': '',
+  'm13': 'm9', 'm11': 'm9', 'm9': 'm7', 'm7': 'm', 'mmaj7': 'm', 'm': null,
+  'add11': 'sus4', 'add9': '', 'madd9': 'm',
+  '6/9': '6', '6': '', 'm6': 'm',
+  'sus2': 'sus4', 'sus4': '', '7sus4': 'sus4',
+  'aug7': 'aug', 'aug': '', 'dim7': 'dim', 'dim': null,
+  'm7b5': 'dim', '5': '', '': null,
+};
+
+function canonQuality(q) {
+  return Object.prototype.hasOwnProperty.call(QUALITY_ALIASES, q) ? QUALITY_ALIASES[q] : q;
+}
+
+/** "D/F#" → ["D","F#"]; "D6/9" no es slash (el bajo tiene que ser una nota). */
+function splitSlash(name) {
+  const i = name.indexOf('/');
+  if (i > 0 && /^[A-G][#b]?$/.test(name.slice(i + 1))) {
+    return [name.slice(0, i), name.slice(i + 1)];
+  }
+  return [name, null];
+}
+
+const NOTE_SEMITONE = {
+  'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4, 'F': 5,
+  'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11,
 };
 
 const PIANO_QUALITY_ALIASES = {
@@ -768,30 +830,54 @@ function parseChordName(name) {
 export function lookupChord(chordName, instrument = 'guitar') {
   if (!chordName) return null;
 
-  // --- Piano: return interval template keyed by quality ---
+  // Slash chord: el bajo se separa; el cuerpo del acorde manda en la búsqueda
+  const [main, bass] = splitSlash(chordName);
+  let [root, quality] = parseChordName(main);
+  if (!root) return null;
+  if (ROOT_FIXES[root]) root = ROOT_FIXES[root];
+  const q = canonQuality(quality);
+
+  // --- Piano: plantilla de intervalos por calidad ---
   if (instrument === 'piano') {
-    const [root, quality] = parseChordName(chordName);
-    if (!root) return null;
-    const q = PIANO_QUALITY_ALIASES[quality];
-    if (q && PIANO[q]) return PIANO[q];
-    if (PIANO[quality]) return PIANO[quality];
-    return null;
+    let tmpl = PIANO[PIANO_QUALITY_ALIASES[q] ?? q] || PIANO[q];
+    if (!tmpl) {
+      // calidad desconocida → tríada de su familia. En piano cualquier acorde se
+      // puede tocar, así que enseñar la base es mejor que no enseñar nada.
+      tmpl = /^m(?!aj)/.test(q) ? PIANO.minor : PIANO.major;
+    }
+    // el bajo del slash se añade como nota extra (relativa al root)
+    if (bass && NOTE_SEMITONE[bass] !== undefined && NOTE_SEMITONE[root] !== undefined) {
+      const rel = (NOTE_SEMITONE[bass] - NOTE_SEMITONE[root] + 12) % 12;
+      if (!tmpl.keys.some(k => k % 12 === rel)) {
+        tmpl = { keys: [...tmpl.keys, rel] };
+      }
+    }
+    return tmpl;
   }
 
-  // --- Fretted instruments ---
+  // --- Instrumentos de trastes ---
   const inst = INSTRUMENTS[instrument];
   if (!inst) return null;
   const db = inst.data;
 
-  // Exact match
+  // nombre exacto primero (con el slash incluido, por si la BD lo tuviera)
   if (db[chordName]) return db[chordName];
 
-  // Try enharmonic equivalent (swap root, keep quality)
-  const [root, quality] = parseChordName(chordName);
-  if (root && ENHARMONIC_MAP[root]) {
-    const alt = ENHARMONIC_MAP[root] + quality;
-    if (db[alt]) return db[alt];
-  }
+  const tryName = (r, qq) => {
+    const name = r + qq;
+    if (db[name]) return db[name];
+    if (ENHARMONIC_MAP[r] && db[ENHARMONIC_MAP[r] + qq]) return db[ENHARMONIC_MAP[r] + qq];
+    return null;
+  };
 
-  return null;
+  // calidad canónica, y si no hay forma, degradar por la cadena de simplificación
+  let cur = q;
+  while (cur !== null && cur !== undefined) {
+    const hit = tryName(root, cur);
+    if (hit) return hit;
+    cur = SIMPLIFY[cur];
+    if (cur === undefined) break;   // calidad fuera de la cadena → probar tríada
+  }
+  // último recurso: tríada de la familia correcta
+  return tryName(root, /^m(?!aj)/.test(q) ? 'm' : '');
 }

@@ -306,27 +306,36 @@ export function pianoDiagram(chord, opts = {}) {
 
     const x = startX + i * cfg.whiteKeyWidth;
 
+    // Colores FÍSICOS del piano (var --piano-*), no los del tema: con
+    // currentColor/--text las negras salían claras en modo oscuro y una tecla
+    // activa era indistinguible de una negra. El piano debe parecer un piano
+    // en ambos temas; lo activo se marca con punto + nombre, no invirtiendo teclas.
     svg.appendChild(svgEl('rect', {
       x: x,
       y: startY,
       width: cfg.whiteKeyWidth - 1,
       height: cfg.whiteKeyHeight,
-      fill: isHighlighted ? 'currentColor' : 'var(--bg, #fff)',
-      stroke: 'currentColor',
+      fill: 'var(--piano-white, #fff)',
+      stroke: 'var(--piano-black, #1c1c1c)',
       'stroke-width': 0.8,
-      'stroke-opacity': 0.3,
+      'stroke-opacity': 0.35,
       rx: 1,
     }));
 
-    // nota label si highlighted
     if (isHighlighted) {
+      svg.appendChild(svgEl('circle', {
+        cx: x + (cfg.whiteKeyWidth - 1) / 2,
+        cy: startY + cfg.whiteKeyHeight - 13,
+        r: 3.2,
+        fill: 'var(--piano-black, #1c1c1c)',
+      }));
       const label = svgEl('text', {
         x: x + (cfg.whiteKeyWidth - 1) / 2,
-        y: startY + cfg.whiteKeyHeight - 4,
+        y: startY + cfg.whiteKeyHeight - 3,
         'text-anchor': 'middle',
         'font-size': cfg.fontSize,
         'font-family': 'monospace',
-        fill: 'var(--bg, #fff)',
+        fill: 'var(--piano-black, #1c1c1c)',
         'font-weight': 'bold',
       });
       label.textContent = WHITE_KEY_NAMES[i % 7];
@@ -352,8 +361,10 @@ export function pianoDiagram(chord, opts = {}) {
         y: startY,
         width: cfg.blackKeyWidth,
         height: cfg.blackKeyHeight,
-        fill: isHighlighted ? 'currentColor' : 'var(--text, #000)',
-        stroke: 'none',
+        fill: 'var(--piano-black, #1c1c1c)',
+        stroke: 'var(--piano-white, #fff)',
+        'stroke-width': 0.6,
+        'stroke-opacity': 0.25,
         rx: 1,
       }));
 
@@ -361,8 +372,8 @@ export function pianoDiagram(chord, opts = {}) {
         svg.appendChild(svgEl('circle', {
           cx: x + cfg.blackKeyWidth / 2,
           cy: startY + cfg.blackKeyHeight - 7,
-          r: 3,
-          fill: 'var(--bg, #fff)',
+          r: 2.8,
+          fill: 'var(--piano-white, #fff)',
         }));
       }
     }

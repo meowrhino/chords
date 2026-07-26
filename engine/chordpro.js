@@ -7,7 +7,11 @@
 const CHORD_SHAPE_RE = /^[A-G](#|b)?((maj|min|dim|aug|sus|add|dom|m)?[#b-]?[0-9]{0,2}){0,4}(\((maj|min|dim|aug|sus|add|dom|m)?[#b-]?[0-9]{1,2}\))?(\/([A-G](#|b)?|[0-9]{1,2}))?\+?°?ø?$/i;
 
 function isChordShape(text) {
-  return CHORD_SHAPE_RE.test(text.trim());
+  const t = text.trim();
+  // N.C. = "no chord": es notación real de cifrado, se muestra como acorde
+  // inline (sin diagrama) en vez de quedarse como texto literal "[N.C.]"
+  if (/^N\.?C\.?$/i.test(t)) return true;
+  return CHORD_SHAPE_RE.test(t);
 }
 
 /**

@@ -631,7 +631,8 @@
     "file": "mili-nine-point-eight.cho",
     "title": "Nine Point Eight",
     "artist": "Mili",
-    "key": "D"
+    "key": "D",
+    "fav": true
   },
   {
     "file": "bonnie-tyler-holding-out-for-a-hero.cho",
@@ -914,8 +915,10 @@
   },
   {
     "file": "yoasobi-ano-yume-wo-nazotte.cho",
-    "title": "Ano Yume Wo Nazotte",
-    "artist": "YOASOBI"
+    "title": "Ano Yume Wo Nazotte あの夢をなぞって",
+    "artist": "YOASOBI",
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "circusp-lie.cho",
@@ -1022,9 +1025,11 @@
   },
   {
     "file": "yoasobi-tabun.cho",
-    "title": "Tabun",
+    "title": "Tabun たぶん",
     "artist": "YOASOBI",
-    "key": "A"
+    "key": "A",
+    "version_label": "romaji",
+    "lang": "ja"
   },
   {
     "file": "yoasobi-racing-into-the-night.cho",
@@ -1297,12 +1302,14 @@
     "file": "misc-computer-games-library-of-ruina-iron-lotus.cho",
     "title": "Library Of Ruina - Iron Lotus",
     "artist": "Misc Computer Games",
-    "key": "Bm"
+    "key": "Bm",
+    "fav": true
   },
   {
     "file": "mili-utopiosphere.cho",
     "title": "Utopiosphere",
-    "artist": "Mili"
+    "artist": "Mili",
+    "fav": true
   },
   {
     "file": "caroline-polachek-look-at-me-now.cho",
@@ -1342,13 +1349,6 @@
     "title": "鳥の詩 (Tori no Uta)",
     "artist": "Lia",
     "key": "Bm",
-    "lang": "ja"
-  },
-  {
-    "file": "kalafina-misterioso.cho",
-    "title": "misterioso",
-    "artist": "Kalafina",
-    "key": "G",
     "lang": "ja"
   },
   {
@@ -1509,5 +1509,60 @@
     "title": "Baby",
     "artist": "Clean Bandit",
     "lang": "en"
+  },
+  {
+    "file": "kalafina-believe.cho",
+    "title": "believe",
+    "artist": "Kalafina",
+    "lang": "ja"
+  },
+  {
+    "file": "kalafina-magia.cho",
+    "title": "Magia",
+    "artist": "Kalafina",
+    "lang": "ja"
+  },
+  {
+    "file": "kalafina-storia.cho",
+    "title": "storia",
+    "artist": "Kalafina",
+    "lang": "ja"
+  },
+  {
+    "file": "kalafina-misterioso.cho",
+    "title": "misterioso",
+    "artist": "Kalafina",
+    "key": "G",
+    "lang": "ja"
+  },
+  {
+    "file": "yoasobi-ano-yume-wo-nazotte-kanji.cho",
+    "title": "Ano Yume Wo Nazotte あの夢をなぞって",
+    "artist": "YOASOBI",
+    "lang": "ja",
+    "version_label": "kanji"
+  },
+  {
+    "file": "yoasobi-tabun-kanji.cho",
+    "title": "Tabun たぶん",
+    "artist": "YOASOBI",
+    "lang": "ja",
+    "version_label": "kanji"
+  },
+  {
+    "file": "mili-camelia.cho",
+    "title": "Camelia",
+    "artist": "Mili"
+  },
+  {
+    "file": "mili-yubikiri-genman.cho",
+    "title": "Yubikiri-Genman",
+    "artist": "Mili"
+  },
+  {
+    "file": "ayano-mashiro-ideal-white.cho",
+    "title": "ideal white",
+    "artist": "綾野ましろ",
+    "lang": "ja"
   }
 ]

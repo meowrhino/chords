@@ -374,6 +374,20 @@ input {
   display: none;
 }
 
+/* "fijar": los diagramas se quedan pegados bajo la barra de controles, en la
+   misma columna que la letra, y la canción pasa por debajo. --pinned-top lo
+   pone app.js midiendo la barra, que es sticky y cambia de alto según ancho. */
+.chord-diagrams.pinned {
+  position: sticky;
+  top: var(--pinned-top, 0px);
+  z-index: 9;
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+  /* con muchos acordes el bloque se comía la pantalla: se scrollea él */
+  max-height: 40dvh;
+  overflow-y: auto;
+}
+
 .chord-diagram-card {
   display: flex;
   flex-direction: column;
@@ -441,6 +455,10 @@ input {
   cursor: pointer;
   white-space: nowrap;
   text-transform: none;
+  /* Con sílabas de una letra ("[Bm]O[F#m]h[G].") los rt se tocan y salía
+     "BmF#mGA" de un tirón. El padding separa los acordes y, de paso, abre
+     la letra de debajo lo justo para que se vea a qué sílaba va cada uno. */
+  padding-inline-end: 0.45em;
 }
 
 .chord-name:hover {
@@ -1241,76 +1259,4 @@ input {
   font-weight: 600;
 }
 
-/* === CHORD PANEL (sticky) === */
 
-.chord-panel {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
-  max-height: 45vh;
-  overflow-y: auto;
-}
-
-.chord-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-}
-
-.chord-panel-title {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-}
-
-.chord-panel-close {
-  font-size: 1.2rem;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0 0.3rem;
-  line-height: 1;
-  font-family: var(--font-ui);
-}
-
-.chord-panel-close:hover {
-  color: var(--text);
-}
-
-.chord-panel-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.8rem 1rem;
-  justify-content: center;
-}
-
-@media (min-width: 769px) {
-  .chord-panel {
-    left: auto;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 180px;
-    max-height: none;
-    border-top: none;
-    border-left: 1px solid var(--border);
-    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .chord-panel-content {
-    flex-direction: column;
-    align-items: center;
-  }
-}

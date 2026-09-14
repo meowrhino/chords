@@ -159,10 +159,7 @@ const els = {
   artistBio: $('#artistBio'),
   artistSongs: $('#artistSongs'),
   followArtistProfileBtn: $('#followArtistProfileBtn'),
-  chordPanel: $('#chordPanel'),
   chordPanelToggle: $('#chordPanelToggle'),
-  chordPanelClose: $('#chordPanelClose'),
-  chordPanelContent: $('#chordPanelContent'),
   commentsSection: $('#commentsSection'),
   commentForm: $('#commentForm'),
   commentUsername: $('#commentUsername'),
@@ -526,31 +523,34 @@ function renderChordDiagrams(song) {
   }
 }
 
-function renderChordPanel(song) {
-  els.chordPanelContent.innerHTML = '';
-  for (const chordName of song.allChords) {
-    const normalized = normalizeChordName(chordName);
-    const data = lookupChord(normalized, state.instrument);
-    if (!data) continue;
-    const card = document.createElement('div');
-    card.className = 'chord-diagram-card';
-    const svg = chordDiagram(chordName, data, state.instrument);
-    if (svg) card.appendChild(svg);
-    els.chordPanelContent.appendChild(card);
-  }
+// "fijar" no abre otro panel con los mismos diagramas: clava el que ya hay
+// arriba de la canción. Antes era un plano fijo a la derecha, lejos de los
+// acordes que estabas mirando; ahora los diagramas se quedan donde estaban,
+// en la misma columna, y la letra pasa por debajo.
+//
+// El top se mide en vez de fijarse: la barra de controles también es sticky y
+// su alto cambia con el ancho de pantalla (en móvil es una fila, en escritorio
+// se reparte en varias), así que un valor a pelo dejaba hueco o solapaba.
+function pinnedTop() {
+  const bar = $('#controlsBar');
+  return bar ? bar.getBoundingClientRect().height : 0;
+}
+
+function syncPinnedTop() {
+  if (!els.chordDiagrams.classList.contains('pinned')) return;
+  els.chordDiagrams.style.setProperty('--pinned-top', `${pinnedTop()}px`);
+}
+
+function setChordsPinned(pinned) {
+  els.chordDiagrams.classList.toggle('pinned', pinned);
+  els.chordPanelToggle.classList.toggle('active', pinned);
+  els.chordPanelToggle.textContent = pinned ? 'soltar' : 'fijar';
+  if (pinned) syncPinnedTop();
+  else els.chordDiagrams.style.removeProperty('--pinned-top');
 }
 
 function toggleChordPanel() {
-  const open = els.chordPanel.style.display !== 'none';
-  els.chordPanel.style.display = open ? 'none' : '';
-  els.chordPanelToggle.classList.toggle('active', !open);
-  els.chordPanelToggle.textContent = open ? 'fijar' : 'ocultar';
-  if (!open && state.parsedSong) {
-    const song = state.transpose !== 0
-      ? transposeSong(state.parsedSong, state.transpose)
-      : state.parsedSong;
-    renderChordPanel(song);
-  }
+  setChordsPinned(!els.chordDiagrams.classList.contains('pinned'));
 }
 
 function setupChordInteraction() {
@@ -1012,7 +1012,7 @@ function initControls() {
 
   // chord panel toggle
   els.chordPanelToggle.addEventListener('click', toggleChordPanel);
-  els.chordPanelClose.addEventListener('click', toggleChordPanel);
+  window.addEventListener('resize', syncPinnedTop);
 }
 
 function startAutoScroll() {
@@ -1378,9 +1378,7 @@ function route() {
   stopAutoScroll();
   state.autoScroll = false;
   hideChordPopup();
-  els.chordPanel.style.display = 'none';
-  els.chordPanelToggle.classList.remove('active');
-  els.chordPanelToggle.textContent = 'fijar';
+  setChordsPinned(false);
 
   // ocultar todas las vistas
   els.catalogView.style.display = 'none';

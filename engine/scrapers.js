@@ -5,6 +5,7 @@
 // que en el CLI local (scripts/import-url.mjs). Un solo sitio donde arreglar cada parser.
 
 import { convertRawToChordPro } from './raw-to-chordpro.js';
+import { decodeEntities } from './entities.js';
 
 // Dominios BASE: isAllowedDomain acepta también cualquier subdominio
 // (www., tabs., es., pt., …) — UG usa es.ultimate-guitar.com para el sitio
@@ -21,21 +22,6 @@ export const ALLOWED_DOMAINS = [
   'e-chords.com',
   'chordu.com',
 ];
-
-const NAMED_ENTITIES = {
-  quot: '"', apos: "'", nbsp: ' ', lt: '<', gt: '>',
-  ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’',
-  mdash: '—', ndash: '–', hellip: '…', amp: '&',
-};
-
-// Una sola pasada a propósito: replace() no reescanea lo ya sustituido, así que
-// "&amp;lt;" se queda en "&lt;" y no se decodifica dos veces hasta "<".
-function decodeEntities(s) {
-  return s
-    .replace(/&#(\d+);/g, (_m, n) => String.fromCodePoint(Number(n)))
-    .replace(/&#x([0-9a-f]+);/gi, (_m, n) => String.fromCodePoint(parseInt(n, 16)))
-    .replace(/&([a-z]+);/gi, (m, name) => NAMED_ENTITIES[name.toLowerCase()] ?? m);
-}
 
 // === Parsers por sitio ===
 
@@ -119,22 +105,52 @@ function parseAcordesWeb(html) {
   return { title, artist, lang: 'es', content: convertRawToChordPro(raw) };
 }
 
+// Extrae un bloque <div ...> equilibrado desde `start`, contando profundidad.
+// Un regex no vale: el bloque de acordes de ChordsWorld lleva divs dentro, y
+// un `[\s\S]*?</div>` cortaba en el primer cierre → se perdía casi toda la letra.
+function balancedDiv(html, start) {
+  let depth = 0;
+  const re = /<(\/?)div\b/g;
+  re.lastIndex = start;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    depth += m[1] ? -1 : 1;
+    if (depth === 0) return html.slice(start, m.index);
+  }
+  return html.slice(start);
+}
+
 function parseChordsWorld(html) {
-  const titleMatch = html.match(/<title>([^-]+)-\s*([^C]+)Chords/);
+  // "<title>MARINA - CUNTISSIMO Chords | ChordsWorld.com</title>".
+  // El regex viejo era /<title>([^-]+)-\s*([^C]+)Chords/: el [^C]+ hacía que
+  // cualquier canción cuyo título empiece por C saliera vacía.
+  const titleMatch = html.match(/<title>\s*(.+?)\s*-\s*(.+?)\s*chords\s*[|<]/i);
   const artist = titleMatch ? titleMatch[1].trim() : '';
   const title = titleMatch ? titleMatch[2].trim() : '';
 
-  const contentMatch = html.match(/<div[^>]*class="entry-content"[^>]*>([\s\S]*?)<\/div>/);
-  if (!contentMatch) throw new Error('No chord content found');
+  // El cifrado vive en .chord-short-code-wrap, no en .entry-content, y no usa
+  // espacios de texto: cada columna en blanco es un <i class="chord-space">.
+  // Si se quitan las etiquetas a lo bruto, la alineación acorde↔sílaba se
+  // pierde entera y la canción sale sin acordes.
+  const wrapAt = html.search(/<div[^>]*class=['"][^'"]*chord-short-code-wrap/);
+  const raw = wrapAt !== -1
+    ? balancedDiv(html, wrapAt)
+    : (html.match(/<div[^>]*class="entry-content"[^>]*>([\s\S]*?)<\/div>/) || [, ''])[1];
 
-  const raw = decodeEntities(
-    contentMatch[1]
+  if (!raw) throw new Error('No chord content found');
+
+  const text = decodeEntities(
+    raw
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<h3[\s\S]*?<\/h3>/gi, '')
+      .replace(/<i[^>]*class="chord-space"[^>]*><\/i>/g, ' ')
+      .replace(/<music-part[^>]*>([^<]*)<\/music-part>/g, '\n[$1]\n')
       .replace(/<c-2[^>]*>([^<]*)<\/c-2>/g, '[$1]')
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<[^>]+>/g, '')
   ).trim();
 
-  return { title, artist, lang: 'fr', content: convertRawToChordPro(raw) };
+  return { title, artist, content: convertRawToChordPro(text) };
 }
 
 function parseUkuTabs(html) {

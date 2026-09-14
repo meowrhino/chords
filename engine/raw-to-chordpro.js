@@ -1,6 +1,8 @@
 // raw-to-chordpro.js — convierte texto crudo (chords-encima-de-letras) a ChordPro inline.
 // Compartido entre frontend y Worker scraper.
 
+import { decodeEntitiesDeep } from './entities.js';
+
 const CHORD_TOKEN = /^[A-G](?:#|b)?(?:maj|min|sus|add|aug|dim|m)?(?:\d{1,2})?(?:[#b]?(?:sus|add|maj)?\d{1,2})*(?:\/[A-G](?:#|b)?)?$/;
 const CHORD_FIND = /[A-G](?:#|b)?(?:maj|min|sus|add|aug|dim|m)?(?:\d{1,2})?(?:[#b]?(?:sus|add|maj)?\d{1,2})*(?:\/[A-G](?:#|b)?)?/g;
 
@@ -113,33 +115,58 @@ export function insertChordsIntoLyrics(chords, lyrics) {
 }
 
 // Convierte cabeceras de sección (en varios idiomas) a directivas ChordPro.
+//
+// El corchete de apertura y el de cierre se aceptan por separado y en ambos
+// sabores ([] o {}): hay transcripciones con "{Bridge]" y otras con el nombre
+// del cantante detrás de dos puntos ("[Chorus: Anne-Marie]"). Si no se
+// reconocen, la cabecera se queda en la pantalla como si fuera letra.
+const SECTION_RULES = [
+  [/Intro/, '{start_of_intro}'],
+  [/Pre[\s-]?Chorus|Pre[\s-]?Estribillo|Pre[\s-]?Hook/, '{start_of_verse}'],
+  [/Post[\s-]?Chorus/, '{start_of_verse}'],
+  [/Verse/, '{start_of_verse}'],
+  [/Chorus|Hook/, '{start_of_chorus}'],
+  [/Bridge/, '{start_of_bridge}'],
+  [/Outro/, '{start_of_outro}'],
+  [/Instrumental|Solo|Interlude/, '{start_of_intro}'],
+  // Español
+  [/Estrofa/, '{start_of_verse}'],
+  [/Estribillo|Coro/, '{start_of_chorus}'],
+  [/Puente/, '{start_of_bridge}'],
+  // Francés
+  [/Couplet/, '{start_of_verse}'],
+  [/Refrain/, '{start_of_chorus}'],
+  [/Pont/, '{start_of_bridge}'],
+];
+
+// Dos formas, a propósito:
+//   - entre corchetes, vale cualquier cosa dentro ("[Chorus: Anne-Marie]",
+//     "[Bridge-Interlude]", y hasta el "{Bridge]" mal cerrado que sueltan
+//     algunos transcriptores);
+//   - a pelo, solo el nombre con adornos mínimos ("Verse 2", "Chorus: (x2)").
+// El (?![A-Za-z]) es lo que impide que "Verseau, Verseau, je chante encore"
+// se coma una letra entera creyéndose un "Verse", y que "Intro tabs can be
+// found here: https://…" se lleve por delante el enlace.
+function sectionRegex(name) {
+  const n = '(?:' + name.source + ')(?![A-Za-z])';
+  const bracketed = '[ \\t]*[\\[{][ \\t]*' + n + '[^\\]}\\n]*[\\]}][ \\t]*:?[ \\t]*';
+  const bare = '[ \\t]*' + n + '[ \\t]*[0-9IVXivx]*[ \\t]*:?[ \\t]*(?:\\([^)\\n]*\\))?[ \\t]*';
+  return new RegExp('^(?:' + bracketed + '|' + bare + ')$', 'gim');
+}
+
 export function normalizeSections(text) {
-  return text
-    // Inglés y formato corchete
-    .replace(/^\s*\[?\s*Intro[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_intro}')
-    .replace(/^\s*\[?\s*(Pre[\s-]?Chorus|Pre[\s-]?Estribillo)[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_verse}')
-    .replace(/^\s*\[?\s*(Post[\s-]?Chorus)[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_verse}')
-    .replace(/^\s*\[?\s*Verse[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_verse}')
-    .replace(/^\s*\[?\s*Chorus[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_chorus}')
-    .replace(/^\s*\[?\s*Bridge[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_bridge}')
-    .replace(/^\s*\[?\s*Outro[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_outro}')
-    .replace(/^\s*\[?\s*Instrumental[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_intro}')
-    .replace(/^\s*\[?\s*Solo[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_intro}')
-    .replace(/^\s*\[?\s*Interlude[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_intro}')
-    // Español
-    .replace(/^\s*\[?\s*Estrofa[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_verse}')
-    .replace(/^\s*\[?\s*Estribillo[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_chorus}')
-    .replace(/^\s*\[?\s*Coro[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_chorus}')
-    .replace(/^\s*\[?\s*Puente[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_bridge}')
-    // Francés
-    .replace(/^\s*\[?\s*Couplet[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_verse}')
-    .replace(/^\s*\[?\s*Refrain[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_chorus}')
-    .replace(/^\s*\[?\s*Pont[^\]\n:]*\]?\s*:?\s*$/gim, '{start_of_bridge}');
+  let out = text;
+  for (const [name, directive] of SECTION_RULES) {
+    out = out.replace(sectionRegex(name), directive);
+  }
+  return out;
 }
 
 // Limpia ruido típico de scrape: tabs, NBSP, watermarks comunes.
 export function cleanWhitespace(text) {
-  return text
+  // Las entidades se deshacen aquí, lo primero de todo: mergeChordLines alinea
+  // por columnas, y "&rsquo;" cuenta 7 donde el transcriptor veía 1.
+  return decodeEntitiesDeep(text)
     .replace(/\r\n/g, '\n')
     .replace(/\r/g, '\n')
     .replace(/\t/g, '    ')

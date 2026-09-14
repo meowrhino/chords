@@ -1,7 +1,7 @@
 {title:Je Disparais Dans Tes Bras}
 {artist:Christine and the Queens}
 
-Music & Lyrics: Hélo&iuml;se Letissier
+Music & Lyrics: Héloïse Letissier
 Album: La vita nuova (EP) (2020)
 
 
@@ -10,12 +10,12 @@ Album: La vita nuova (EP) (2020)
 |[C]    |[D]  [Am]|[C]
 
 {start_of_verse}
-Tu voudra[D]is l'arr&ecirc;t[Am] tot[C]al du monde, quand[D] t[Am]u[C] t'en vas
+Tu voudra[D]is l'arrêt[Am] tot[C]al du monde, quand[D] t[Am]u[C] t'en vas
 Tu voudra[D]is la substance et[Am] le[C] doute, tout comm[D]e [Am]t[C]oi
 Ce mat[D]in, je regardais[Am] le[C] ciel et les oiseaux vole[D]nt[Am] [C]bas
 Tu voudra[D]is mordre sans co[Am]ns[C]équence, je saigne[D] déjà
 
-[Pre-Chorus]
+{start_of_verse}
 (Tu saignes [Am]dé[C]jà, va)
 Tu saignes déj[D]à
 (Tu saignes [Am]dé[C]jà, va)
@@ -25,18 +25,18 @@ Tu saignes déj[D]à
 {start_of_chorus}
 {start_of_verse}
  Pourrais-tu m'aimer ?
-[D]Hmm et &c[Am]cedil[C];a j'en doute
+[D]Hmm et [C][Am]ça j'en doute
 Quand tu pre[D]nds que ce que tu veux[Am] [C]de moi
 Que tu n'a[D]imes que ce que tu veux[Am] [C]de moi
 Quand tu n've[D]ux qu'une partie de[Am] moi
 {start_of_verse}
  Pourrais-tu m'aimer ?
-[D]Hmm et &c[Am]cedil[C];a j'en doute
+[D]Hmm et [C][Am]ça j'en doute
 Quand tu pre[D]nds que ce que tu veux[Am] [C]de moi
 Que tu n'a[D]imes que ce que tu veux[Am] [C]de moi
 Et que j[D]e disparais dans[Am] te[C]s bras
 
-[Instrumental] [A&iuml;e a&iuml;e ing]
+[Instrumental] [Aïe aïe ing]
       |[D]  [Am]|[C]    |[D]  [Am]|
 |[C]    |[D]  [Am]|[C]    |[D]    |
 
@@ -51,18 +51,18 @@ Et tu brilles déjà fort sur ma peau, cet or c'est toi (cet or c'est toi !)
 {start_of_chorus}
 {start_of_verse}
  Pourrais-tu m'aimer ?
-[D]Hmm et &c[Am]cedil[C];a j'en doute (&ccedil;a j'en doute)
+[D]Hmm et [C][Am]ça j'en doute (ça j'en doute)
 Quand tu pre[D]nds que ce que tu veux[Am] [C]de moi (quand tu prends, quand tu n'aimes)
 Que tu n'a[D]imes que ce que tu veux[Am] [C]de moi (quand tu n'aimes)
 Quand tu n've[D]ux qu'une partie de[Am] moi
 {start_of_verse}
  Pourrais-tu m'aimer ?
-[D]Hmm et &c[Am]cedil[C];a j'en doute (&ccedil;a j'en doute)
+[D]Hmm et [C][Am]ça j'en doute (ça j'en doute)
 Quand tu pre[D]nds que ce que tu veux[Am] [C]de moi (quand tu prends, quand tu n'aimes)
 Que tu n'a[D]imes que ce que tu veux[Am] [C]de moi (quand tu n'aimes)
 Et que j[D]e disparais dans[Am] te[C]s bras
 
-[Instrumental] [A&iuml;e a&iuml;e ing]
+[Instrumental] [Aïe aïe ing]
       |[D]  [Am]|[C]    |[D]  [Am]|
 |[C]    |[D]  [Am]|[C]    |[D]    |
 |N.C. |
@@ -75,7 +75,7 @@ N.C.
 N.C.
  Dans la rivière de l'autre, eh eh
 
-[Post-Chorus]
+{start_of_verse}
 [C] Pourrais-tu m'aimer[D], dans les pleurs de l[C]'autre ?
 Pourrais-tu m'aimer,[D] dans la rivière de l'[C]autre ?
 Pourrais-tu m'aimer[D], dans la mer de l'[C]autr[D]e ?

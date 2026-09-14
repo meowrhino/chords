@@ -4,7 +4,7 @@
 This is the full second opening song for the Japanese anime "Kill la Kill".
 Capo: No
 
-INTRO
+{start_of_intro}
 *****
 |[Dm] |   |[G]  |   |[Gm] |   |[Dm] |   | x2
 
@@ -12,7 +12,7 @@ INTRO
 
 |[Dm] |[Bb] |[F]  |[Gm] [C] | x2
 
-VERSE 1
+{start_of_verse}
 *******
 [Am]  Se[Fmaj7]nob[C]ishiteitanda
 Kutsu[G]zure[E] da[Am]rake[Fmaj7] no 
@@ -25,7 +25,7 @@ Kaku[C]shita ts[Bm]umo[E]ri de
 [Am]Minukareteshi[G]matteite 
 [Fmaj7]Konna no wa[G] hajimete[Asus4] de[A] tomadou kedo 
 
-CHORUS 1
+{start_of_chorus}
 ********
 [Dm]Hoka no [Bb]dare nim[F]o kikon[C]asenai 
 Nanda[Dm]ka wak[Bb]annai atsusa g[F]a mune wo[C] kog[A]asu kara 
@@ -34,7 +34,7 @@ I[G]ma at[Gm]ara[Am]sh[Bb]ii[C] yoa[Dm]ke ga kuru
 
 |[Dm] |[Bb] |[F]  |[Gm] [C] | x2
 
-VERSE 2
+{start_of_verse}
 *******
 [Am]  Ka[Fmaj7]jik[C]anda yubi de 
 zut[G]to sagash[Am]ite[Fmaj7]ta 
@@ -47,14 +47,14 @@ U[C]tsutte[Bm]i[E]tanda
 [Am]Amasugirushi [G]nigasugiru 
 [Fmaj7]Sou Jibuntac[G]hi dake no fur[Asus4]eiba[A]a nomihoshite 
 
-CHORUS 2
+{start_of_chorus}
 ********
 [Dm]Ano hi [Bb]kimi ga [F]oshiete[C] kureta 
 Nanda[Dm]ka wak[Bb]annai atsusa g[F]a hoho wo [C]tsu[A]tau kara 
 [Dm]Sorezor[Bb]e no o[F]moi kar[C]amia[A]tta son[Dm]o saki ni 
 I[G]ma at[Gm]ara[Am]sh[Bb]ii[C] yoa[Dm]ke ga kuru 
 
-BRIDGE
+{start_of_bridge}
 ******
 |[Dm] |[Bb] |[F]  |[C]   |
 |[Dm] |[Bb] |[F]  |[C] [A] |
@@ -66,7 +66,7 @@ Tatta sore [Gm7]dake no mucha na k[Cm7]imochi
 [Am7]D[Bb]akedo ic[Bm7]hiru no[Cm] nozom[Fm]i[Gm] [G#]w[Gm]a[G#] kimi ga
 i[Bb]m[Fm]a[Gm]  t[G#]o[Db]na[F]r[G]i ni iru koto 
 
-CHORUS 3
+{start_of_chorus}
 ********
 [Cm]Hoka no [G#]darenim[Eb]o kiko[Bb]nasenai 
 Nanda[Cm]ka wak[G#]annai atsusa g[Eb]a mune w[Bb]o k[G]ogasu kara 

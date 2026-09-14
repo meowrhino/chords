@@ -5,7 +5,7 @@
 If anyone knows the right lyrics, especially to Sean Paul's sections, please feel free to correct :)
 
 
-[Intro: Sean Paul]
+{start_of_intro}
 [Am]Call i[F]t love and devoti[G]on[C]
 Call it the mom's ad[Am]oration
 Foundation[F]
@@ -14,7 +14,7 @@ A special [G]bond of creatio[C]n, hah
 Clean [F]Bandit, Sean-da[Dm]-Paul, Anne[E]-Marie sing mek dem hear
 
 
-[Verse 1: Anne-Marie & Sean Paul]
+{start_of_verse}
 She works the [Am]nig[F]ht, by the[G] wat[Em]er
 She's gone as[Am]tray, so far [F]away
 From her father's da[G]ughter[Em]
@@ -23,7 +23,7 @@ All on her [Am]own, no one will[F] come
 She's got to [G]save him (daily[Em] struggle)
 
 
-[Pre-Chorus: Anne-Marie & Sean Paul]
+{start_of_verse}
 She tells him "[Am]ooh, love[F], no one's ever gonna hu[G]rt you, love
 [Em]I'm gonna give you all o[Am]f my love
 [F]Nobody matters like[G] you" [Em](stay up there, stay up there)
@@ -32,7 +32,7 @@ She tells him "[Am]your lif[F]e ain't gonna be nothing li[G]ke my life (straight
 [F]I'm gonna do what I've[G] got t[Em]o do" (stay up there, stay up there)
 
 
-[Chorus: Anne-Marie & Sean Paul]
+{start_of_chorus}
 So, [Am]Rockaby[F]e baby, Roc[G]kabye
 {start_of_verse}
 I'm gonna rock you
@@ -47,7 +47,7 @@ Rockab[Am]ye,[F]   no[G]    (rockab[Em]ye, rock-a rock-a rockabye)
 Rock[Am]aby[F]e, [G] yeah (rock[Em]abye, rock-a rock-a rockabye)
 
 
-[Verse 2: Anne-Marie & Sean Paul]
+{start_of_verse}
 [Am]Single mom, ho[F]w you doing out there
 [G]Facing the hard life,[Em] without no fear
 [Am]Just see and know th[F]at you really care
@@ -57,12 +57,12 @@ Cause [G]you have to set things[Em] year and to year
 And [Am]you give the youth lov[F]e beyond compare
 [G]You find the school fee[Em] and the bus fare
 [Am]Mmm all when [F]the paps' disappear
-[G]In a rum bar can&rsquo;[Em]t find him nowhere
+[G]In a rum bar can’[Em]t find him nowhere
 [Am]Steadily you work flow[F], heavily you know
 [G]So you nah stop no time, no [Em]time fi a jear
 
 
-[Bridge: Anne-Marie]
+{start_of_bridge}
 [Am]Now she gotta a six yea[F]r old
 Trying to [G]keep him warm
 [Em]Trying to keep out th[Am]e cold
@@ -70,13 +70,13 @@ When he [F]looks in her eyes
 [G]He don't know he's[Em] safe
 
 
-[Pre-Chorus: Anne-Marie]
+{start_of_verse}
 When she says "[Am]ooh, love[F], no one's ever gonna hu[G]rt you, love
 [Em]I'm gonna give you all o[Am]f my love
 [F]Nobody matters like[G] you"[Em]
 
 
-[Chorus: Anne-Marie & Sean Paul]
+{start_of_chorus}
 So, [Am]Rockaby[F]e baby, Roc[G]kabye
 {start_of_verse}
 I'm gonna rock you
@@ -95,7 +95,7 @@ Rock[Am]aby[F]e, [G]yeah (rocka[Em]bye, rock-a rock-a rockabye)
 [G]Angels around, you[Em] just dry your eyes
 
 
-[Bridge: Anne-Marie]
+{start_of_bridge}
 [Am]Now she gotta a six yea[F]r old
 Trying to [G]keep him warm
 [Em]Trying to keep out th[F]e cold
@@ -104,7 +104,7 @@ When he [F]looks her in the eyes[E]
 He don't know he's safe when she says
 
 
-[Pre-Chorus: Anne-Marie & Sean Paul]
+{start_of_verse}
 She tells him "[Am]ooh, love[F], no one's ever gonna hu[G]rt you, love
 [Em]I'm gonna give you all o[Am]f my love
 [F]Nobody matters like[G] you" [Em](stay up there, stay up there)
@@ -113,7 +113,7 @@ She tells him "[Am]your lif[F]e ain't gonna be nothing li[G]ke my life (straight
 [F]I'm gonna do what I've[G] got t[Em]o do" (yeah)
 
 
-[Chorus: Anne-Marie & Sean Paul]
+{start_of_chorus}
 So, [Am]Rockaby[F]e baby, Roc[G]kabye (Rockabye-rocka-rocka-rocka-bye)
 {start_of_verse}
 I'm gonna rock you

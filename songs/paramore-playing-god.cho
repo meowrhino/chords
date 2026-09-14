@@ -10,7 +10,7 @@ Leave a comment if you have any corrections :D
 
 Intro: [C#m]  [B]  [C#m]  [B]  [E]
 
-Verse:
+{start_of_verse}
 [C#m]I can't make my own deci[B]s[C#m]ions or make any with[B] precision
 {start_of_verse}
 Well, maybe you should tie me up, so I don't go where you don't want me
@@ -19,13 +19,13 @@ Well, maybe you should tie me up, so I don't go where you don't want me
 Yeah, how could that be logical? Just keep on cramming ideas down my throat 
 [A]Woooooooaaaa[B]hhhh 
 
-Chorus: 
+{start_of_chorus}
 [E]You don't have to believe me, but the[C#m] way I, way I see it
 [A]Next time you point a finger[B], I might have to bend it back
 [G#]Or break it, break it of[A]f
 [A]Next time you point a finger[B], I'll point you to the mirror
 
-Verse:
+{start_of_verse}
 [C#m]If God's the game that you're p[B]lay[C#m]ing, well we must get more [B]acquainted
 {start_of_verse}
 Because it has to be so lonely, to be the only one who's holy
@@ -34,13 +34,13 @@ Because it has to be so lonely, to be the only one who's holy
 You don't deserve a point of view, if the only thing you see is you
 [A]Woooooooaaaa[B]hhhh
 
-Chorus: 
+{start_of_chorus}
 [E]You don't have to believe me, but the[C#m] way I, way I see it
 [A]Next time you point a finger[B], I might have to bend it back
 [G#]Or break it, break it of[A]f
 [A]Next time you point a finger[B], I'll point you to the mirror
 
-Bridge:
+{start_of_bridge}
 [A]  [B]  [C#m]  [G#] x2
 
 [A]This is the last second ch[B]ance (I'll point you to the mirror)
@@ -48,7 +48,7 @@ Bridge:
 [A]I'm on both sides of the [B]fence (I'll point you to the mirror)
 [C#m]Without a hint of regr[B]et, I'll hold you to it
 
-Chorus: (X2)
+{start_of_chorus}
 [E]You don't have to believe me, but the[C#m] way I, way I see it
 [A]Next time you point a finger[B], I might have to bend it back
 [G#]Or break it, break it of[A]f

@@ -5,7 +5,7 @@
                                by Lily Allen
                               standard tuning
 
-                         verse 1
+{start_of_verse}
 I[F] see you[Fmaj7] from[Gm] the sky
 A[Dm]nd I wonder how long it wil[Bb]l take me to [Gm]g[C]et home
 I[F] wait for an h[Fmaj7]our or so at t[Gm]he carousel
@@ -24,7 +24,7 @@ I'll be exhausted so I'll probably sl[Bb]eep
 And we'll get a Chinese and watch[F] TV
 
 
-                verse 2
+{start_of_verse}
 Yo[F]u wipe the [Fmaj7]tears fr[Gm]om my eye
 And you sa[Dm]y that all that i[Bb]t takes is a[Gm] p[C]hone call
 I [F]cr[Fmaj7]y at the thought of [Gm]being alone and then
@@ -41,11 +41,11 @@ I'll be exhausted so I'll probably s[Bb]leep
 And we'll get a Chinese and watch [F]TV
 
            
-              verse 3
+{start_of_verse}
 I[F] kn[Fmaj7]ow it doesn't [Gm]seem so fair
 But I'll se[Dm]nd you a p[Bb]ostcard when [Gm]I get there
 
-                  chorus
+{start_of_chorus}
 I[F] don't want anything [Am]more
 Than to see your face when you open the d[Cm]oor
 You'll make me beans on toast and a nice cup of t[Bb]ea

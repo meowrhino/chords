@@ -1,10 +1,10 @@
 {title:Verseau}
-{artist:C&oelig;ur de Pirate}
+{artist:Cœur de Pirate}
 
 Capo 2
 Intro: [G] x2
 
-Verse 1:
+{start_of_verse}
 
 [G]Laisse-les t'aimer ce s[E]oir
 Tu s[Am]ais qu'elles ne t'auront j[D]amais
@@ -13,13 +13,13 @@ Mais da[C]ns ces avances a[E]veugles
 Tu lai[Am]sses l'attention t'[D]atteindre
 Et dans cette so[G]litude, j'at[Em]tends tes ét[Am]reintes[D]
 
-Pre-chorus:
+{start_of_verse}
 
 Et si t[C]u savais, si [D]tu savais
 J'ai pe[G]ur de te perdre à j[Em]amais
-Et si [C]tu savais que [Am]m&ecirc;me m[G]oi j'attendrais
+Et si [C]tu savais que [Am]même m[G]oi j'attendrais
 
-Chorus:
+{start_of_chorus}
 
 {start_of_verse}
 Verseau, Verseau, tu brises mon coeur
@@ -35,23 +35,23 @@ Verseau, Verseau, je sais qu'on a tort
 [C]Au moins dis-moi si tu me tiens la[D] main
 Ou si c'est bien la f[G]in
 
-Verse 2:
+{start_of_verse}
 
 [G]Laisse-les tomber ce [E]soir
 Ces e[Am]nvies de voir tes[D] limites
 Et tu ne nous f[G]ais que du mal
 Quand tu f[Em]ranchis ces [Am]lignes[D]
-Je su[G]is br&ucirc;l[E]ée par l'usure
+Je su[G]is brûl[E]ée par l'usure
 Je n[Am]e vis que pour tes yeux d[D]e gris
 Et de mon [G]mal, j'avale mes l[Em]armes et me[Am]s cris[D]
 
-Pre-chorus:
+{start_of_verse}
 
 Et si t[C]u savais, si [D]tu savais
 J'ai pe[G]ur de te perdre à j[Em]amais
-Et si [C]tu savais que [Am]m&ecirc;me m[G]oi j'attendrais
+Et si [C]tu savais que [Am]même m[G]oi j'attendrais
 
-Chorus:
+{start_of_chorus}
 
 {start_of_verse}
 Verseau, Verseau, tu brises mon coeur
@@ -67,7 +67,7 @@ Verseau, Verseau, je sais qu'on a tort
 [C]Au moins dis-moi si tu me tiens la[D] main
 Ou si c'est bien la f[G]in
 
-Chorus:
+{start_of_chorus}
 
 {start_of_verse}
 Verseau, Verseau, tu brises mon coeur

@@ -26,7 +26,7 @@ E|------------------------------------------------------|
 
 [E]-[F#m]--[E] [E]-[F#m]--[E]
 
-Verse 1:
+{start_of_verse}
 [D]                                                           [E]-[F#m]
   I think we have an emergency, I think we have an emergency
                                   [E]          [E]-[F#m]                  [E]
@@ -41,14 +41,14 @@ if you thought I'd leave then you we're wrong cause I won't stop holding on.
 and I can't pretend that I don't see this.
 
 
-Refrain:
+{start_of_chorus}
 [E]  but it's really not your[F#m] fault,
 when no one cares to [D]talk about it,
               [Bm]-[A/C#]
 talk about it.
 
 
-Chorus:
+{start_of_chorus}
 [Bm]  cause I'v[D]e seen lo[F#m]ve die,
 way [A]too many time[Bm]s
 when it de[D]served to be [F#m]al[E]ive.
@@ -58,7 +58,7 @@ when you de[D]served to be [F#m]a[E]live,
 a[D]live.
 
 
-Verse 2:
+{start_of_verse}
 [E]-[F#m]                  [E]             [E]-[F#m]             [E]
   so you give up every chance you get, just to feel new again.
 [D]                                                           [E]-[F#m]
@@ -74,7 +74,7 @@ and you do your best to show me love, but you don't know what love is.
 (Repeat Refrain and Chorus)
 
 
-Bridge:
+{start_of_bridge}
 S[E]cars they will no[F#m]t
 {start_of_verse}
 fade away.

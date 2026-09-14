@@ -1,7 +1,7 @@
 {title:From Y To Y}
 {artist:Hatsune Miku}
 
-Intro:
+{start_of_intro}
 [B] [A] [E] [F#] x2
 
 
@@ -27,7 +27,7 @@ Kazo[E]e kiren[B]ai hodo n[C#m]o tsumi wo kasanete[B] kita
 Sono te ni fu[E]reta koto 
 Kimi[B] no tonari[C#m] de sott[F#]o ikiyou to shita koto
 
-Bridge:
+{start_of_bridge}
 [E] [B] [C#m] [B] x2
 
 Ima [E]wo hitotsu hirou tabi kako[B] wo hitotsu suteru you na 

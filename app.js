@@ -4,7 +4,7 @@ import { parseChordPro, hasCJKReadings, getReadingType } from './engine/chordpro
 import { renderSong } from './engine/ruby-render.js';
 import { transposeSong, normalizeChordName } from './engine/transpose.js';
 import { chordDiagram } from './engine/chord-svg.js';
-import { lookupChord } from './engine/chords-db.js';
+import { lookupChord, listChords, chordRoot } from './engine/chords-db.js';
 import { convertRawToChordPro } from './engine/raw-to-chordpro.js';
 import { createTuner } from './engine/tuner.js';
 
@@ -165,6 +165,11 @@ const els = {
   artistSongs: $('#artistSongs'),
   followArtistProfileBtn: $('#followArtistProfileBtn'),
   chordPanelToggle: $('#chordPanelToggle'),
+  inventoryView: $('#inventoryView'),
+  inventoryGrid: $('#inventoryGrid'),
+  inventoryCount: $('#inventoryCount'),
+  inventoryInstrumentPicker: $('#inventoryInstrumentPicker'),
+  inventorySearch: $('#inventorySearch'),
   tunerView: $('#tunerView'),
   tunerMount: $('#tunerMount'),
   tunerInstrumentPicker: $('#tunerInstrumentPicker'),
@@ -967,6 +972,16 @@ function initControls() {
   // instrumento del afinador: el mismo state, así que cambiarlo aquí también
   // cambia los diagramas de las canciones. Es lo que se espera: es "tu"
   // instrumento, no un ajuste por pantalla.
+  els.inventoryInstrumentPicker.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-instrument]');
+    if (!btn) return;
+    state.instrument = btn.dataset.instrument;
+    els.inventoryInstrumentPicker.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderInventory();
+  });
+  els.inventorySearch.addEventListener('input', renderInventory);
+
   els.tunerInstrumentPicker.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-instrument]');
     if (!btn) return;
@@ -1391,6 +1406,80 @@ function initProfileUI() {
   });
 }
 
+// === INVENTARIO DE ACORDES ===
+
+// Dibujar 391 diagramas de golpe congela la pestaña medio segundo, así que se
+// pintan por tandas con requestAnimationFrame. renderToken corta la tanda en
+// curso cuando cambias de instrumento o escribes en el buscador: sin él, dos
+// renders solapados van metiendo tarjetas en la misma rejilla.
+let inventoryToken = 0;
+
+function renderInventory() {
+  const token = ++inventoryToken;
+  const query = els.inventorySearch.value.trim().toLowerCase();
+  const names = listChords(state.instrument)
+    .filter(n => !query || n.toLowerCase().includes(query));
+
+  els.inventoryGrid.innerHTML = '';
+  els.inventoryCount.textContent = names.length
+    ? `${names.length} acordes`
+    : 'ningún acorde con ese nombre';
+
+  // Agrupar por fundamental, en el orden cromático que ya trae listChords.
+  const groups = [];
+  for (const name of names) {
+    const root = chordRoot(name);
+    if (!groups.length || groups[groups.length - 1].root !== root) {
+      groups.push({ root, names: [] });
+    }
+    groups[groups.length - 1].names.push(name);
+  }
+
+  let i = 0;
+  function paintBatch() {
+    if (token !== inventoryToken) return;
+    const deadline = performance.now() + 12;   // ~un frame
+    while (i < groups.length && performance.now() < deadline) {
+      els.inventoryGrid.appendChild(inventoryGroupEl(groups[i]));
+      i++;
+    }
+    if (i < groups.length) requestAnimationFrame(paintBatch);
+  }
+  paintBatch();
+}
+
+function inventoryGroupEl({ root, names }) {
+  const section = document.createElement('section');
+  section.className = 'inventory-group';
+  const label = document.createElement('div');
+  label.className = 'catalog-section-label';
+  label.textContent = root;
+  section.appendChild(label);
+
+  const grid = document.createElement('div');
+  // El teclado de piano es apaisado: en columnas pensadas para un diagrama de
+  // trastes las teclas salen del ancho de un pelo y las notas no se leen.
+  grid.className = `inventory-cards${state.instrument === 'piano' ? ' inventory-cards-wide' : ''}`;
+  for (const name of names) {
+    const data = lookupChord(name, state.instrument);
+    if (!data) continue;
+    const card = document.createElement('div');
+    card.className = 'chord-diagram-card inventory-card';
+    const svg = chordDiagram(name, data, state.instrument);
+    if (svg) card.appendChild(svg);
+    grid.appendChild(card);
+  }
+  section.appendChild(grid);
+  return section;
+}
+
+function openInventory() {
+  for (const btn of els.inventoryInstrumentPicker.querySelectorAll('.control-btn')) {
+    btn.classList.toggle('active', btn.dataset.instrument === state.instrument);
+  }
+  renderInventory();
+}
+
 // === AFINADOR ===
 
 // Una instancia viva como mucho. Se crea al entrar en #/afinador y se destruye
@@ -1428,9 +1517,16 @@ function route() {
   els.feedView.style.display = 'none';
   els.artistView.style.display = 'none';
   els.tunerView.style.display = 'none';
+  els.inventoryView.style.display = 'none';
   if (hash !== '#/afinador') closeTuner();
 
-  if (hash === '#/afinador') {
+  if (hash === '#/inventario') {
+    els.inventoryView.style.display = '';
+    els.inventoryView.style.animation = 'none';
+    els.inventoryView.offsetHeight;
+    els.inventoryView.style.animation = '';
+    openInventory();
+  } else if (hash === '#/afinador') {
     els.tunerView.style.display = '';
     els.tunerView.style.animation = 'none';
     els.tunerView.offsetHeight;

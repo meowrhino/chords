@@ -881,3 +881,66 @@ export function lookupChord(chordName, instrument = 'guitar') {
   // último recurso: tríada de la familia correcta
   return tryName(root, /^m(?!aj)/.test(q) ? 'm' : '');
 }
+
+// ---------------------------------------------------------------------------
+// listChords — inventario: todos los acordes que este instrumento sabe dibujar
+// ---------------------------------------------------------------------------
+
+// Sufijo de nombre para cada plantilla de piano. Las dos tríadas se llaman
+// distinto de como se escriben ("major" se escribe "", "minor" se escribe "m");
+// el resto de plantillas ya se llaman como se escriben.
+const PIANO_SUFFIX = { major: '', minor: 'm' };
+
+const CHROMATIC = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+/**
+ * Nombres de acorde que `lookupChord` resuelve para un instrumento.
+ *
+ * Con trastes es la lista de digitaciones guardadas. El piano va por
+ * plantillas de intervalos, así que cualquier fundamental sirve y hay que
+ * generar las combinaciones. Solo se devuelven los nombres que vuelven a
+ * resolver a la plantilla de la que salieron: así el inventario nunca enseña
+ * una etiqueta con un diagrama que no le corresponde, pase lo que pase con
+ * los alias de calidad.
+ *
+ * @param {string} instrument
+ * @returns {string[]} nombres ordenados por fundamental cromática
+ */
+export function listChords(instrument = 'guitar') {
+  const inst = INSTRUMENTS[instrument];
+  if (!inst) return [];
+
+  let names;
+  if (instrument === 'piano') {
+    names = [];
+    for (const root of CHROMATIC) {
+      for (const tmpl of Object.keys(PIANO)) {
+        const suffix = PIANO_SUFFIX[tmpl] ?? tmpl;
+        const name = root + suffix;
+        if (lookupChord(name, 'piano') === PIANO[tmpl]) names.push(name);
+      }
+    }
+    return names;
+  }
+
+  names = Object.keys(inst.data);
+  // Orden cromático por fundamental; dentro, alfabético por calidad, que deja
+  // la tríada suelta ("C") delante de sus variantes ("C7", "Cm"…).
+  return names.sort((a, b) => {
+    const [ra, qa] = parseChordName(a);
+    const [rb, qb] = parseChordName(b);
+    const ia = CHROMATIC.indexOf(ENHARMONIC_MAP[ra] && !CHROMATIC.includes(ra) ? ENHARMONIC_MAP[ra] : ra);
+    const ib = CHROMATIC.indexOf(ENHARMONIC_MAP[rb] && !CHROMATIC.includes(rb) ? ENHARMONIC_MAP[rb] : rb);
+    if (ia !== ib) return ia - ib;
+    return (qa || '').localeCompare(qb || '');
+  });
+}
+
+/** La fundamental de un nombre de acorde, normalizada a sostenidos. */
+export function chordRoot(name) {
+  let [root] = parseChordName(name);
+  if (!root) return '?';
+  if (ROOT_FIXES[root]) root = ROOT_FIXES[root];
+  if (!CHROMATIC.includes(root) && ENHARMONIC_MAP[root]) root = ENHARMONIC_MAP[root];
+  return root;
+}

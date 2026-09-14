@@ -1384,3 +1384,60 @@ input {
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* === INVENTARIO DE ACORDES === */
+
+.inventory-search {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-width: 10rem;
+}
+
+.inventory-search:focus {
+  outline: none;
+  border-color: var(--border-hover);
+}
+
+.inventory-group {
+  margin-bottom: 1.5rem;
+}
+
+.inventory-cards {
+  display: grid;
+  /* auto-fill y no auto-fit: con pocos acordes (un filtro estrecho) auto-fit
+     estira las tarjetas hasta deformar los diagramas. */
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 0.6rem;
+}
+
+.inventory-card {
+  padding: 0.5rem 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.inventory-card:hover {
+  border-color: var(--border-hover);
+}
+
+@media (max-width: 768px) {
+  .inventory-cards {
+    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+    gap: 0.4rem;
+  }
+}
+
+.inventory-cards-wide {
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+}
+
+@media (max-width: 768px) {
+  .inventory-cards-wide {
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  }
+}

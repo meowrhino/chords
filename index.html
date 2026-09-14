@@ -27,6 +27,13 @@
   <header class="site-header">
     <a href="#/" class="site-title">acordes</a>
     <div class="header-actions">
+      <a href="#/inventario" class="header-link" id="inventoryLink" title="inventario de acordes">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2.5" y="2.5" width="11" height="11" rx="1"/>
+          <line x1="6" y1="2.5" x2="6" y2="13.5"/><line x1="10" y1="2.5" x2="10" y2="13.5"/>
+          <line x1="2.5" y1="6" x2="13.5" y2="6"/>
+        </svg>
+      </a>
       <a href="#/afinador" class="header-link" id="tunerLink" title="afinador">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M5 1.5v6a3 3 0 0 0 6 0v-6"/><path d="M8 10.5v4"/>
@@ -82,6 +89,31 @@
         <p class="site-statement">acordes libres — sin anuncios, sin cuentas, para siempre. tus tablaturas son tuyas.</p>
       </div>
       <div id="songList" class="song-list"></div>
+    </div>
+
+    <!-- vista inventario -->
+    <div id="inventoryView" class="view" style="display:none;">
+      <div class="song-header">
+        <a href="#/" class="back-link">&larr; catálogo</a>
+        <h1 class="song-title">inventario</h1>
+        <div class="song-meta" id="inventoryCount"></div>
+      </div>
+      <div class="controls-bar">
+        <div class="control-group">
+          <label class="control-label">instrumento</label>
+          <div class="control-buttons" id="inventoryInstrumentPicker">
+            <button class="control-btn active" data-instrument="guitar">guitarra</button>
+            <button class="control-btn" data-instrument="ukulele">ukelele</button>
+            <button class="control-btn" data-instrument="bass">bajo</button>
+            <button class="control-btn" data-instrument="piano">piano</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">buscar</label>
+          <input type="search" id="inventorySearch" class="inventory-search" placeholder="C#m7, sus4, dim..." autocomplete="off">
+        </div>
+      </div>
+      <div id="inventoryGrid"></div>
     </div>
 
     <!-- vista afinador -->

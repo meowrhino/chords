@@ -3,6 +3,7 @@
 //
 //   node scripts/import-url.mjs <url> [--fav] [--key Eb] [--lang ja] [--slug foo]
 //                                     [--title "RPG"] [--artist "…"] [--dry]
+//                                     [--version-label "acordes simples"]
 //
 // Hace: fetch → parser del sitio → .cho con cabecera → entrada en index.json →
 //       anotación romaji/pinyin si es ja/zh.
@@ -96,6 +97,9 @@ async function main() {
   const entry = { file, title: song.title, artist: song.artist };
   if (key) entry.key = key;
   if (lang) entry.lang = lang;
+  // El selector de versiones lo enseña tal cual: sin esto dice "v1"/"v2", que
+  // no explica en qué se diferencian. Mejor "chordsworld" / "mychords".
+  if (opts['version-label']) entry.version_label = opts['version-label'];
   if (flags.has('--fav')) entry.fav = true;
 
   if (flags.has('--dry')) {

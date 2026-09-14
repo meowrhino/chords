@@ -21,6 +21,7 @@ export const ALLOWED_DOMAINS = [
   'la-cuerda.net',
   'e-chords.com',
   'chordu.com',
+  'mychords.net',
 ];
 
 // === Parsers por sitio ===
@@ -151,6 +152,42 @@ function parseChordsWorld(html) {
   ).trim();
 
   return { title, artist, content: convertRawToChordPro(text) };
+}
+
+// mychords.net monta cada verso como dos capas: <span class="subline"> con los
+// acordes (espacios literales para alinear) y otro con la letra debajo. Las
+// líneas sueltas (intro, puentes) van en .single-line, y las cabeceras vienen
+// TROCEADAS en varios <span class="b-lr-section"> ("Verse" + "1"), así que hay
+// que juntarlas antes de meterlas en corchetes o salen como "[Verse] [1]".
+function parseMyChords(html) {
+  const titleMatch = html.match(/<title>\s*(.+?)\s*-\s*(.+?)\s*,\s*chords/i);
+  const artist = titleMatch ? titleMatch[1].trim() : '';
+  const title = titleMatch ? titleMatch[2].trim() : '';
+
+  const at = html.search(/<div[^>]*class=['"][^'"]*w-words__text/);
+  if (at === -1) throw new Error('No chord content found on mychords');
+  const block = balancedDiv(html, at);
+
+  const LINE = /<div class="pline">([\s\S]*?)<\/div><\/div>|<div class="single-line">([\s\S]*?)<\/div>|<div>([\s\S]*?)<\/div>/g;
+  const strip = (s) => decodeEntities(s.replace(/<[^>]+>/g, ''));
+
+  const lines = [];
+  let m;
+  while ((m = LINE.exec(block)) !== null) {
+    if (m[1] !== undefined) {
+      // pline: capa de acordes + capa de letra, en ese orden
+      const parts = m[1].split(/<\/span>\s*<span class="subline">/);
+      lines.push(strip(parts[0]), strip(parts[1] || ''));
+    } else if (m[2] !== undefined) {
+      lines.push(/b-lr-section/.test(m[2])
+        ? `[${strip(m[2]).replace(/\s+/g, ' ').trim()}]`
+        : strip(m[2]));
+    } else {
+      lines.push('');
+    }
+  }
+
+  return { title, artist, content: convertRawToChordPro(lines.join('\n')) };
 }
 
 function parseUkuTabs(html) {
@@ -324,6 +361,7 @@ export function parseByDomain(domain, html) {
   if (domain.includes('la-cuerda.net')) return parseLaCuerda(html);
   if (domain.includes('e-chords.com')) return parseEChords(html);
   if (domain.includes('chordu.com')) return parseChordu(html);
+  if (domain.includes('mychords.net')) return parseMyChords(html);
   return parseGeneric(html);
 }
 

@@ -47,7 +47,6 @@ export const els = {
   chordPanelToggle: $('#chordPanelToggle'),
   recSection: $('#recSection'),
   recBtn: $('#recBtn'),
-  recBtnText: $('#recBtnText'),
   recTime: $('#recTime'),
   recNote: $('#recNote'),
   recStatus: $('#recStatus'),

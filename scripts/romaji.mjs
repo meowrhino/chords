@@ -175,27 +175,107 @@ function skipLine(line, tag) {
 
 /**
  * Anota una línea japonesa con romaji: 夢 → {r:yume}夢{/r}
+ *
  * Un tag por token (no por carácter): "anata" encima de あなた se lee mucho
  * mejor que "a"/"na"/"ta" en tres cajitas ruby separadas.
+ *
+ * La línea se tokeniza ENTERA, con los acordes apartados. Antes se tokenizaba
+ * cada trozo entre acordes por su cuenta, y eso rompía cualquier palabra que un
+ * acorde partiera por la mitad: kuromoji veía 公 suelto y lo leía "ooyake" en
+ * vez de "kou", o 呼 como "ko" en vez de "yo". Los acordes no se mueven —están
+ * puestos sobre su sílaba—, así que se vuelven a meter donde estaban y la
+ * lectura del token se reparte entre los trozos.
  */
 export function annotateJapaneseLine(line, tokenizer) {
   if (skipLine(line, 'r')) return line;
 
-  return splitChords(line).map(seg => {
-    if (seg.chord) return seg.value;
+  // Texto sin acordes + en qué posición del texto llano iba cada uno.
+  let plain = '';
+  const chordAt = new Map();
+  for (const seg of splitChords(line)) {
+    if (seg.chord) chordAt.set(plain.length, (chordAt.get(plain.length) || '') + seg.value);
+    else plain += seg.value;
+  }
 
-    let out = '';
-    for (const token of tokenizer.tokenize(seg.value)) {
-      const surface = token.surface_form;
-      if (!RE_KANA.test(surface) && !RE_KANJI.test(surface)) {
-        out += surface;      // espacios, latino, puntuación
-        continue;
-      }
-      const romaji = kanaToRomaji(tokenKana(token));
-      out += romaji ? `{r:${romaji}}${surface}{/r}` : surface;
-    }
-    return out;
-  }).join('');
+  // Tramos del texto llano: uno por token, con su lectura (vacía si no es
+  // japonés). Se recorre en orden para que los tramos cubran la línea entera.
+  const spans = [];
+  let pos = 0;
+  for (const token of tokenizer.tokenize(plain)) {
+    const surface = token.surface_form;
+    const start = plain.indexOf(surface, pos);
+    if (start === -1) continue;
+    if (start > pos) spans.push({ start: pos, end: start, reading: '' });
+    const japanese = RE_KANA.test(surface) || RE_KANJI.test(surface);
+    spans.push({ start, end: start + surface.length, reading: japanese ? kanaToRomaji(tokenKana(token)) : '' });
+    pos = start + surface.length;
+  }
+  if (pos < plain.length) spans.push({ start: pos, end: plain.length, reading: '' });
+
+  let out = '';
+  for (const span of spans) out += renderSpan(plain, span, chordAt);
+  if (chordAt.has(plain.length)) out += chordAt.get(plain.length);   // acordes al final
+  return out;
+}
+
+/**
+ * Escribe un tramo devolviendo a su sitio los acordes que caigan dentro.
+ *
+ * Si ningún acorde lo parte, un solo tag con la lectura entera. Si lo parte,
+ * los trozos de kana se leen solos (son okurigana: れ es "re" y punto) y su
+ * romaji se descuenta de la lectura del token; lo que sobra va al primer trozo
+ * sin lectura. Así 日暮[C]れ sale "higu"+"re" en vez de "higure"+"re", y
+ * 呼[G]ぶ sale "yo"+"bu" en vez de "ko"+"bu".
+ *
+ * Cuando quedan varios trozos de kanji (公[Em]園) no hay forma honesta de saber
+ * por dónde cortar "kouen", así que la lectura entera va al primero y el resto
+ * se queda sin ruby: mejor una lectura correcta mal repartida que dos
+ * lecturas inventadas.
+ */
+function renderSpan(plain, { start, end, reading }, chordAt) {
+  const tag = (text, r) => (r && text ? `{r:${r}}${text}{/r}` : text);
+
+  const cuts = [];
+  for (let i = start + 1; i < end; i++) if (chordAt.has(i)) cuts.push(i);
+
+  const lead = chordAt.get(start) || '';
+  const text = plain.slice(start, end);
+
+  if (!cuts.length) return lead + tag(text, reading);
+
+  const pieces = [];
+  let prev = start;
+  for (const c of [...cuts, end]) {
+    pieces.push({ text: plain.slice(prev, c), chord: prev === start ? '' : chordAt.get(prev) || '' });
+    prev = c;
+  }
+
+  const readings = pieces.map(() => '');
+  let rest = reading;
+  // Okurigana del final hacia dentro.
+  for (let i = pieces.length - 1; i > 0; i--) {
+    const t = pieces[i].text;
+    if (!t || RE_KANJI.test(t)) break;
+    const r = kanaToRomaji(t);
+    if (!r || !rest.endsWith(r)) break;
+    readings[i] = r;
+    rest = rest.slice(0, -r.length);
+  }
+  // Kana del principio hacia dentro.
+  for (let i = 0; i < pieces.length - 1; i++) {
+    const t = pieces[i].text;
+    if (!t || RE_KANJI.test(t) || readings[i]) break;
+    const r = kanaToRomaji(t);
+    if (!r || !rest.startsWith(r)) break;
+    readings[i] = r;
+    rest = rest.slice(r.length);
+  }
+  if (rest) {
+    const free = readings.findIndex((r, i) => !r && pieces[i].text);
+    if (free !== -1) readings[free] = rest;
+  }
+
+  return lead + pieces.map((p, i) => p.chord + tag(p.text, readings[i])).join('');
 }
 
 /** Anota una línea china con pinyin: 爱 → {p:ài}爱{/p} */

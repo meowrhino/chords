@@ -1457,23 +1457,6 @@ input {
   flex-wrap: wrap;
 }
 
-.rec-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-ui);
-  font-size: 0.7rem;
-  padding: 0.3rem 0.6rem;
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: border-color var(--transition);
-}
-
-.rec-btn:hover { border-color: var(--border-hover); }
-
 .rec-dot {
   width: 8px;
   height: 8px;
@@ -1484,17 +1467,12 @@ input {
 
 /* El único rojo de la app: grabando es el estado donde importa que se vea de
    reojo que sigue corriendo. */
-.rec-btn.recording .rec-dot {
-  background: #d64545;
-  animation: rec-pulse 1.2s ease-in-out infinite;
-}
-
 @keyframes rec-pulse {
   50% { opacity: 0.25; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rec-btn.recording .rec-dot { animation: none; }
+  .rec-nav.recording .rec-dot { animation: none; }
 }
 
 .rec-time {
@@ -1581,4 +1559,37 @@ input {
 .rec-item audio {
   width: 100%;
   height: 2rem;
+}
+
+/* El botón de grabar vive en la cabecera, con el resto de accesos. Es el único
+   .header-link que no es un enlace: hereda su caja para que la fila no baile. */
+.rec-nav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.rec-nav .rec-dot {
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid currentColor;
+  background: transparent;
+}
+
+.rec-nav.recording .rec-dot {
+  background: #d64545;
+  border-color: #d64545;
+  animation: rec-pulse 1.2s ease-in-out infinite;
+}
+
+.rec-nav .rec-time:empty { display: none; }
+
+.rec-nav .rec-time {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  min-width: 0;
 }

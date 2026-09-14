@@ -84,20 +84,29 @@ export async function loadSongRecordings(slug) {
   }
 }
 
-export function setRecStatus(text) {
-  els.recStatus.textContent = text || '';
+export // El botón vive en la cabecera, que está en todas las vistas; el hueco de
+// estado solo existe en la de canción. Así que el mensaje va siempre al title
+// del botón, y además al hueco cuando lo hay.
+function onSongView() {
+  return location.hash.startsWith('#/song/') && !!state.currentSong;
+}
+
+function setRecStatus(text) {
+  els.recBtn.title = text || 'grabar';
+  if (els.recStatus) els.recStatus.textContent = text || '';
 }
 
 export function initRecorder() {
   if (!canRecord()) {
     els.recSection.style.display = 'none';
+    els.recBtn.style.display = 'none';
     return;
   }
 
   recorder = createRecorder(({ recording, seconds }) => {
     els.recTime.textContent = recording ? fmtTime(seconds) : '';
     els.recBtn.classList.toggle('recording', recording);
-    els.recBtnText.textContent = recording ? 'parar' : 'grabar';
+    els.recBtn.setAttribute('aria-pressed', String(recording));
   });
 
   els.recBtn.addEventListener('click', async () => {
@@ -109,7 +118,7 @@ export function initRecorder() {
 
     if (!recorder.isRecording()) {
       try {
-        setRecStatus('');
+        setRecStatus('grabando');
         await recorder.start();
       } catch (err) {
         setRecStatus(err.name === 'NotAllowedError'
@@ -125,12 +134,15 @@ export function initRecorder() {
       await uploadRecording({
         ...take,
         username,
-        slug: state.currentSong,
-        note: els.recNote.value.trim(),
+        // Desde la cabecera se graba en cualquier vista: si no estás en una
+        // canción, la toma queda suelta y aparece solo en el diario.
+        slug: onSongView() ? state.currentSong : null,
+        note: els.recNote ? els.recNote.value.trim() : '',
       });
-      els.recNote.value = '';
+      if (els.recNote) els.recNote.value = '';
       setRecStatus('');
-      loadSongRecordings(state.currentSong);
+      if (onSongView()) loadSongRecordings(state.currentSong);
+      else if (location.hash === '#/diario') loadDiary();
     } catch (err) {
       setRecStatus(err.message || 'no se ha podido guardar');
     }
@@ -159,10 +171,4 @@ export async function loadDiary() {
   } catch {
     els.diaryList.innerHTML = '<div class="no-results">error cargando el diario</div>';
   }
-}
-
-/** Corta una grabación a medias (al cambiar de vista). Se tira la toma: si te
- *  vas de la canción mientras grabas, no hay dónde guardarla. */
-export function cancelRecordingIfAny() {
-  if (recorder && recorder.isRecording()) recorder.cancel();
 }

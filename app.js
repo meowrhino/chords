@@ -15,7 +15,7 @@ import { initControls, stopAutoScroll } from './app/controls.js';
 import { initTheme } from './app/theme.js';
 import { initEditor, loadEditor } from './app/editor.js';
 import { initProfileUI } from './app/profile-ui.js';
-import { initRecorder, loadDiary, cancelRecordingIfAny } from './app/recordings.js';
+import { initRecorder, loadDiary } from './app/recordings.js';
 import { openInventory } from './app/inventory.js';
 import { openTuner, closeTuner } from './app/tuner-view.js';
 
@@ -38,7 +38,8 @@ function route() {
   els.inventoryView.style.display = 'none';
   els.diaryView.style.display = 'none';
   if (hash !== '#/afinador') closeTuner();
-  cancelRecordingIfAny();
+  // La grabación NO se corta al cambiar de vista: el botón vive en la cabecera
+  // justo para poder seguir grabando mientras te mueves por la app.
 
   if (hash === '#/diario') {
     els.diaryView.style.display = '';

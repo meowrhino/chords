@@ -1260,3 +1260,127 @@ input {
 }
 
 
+
+/* === AFINADOR === */
+
+.tuner-instrument {
+  margin-bottom: 1.5rem;
+}
+
+.tuner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tuner-readout {
+  text-align: center;
+}
+
+.tuner-note {
+  font-family: var(--font-ui);
+  font-size: clamp(3rem, 12dvw, 5rem);
+  line-height: 1;
+  color: var(--text);
+  text-transform: none;
+}
+
+.tuner-freq {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+/* La aguja se mueve con `left` en % sobre este carril: 0% = −50 cents,
+   50% = justo, 100% = +50 cents. */
+.tuner-meter {
+  position: relative;
+  width: min(100%, 420px);
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tuner-meter-center {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-hover);
+}
+
+.tuner-meter-needle {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 50%;
+  width: 3px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: var(--text-muted);
+  transition: left 0.08s linear, background var(--transition);
+}
+
+/* Sin color: el estado se lee por grosor y posición, como el resto de la app.
+   Solo "afinado" se marca, que es la única información que buscas de reojo
+   mientras giras la clavija. */
+.tuner-meter-needle.in-tune {
+  background: var(--text);
+  width: 5px;
+  margin-left: -2.5px;
+}
+
+.tuner-meter-needle.close { background: var(--text-dim); }
+.tuner-meter-needle.out-tune { background: var(--text-muted); }
+
+.tuner-cents {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.tuner-status {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--text);
+  text-align: center;
+  min-height: 1.2em;
+}
+
+.tuner-strings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.tuner-string {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.tuner-string small {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+}
+
+.tuner-string.active small { color: inherit; }
+
+.tuner-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.tuner-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}

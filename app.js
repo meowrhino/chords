@@ -6,6 +6,7 @@ import { transposeSong, normalizeChordName } from './engine/transpose.js';
 import { chordDiagram } from './engine/chord-svg.js';
 import { lookupChord } from './engine/chords-db.js';
 import { convertRawToChordPro } from './engine/raw-to-chordpro.js';
+import { createTuner } from './engine/tuner.js';
 
 const API_BASE = '';
 
@@ -164,6 +165,9 @@ const els = {
   artistSongs: $('#artistSongs'),
   followArtistProfileBtn: $('#followArtistProfileBtn'),
   chordPanelToggle: $('#chordPanelToggle'),
+  tunerView: $('#tunerView'),
+  tunerMount: $('#tunerMount'),
+  tunerInstrumentPicker: $('#tunerInstrumentPicker'),
   commentsSection: $('#commentsSection'),
   commentForm: $('#commentForm'),
   commentUsername: $('#commentUsername'),
@@ -960,6 +964,18 @@ function initControls() {
     renderSongView();
   });
 
+  // instrumento del afinador: el mismo state, así que cambiarlo aquí también
+  // cambia los diagramas de las canciones. Es lo que se espera: es "tu"
+  // instrumento, no un ajuste por pantalla.
+  els.tunerInstrumentPicker.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-instrument]');
+    if (!btn) return;
+    state.instrument = btn.dataset.instrument;
+    els.tunerInstrumentPicker.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (tuner) tuner.setInstrument(state.instrument);
+  });
+
   // transposición
   $('#transposeDown').addEventListener('click', () => {
     state.transpose = Math.max(state.transpose - 1, -6);
@@ -1375,6 +1391,27 @@ function initProfileUI() {
   });
 }
 
+// === AFINADOR ===
+
+// Una instancia viva como mucho. Se crea al entrar en #/afinador y se destruye
+// al salir: destroy() corta el micro, y si no, el navegador deja el indicador
+// de grabación encendido mientras navegas por el resto de la app.
+let tuner = null;
+
+function openTuner() {
+  if (tuner) tuner.destroy();
+  tuner = createTuner(els.tunerMount, { instrument: state.instrument });
+  for (const btn of els.tunerInstrumentPicker.querySelectorAll('.control-btn')) {
+    btn.classList.toggle('active', btn.dataset.instrument === state.instrument);
+  }
+}
+
+function closeTuner() {
+  if (!tuner) return;
+  tuner.destroy();
+  tuner = null;
+}
+
 // === ROUTER ===
 
 function route() {
@@ -1390,8 +1427,16 @@ function route() {
   els.editorView.style.display = 'none';
   els.feedView.style.display = 'none';
   els.artistView.style.display = 'none';
+  els.tunerView.style.display = 'none';
+  if (hash !== '#/afinador') closeTuner();
 
-  if (hash.startsWith('#/artist/')) {
+  if (hash === '#/afinador') {
+    els.tunerView.style.display = '';
+    els.tunerView.style.animation = 'none';
+    els.tunerView.offsetHeight;
+    els.tunerView.style.animation = '';
+    openTuner();
+  } else if (hash.startsWith('#/artist/')) {
     const name = decodeURIComponent(hash.slice(9));
     els.artistView.style.display = '';
     els.artistView.style.animation = 'none';

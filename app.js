@@ -110,7 +110,11 @@ const state = {
   instrument: 'guitar',
   transpose: 0,
   capo: 0,
-  showReadings: false,
+  // Arranca en on: con readings, renderLine usa el layout de dos capas
+  // (acordes en su propia línea, alineados por columna) en vez del ruby, y
+  // los acordes respiran mucho mejor. Solo cambia algo en canciones con
+  // romaji/pinyin; en el resto no hay readings que enseñar.
+  showReadings: true,
   autoScroll: false,
   scrollSpeed: 3,
   scrollInterval: null,

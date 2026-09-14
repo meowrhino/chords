@@ -1,0 +1,93 @@
+// dom.js — referencias a los nodos y el escapador de texto. Es la hoja del
+// árbol de módulos: no importa nada de la app, todo lo demás lo importa a él.
+
+// === ELEMENTOS DOM ===
+
+export const $ = (sel) => document.querySelector(sel);
+export const $$ = (sel) => document.querySelectorAll(sel);
+
+export const els = {
+  catalogView: $('#catalogView'),
+  songView: $('#songView'),
+  editorView: $('#editorView'),
+  searchInput: $('#searchInput'),
+  songList: $('#songList'),
+  songTitle: $('#songTitle'),
+  songMeta: $('#songMeta'),
+  controlsBar: $('#controlsBar'),
+  instrumentPicker: $('#instrumentPicker'),
+  transposeValue: $('#transposeValue'),
+  capoValue: $('#capoValue'),
+  readingsControl: $('#readingsControl'),
+  readingsLabel: $('#readingsLabel'),
+  readingsToggle: $('#readingsToggle'),
+  scrollToggle: $('#scrollToggle'),
+  scrollSpeed: $('#scrollSpeed'),
+  scrollSlower: $('#scrollSlower'),
+  scrollFaster: $('#scrollFaster'),
+  chordDiagrams: $('#chordDiagrams'),
+  songContent: $('#songContent'),
+  chordPopup: $('#chordPopup'),
+  chordPopupContent: $('#chordPopupContent'),
+  themeToggle: $('#themeToggle'),
+  favoriteBtn: $('#favoriteBtn'),
+  editBtn: $('#editBtn'),
+  versionSelector: $('#versionSelector'),
+  followArtistBtn: $('#followArtistBtn'),
+  followSongBtn: $('#followSongBtn'),
+  feedView: $('#feedView'),
+  feedList: $('#feedList'),
+  feedLink: $('#feedLink'),
+  artistView: $('#artistView'),
+  artistName: $('#artistName'),
+  artistMeta: $('#artistMeta'),
+  artistBio: $('#artistBio'),
+  artistSongs: $('#artistSongs'),
+  followArtistProfileBtn: $('#followArtistProfileBtn'),
+  chordPanelToggle: $('#chordPanelToggle'),
+  recSection: $('#recSection'),
+  recBtn: $('#recBtn'),
+  recBtnText: $('#recBtnText'),
+  recTime: $('#recTime'),
+  recNote: $('#recNote'),
+  recStatus: $('#recStatus'),
+  recList: $('#recList'),
+  diaryView: $('#diaryView'),
+  diaryList: $('#diaryList'),
+  diaryMeta: $('#diaryMeta'),
+  inventoryView: $('#inventoryView'),
+  inventoryGrid: $('#inventoryGrid'),
+  inventoryCount: $('#inventoryCount'),
+  inventoryInstrumentPicker: $('#inventoryInstrumentPicker'),
+  inventorySearch: $('#inventorySearch'),
+  tunerView: $('#tunerView'),
+  tunerMount: $('#tunerMount'),
+  tunerInstrumentPicker: $('#tunerInstrumentPicker'),
+  commentsSection: $('#commentsSection'),
+  commentForm: $('#commentForm'),
+  commentUsername: $('#commentUsername'),
+  commentContent: $('#commentContent'),
+  commentSubmit: $('#commentSubmit'),
+  commentsList: $('#commentsList'),
+  edTitle: $('#edTitle'),
+  edArtist: $('#edArtist'),
+  edKey: $('#edKey'),
+  edCapo: $('#edCapo'),
+  edLang: $('#edLang'),
+  edContent: $('#edContent'),
+  edPreview: $('#edPreview'),
+  edSave: $('#edSave'),
+  edDownload: $('#edDownload'),
+  edDelete: $('#edDelete'),
+  profileBtn: $('#profileBtn'),
+  profileDropdown: $('#profileDropdown'),
+  profileName: $('#profileName'),
+  profileInstrument: $('#profileInstrument'),
+};
+
+export function esc(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}

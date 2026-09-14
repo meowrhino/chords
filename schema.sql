@@ -58,3 +58,24 @@ CREATE TABLE IF NOT EXISTS chords_follows (
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     PRIMARY KEY (username, target_type, target)
 );
+
+-- Grabaciones: tus tomas cantando. El AUDIO NO vive aquí — D1 es SQLite y los
+-- blobs grandes lo degradan, y su cuota gratis son 5 GB compartidos entre
+-- todas las bases de la cuenta. El sonido va a R2 (bucket twoitter-storage,
+-- compartido igual que esta base, con claves bajo chords/) y aquí solo queda
+-- la ficha con su r2_key.
+CREATE TABLE IF NOT EXISTS chords_recordings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    song_slug TEXT,                       -- NULL = toma suelta, sin canción
+    username TEXT NOT NULL,
+    tripcode TEXT,                        -- mismo nombre#secreto que los comentarios
+    r2_key TEXT NOT NULL,
+    mime TEXT NOT NULL,                   -- webm/opus, o mp4/aac en Safari
+    bytes INTEGER NOT NULL,
+    seconds REAL,
+    note TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_chords_recordings_song ON chords_recordings(song_slug);
+CREATE INDEX IF NOT EXISTS idx_chords_recordings_user ON chords_recordings(username, created_at);

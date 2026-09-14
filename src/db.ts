@@ -193,3 +193,64 @@ export async function getFeed(db: D1Database, username: string, limit = 50) {
   }>();
   return results;
 }
+
+// --- Recordings ---
+
+export interface Recording {
+  id: number;
+  song_slug: string | null;
+  username: string;
+  tripcode: string | null;
+  r2_key: string;
+  mime: string;
+  bytes: number;
+  seconds: number | null;
+  note: string | null;
+  created_at: string;
+}
+
+export async function getSongRecordings(db: D1Database, songSlug: string, limit = 50) {
+  const { results } = await db.prepare(
+    `SELECT * FROM chords_recordings WHERE song_slug = ?
+     ORDER BY created_at DESC LIMIT ?`
+  ).bind(songSlug, limit).all<Recording>();
+  return results;
+}
+
+// El diario: todo lo que ha grabado una persona, lo último arriba, con el
+// título de la canción resuelto de una pasada (si la toma lleva canción; las
+// sueltas no). LEFT JOIN y no JOIN a secas: con JOIN desaparecerían del
+// diario las tomas sueltas y las de canciones que solo están en songs/*.cho
+// y nunca se subieron a la BD.
+export async function getUserRecordings(db: D1Database, username: string, limit = 100) {
+  const { results } = await db.prepare(
+    `SELECT r.*, s.title AS song_title, s.artist AS song_artist
+     FROM chords_recordings r
+     LEFT JOIN chords_songs s ON s.slug = r.song_slug
+     WHERE r.username = ?
+     ORDER BY r.created_at DESC LIMIT ?`
+  ).bind(username, limit).all<Recording & { song_title: string | null; song_artist: string | null }>();
+  return results;
+}
+
+export async function getRecording(db: D1Database, id: number) {
+  return db.prepare('SELECT * FROM chords_recordings WHERE id = ?')
+    .bind(id).first<Recording>();
+}
+
+export async function createRecording(db: D1Database, rec: {
+  song_slug?: string | null; username: string; tripcode?: string | null;
+  r2_key: string; mime: string; bytes: number; seconds?: number | null; note?: string | null;
+}) {
+  return db.prepare(
+    `INSERT INTO chords_recordings (song_slug, username, tripcode, r2_key, mime, bytes, seconds, note)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING *`
+  ).bind(
+    rec.song_slug || null, rec.username, rec.tripcode || null,
+    rec.r2_key, rec.mime, rec.bytes, rec.seconds ?? null, rec.note || null,
+  ).first<Recording>();
+}
+
+export async function deleteRecording(db: D1Database, id: number) {
+  await db.prepare('DELETE FROM chords_recordings WHERE id = ?').bind(id).run();
+}

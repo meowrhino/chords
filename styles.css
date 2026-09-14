@@ -1441,3 +1441,144 @@ input {
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   }
 }
+
+/* === GRABACIONES === */
+
+.rec-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.rec-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.rec-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  padding: 0.3rem 0.6rem;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.rec-btn:hover { border-color: var(--border-hover); }
+
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* El único rojo de la app: grabando es el estado donde importa que se vea de
+   reojo que sigue corriendo. */
+.rec-btn.recording .rec-dot {
+  background: #d64545;
+  animation: rec-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes rec-pulse {
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rec-btn.recording .rec-dot { animation: none; }
+}
+
+.rec-time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text);
+  min-width: 3ch;
+}
+
+.rec-note {
+  flex: 1 1 12rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.3rem 0.5rem;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.rec-note:focus { outline: none; border-color: var(--border-hover); }
+
+.rec-status {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  min-height: 1em;
+  margin-top: 0.4rem;
+}
+
+.rec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.rec-item {
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.rec-item-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.rec-song, .rec-who {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+.rec-song:hover { text-decoration: underline; }
+
+.rec-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
+.rec-del {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.2rem;
+}
+
+.rec-del:hover { color: var(--text); }
+
+.rec-item-note {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.rec-item audio {
+  width: 100%;
+  height: 2rem;
+}

@@ -27,6 +27,11 @@
   <header class="site-header">
     <a href="#/" class="site-title">acordes</a>
     <div class="header-actions">
+      <a href="#/diario" class="header-link" id="diaryLink" title="diario de grabaciones">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
       <a href="#/inventario" class="header-link" id="inventoryLink" title="inventario de acordes">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="2.5" y="2.5" width="11" height="11" rx="1"/>
@@ -89,6 +94,16 @@
         <p class="site-statement">acordes libres — sin anuncios, sin cuentas, para siempre. tus tablaturas son tuyas.</p>
       </div>
       <div id="songList" class="song-list"></div>
+    </div>
+
+    <!-- vista diario -->
+    <div id="diaryView" class="view" style="display:none;">
+      <div class="song-header">
+        <a href="#/" class="back-link">&larr; catálogo</a>
+        <h1 class="song-title">diario</h1>
+        <div class="song-meta" id="diaryMeta"></div>
+      </div>
+      <div id="diaryList" class="rec-list"></div>
     </div>
 
     <!-- vista inventario -->
@@ -207,6 +222,18 @@
 
       <div id="chordDiagrams" class="chord-diagrams"></div>
       <div id="songContent" class="song-content"></div>
+
+      <div id="recSection" class="rec-section">
+        <div class="rec-bar">
+          <button class="rec-btn" id="recBtn" title="grabar">
+            <span class="rec-dot"></span><span id="recBtnText">grabar</span>
+          </button>
+          <span class="rec-time" id="recTime"></span>
+          <input type="text" id="recNote" class="rec-note" placeholder="una nota sobre esta toma (opcional)" autocomplete="off">
+        </div>
+        <div class="rec-status" id="recStatus"></div>
+        <div id="recList" class="rec-list"></div>
+      </div>
 
       <div id="commentsSection" class="comments-section" style="display:none;">
         <h2 class="comments-title">comentarios</h2>

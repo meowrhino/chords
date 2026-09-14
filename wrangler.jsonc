@@ -7,6 +7,13 @@
     "directory": "./",
     "binding": "ASSETS"
   },
+  // Audio de las grabaciones. Mismo criterio que la D1: bucket compartido en
+  // vez de uno nuevo. Las claves de chords van bajo "chords/", y twoitter usa
+  // images/ videos/ audios/ thumbs/, así que no se pisan. Los buckets de R2 no
+  // gastan ninguna de las 10 bases de D1 del plan gratis: son cosas distintas.
+  "r2_buckets": [
+    { "binding": "STORAGE", "bucket_name": "twoitter-storage" }
+  ],
   // BD compartida con twoitter: las tablas de chords van prefijadas (chords_*).
   // chords-db quedó huérfana y se puede borrar del dashboard.
   "d1_databases": [

@@ -82,7 +82,8 @@ export async function importFromUrl(url, opts = {}) {
   let cho = `{title:${song.title}}\n{artist:${song.artist}}\n`;
   if (key) cho += `{key:${key}}\n`;
   if (lang) cho += `{lang:${lang}}\n`;
-  cho += `\n${song.content}\n`;
+  // NFC: algunos sitios mandan た+゙ en vez de だ y kuromoji no lo lee
+  cho += `\n${song.content.normalize('NFC')}\n`;
 
   if (lang === 'ja' || lang === 'zh') {
     cho = annotateContent(cho, lang, tokenizer);

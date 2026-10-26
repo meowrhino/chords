@@ -181,21 +181,62 @@ function skipLine(line, tag) {
 export function annotateJapaneseLine(line, tokenizer) {
   if (skipLine(line, 'r')) return line;
 
-  return splitChords(line).map(seg => {
-    if (seg.chord) return seg.value;
+  // Se tokeniza el texto entero sin acordes y luego se reinsertan. Tokenizando
+  // trozo a trozo, un acorde en mitad de 描[C]く dejaba 描 suelto (sin lectura)
+  // y 明[F]後日 salía "akira" + "gojitsu" en vez de "asatte".
+  const chordsAt = new Map();   // posición en el texto → acordes que van ahí
+  let text = '';
+  for (const seg of splitChords(line)) {
+    if (seg.chord) chordsAt.set(text.length, (chordsAt.get(text.length) || '') + seg.value);
+    else text += seg.value;
+  }
 
-    let out = '';
-    for (const token of tokenizer.tokenize(seg.value)) {
-      const surface = token.surface_form;
-      if (!RE_KANA.test(surface) && !RE_KANJI.test(surface)) {
-        out += surface;      // espacios, latino, puntuación
-        continue;
-      }
-      const romaji = kanaToRomaji(tokenKana(token));
-      out += romaji ? `{r:${romaji}}${surface}{/r}` : surface;
+  let out = '';
+  let pos = 0;
+  for (const token of tokenizer.tokenize(text)) {
+    const surface = token.surface_form;
+    const parts = [];
+    let from = 0;
+    for (let i = 1; i < surface.length; i++) {
+      if (chordsAt.has(pos + i)) { parts.push(surface.slice(from, i)); from = i; }
     }
-    return out;
-  }).join('');
+    parts.push(surface.slice(from));
+
+    const isJa = RE_KANA.test(surface) || RE_KANJI.test(surface);
+    const readings = isJa ? splitReading(parts, tokenKana(token)) : [];
+    parts.forEach((part, i) => {
+      out += chordsAt.get(pos) || '';
+      const romaji = readings[i] ? kanaToRomaji(readings[i]) : '';
+      // sin lectura (・, 々 suelto, kanji raro) kuromoji devuelve el propio carácter: no se anota
+      out += /^[\x20-\x7e]+$/.test(romaji) ? `{r:${romaji}}${part}{/r}` : part;
+      pos += part.length;
+    });
+  }
+  return out + (chordsAt.get(pos) || '');
+}
+
+const RE_ALL_KANA = /^[぀-ゟ゠-ヿ]+$/;
+
+/**
+ * Reparte la lectura de un token entre los trozos en que lo cortan los acordes.
+ * Los trozos en kana se leen tal cual (okurigana: 描|く → ega|ku); lo que sobra
+ * va al primer trozo no-kana.
+ */
+function splitReading(parts, kana) {
+  if (parts.length === 1) return [kana];
+  const out = parts.map(() => '');
+  let rest = kataToHira(kana);
+  let lo = 0, hi = parts.length - 1;
+  while (lo <= hi && RE_ALL_KANA.test(parts[lo]) && rest.startsWith(kataToHira(parts[lo]))) {
+    out[lo] = kataToHira(parts[lo]); rest = rest.slice(out[lo].length); lo++;
+  }
+  while (hi >= lo && RE_ALL_KANA.test(parts[hi]) && rest.endsWith(kataToHira(parts[hi]))) {
+    out[hi] = kataToHira(parts[hi]); rest = rest.slice(0, rest.length - out[hi].length); hi--;
+  }
+  // shortcut: compuesto partido entre kanji (明|後日) → lectura entera sobre el primer
+  // trozo; no hay forma fiable de saber cuánto lee cada kanji.
+  if (lo <= hi) out[lo] += rest;
+  return out;
 }
 
 /** Anota una línea china con pinyin: 爱 → {p:ài}爱{/p} */

@@ -1,5 +1,7 @@
 // chordpro.js — parser de formato ChordPro con extensiones para romaji/pinyin
 
+import { normalizeAccidentals } from './transpose.js';
+
 // forma aproximada de un nombre de acorde real: nota raíz + calidad opcional + bajo opcional.
 // se usa para distinguir acordes de etiquetas de sección copiadas entre corchetes desde otras
 // webs (p.ej. "[Pre-Chorus]", "[Verse 2: Artista]"), que de otro modo se tratarían como acordes
@@ -7,7 +9,8 @@
 const CHORD_SHAPE_RE = /^[A-G](#|b)?((maj|min|dim|aug|sus|add|dom|m)?[#b-]?[0-9]{0,2}){0,4}(\((maj|min|dim|aug|sus|add|dom|m)?[#b-]?[0-9]{1,2}\))?(\/([A-G](#|b)?|[0-9]{1,2}))?\+?°?ø?$/i;
 
 function isChordShape(text) {
-  const t = text.trim();
+  // ♭/♯ tipográficos (u-fret los usa) cuentan como b/#
+  const t = normalizeAccidentals(text.trim());
   // N.C. = "no chord": es notación real de cifrado, se muestra como acorde
   // inline (sin diagrama) en vez de quedarse como texto literal "[N.C.]"
   if (/^N\.?C\.?$/i.test(t)) return true;

@@ -44,5 +44,11 @@ eq(ann('[Am] [C]'), '[Am] [C]', 'línea de solo acordes');
 eq(ann('{title:テスト}'), '{title:テスト}', 'directiva intacta');
 eq(ann('hello world'), 'hello world', 'texto latino intacto');
 
+console.log('\n— acorde en mitad de una palabra —');
+eq(ann('何を描[C]く'), '{r:nani}何{/r}{r:wo}を{/r}{r:ega}描{/r}[C]{r:ku}く{/r}', 'okurigana: ega|ku');
+eq(ann('生き抜[C]く'), '{r:ikinu}生き抜{/r}[C]{r:ku}く{/r}', '抜 no se queda sin lectura');
+eq(ann('希[F]望'), '{r:kibou}希{/r}[F]望', 'compuesto partido: lectura entera delante');
+eq(ann('[Am] 夢[C]を'), '[Am] {r:yume}夢{/r}[C]{r:wo}を{/r}', 'acordes entre tokens');
+
 console.log(fail === 0 ? '\nTodo OK.' : `\n${fail} fallo(s).`);
 process.exit(fail === 0 ? 0 : 1);

@@ -211,6 +211,7 @@ async function loadCatalog() {
           artist: s.artist,
           key: s.key_signature || '',
           lang: s.lang || '',
+          added: (s.created_at || '').slice(0, 10),
         }));
       state.catalog = [...state.catalog, ...dbEntries];
     }
@@ -397,6 +398,8 @@ function renderSongView() {
   if (song.meta.key) metaParts.push(`<span>tonalidad: ${esc(song.meta.key)}</span>`);
   if (state.capo > 0) metaParts.push(`<span>capo: ${state.capo}</span>`);
   if (song.meta.tempo) metaParts.push(`<span>${song.meta.tempo} bpm</span>`);
+  const added = state.catalog.find(s => s.file === `${state.currentSong}.cho`)?.added;
+  if (added) metaParts.push(`<span>añadida: ${esc(added)}</span>`);
   els.songMeta.innerHTML = metaParts.join('');
 
   // favorito

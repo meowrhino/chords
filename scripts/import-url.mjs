@@ -41,20 +41,19 @@ function parseArgs(argv) {
   return out;
 }
 
-async function main() {
-  const { flags, opts, url } = parseArgs(process.argv.slice(2));
-  if (!url) {
-    console.error('uso: node scripts/import-url.mjs <url> [--fav] [--key X] [--lang ja] [--slug s] [--dry]');
-    process.exit(1);
-  }
-
+/**
+ * Núcleo reutilizable: importa una URL a songs/ + index.json.
+ * @param {string} url
+ * @param {object} opts - { slug, title, artist, key, lang, fav, dry, tokenizer, quiet }
+ *   tokenizer: pásalo para lotes (cargar kuromoji una vez, no por canción).
+ * @returns {Promise<object>} { slug, file, title, artist, key, lang, chords, lines, entry }
+ */
+export async function importFromUrl(url, opts = {}) {
+  const say = (...a) => { if (!opts.quiet) console.log(...a); };
   const domain = new URL(url).hostname;
-  if (!isAllowedDomain(domain)) {
-    console.error(`dominio no soportado: ${domain}`);
-    process.exit(1);
-  }
+  if (!isAllowedDomain(domain)) throw new Error(`dominio no soportado: ${domain}`);
 
-  console.log(`↓ ${url}`);
+  say(`↓ ${url}`);
   const res = await fetch(url, { headers: browserHeaders() });
   if (!res.ok) throw new Error(`fetch falló: ${res.status}`);
 
@@ -64,23 +63,20 @@ async function main() {
   if (opts.artist) song.artist = opts.artist;
   const lang = opts.lang || song.lang || '';
   const key = opts.key || song.key || '';
-  console.log(`  título: ${song.title}\n  artista: ${song.artist}\n  idioma: ${lang || '—'}  key: ${key || '—'}`);
+  say(`  título: ${song.title}\n  artista: ${song.artist}\n  idioma: ${lang || '—'}  key: ${key || '—'}`);
 
   // El tokenizer hace falta para el slug romaji y/o para anotar
   const needsJa = lang === 'ja';
-  const tokenizer = needsJa ? await loadTokenizer() : null;
+  const tokenizer = needsJa ? (opts.tokenizer || await loadTokenizer()) : null;
 
   // Slug: título japonés → romaji antes de slugificar (ver toRomajiText)
   const titleForSlug = needsJa ? toRomajiText(song.title, tokenizer) : song.title;
   const slug = opts.slug || slugify(`${song.artist}-${titleForSlug}`);
   const file = `${slug}.cho`;
   const filePath = join(SONGS_DIR, file);
-  console.log(`  slug: ${slug}`);
+  say(`  slug: ${slug}`);
 
-  if (existsSync(filePath) && !flags.has('--dry')) {
-    console.error(`\n✗ ya existe: songs/${file}`);
-    process.exit(1);
-  }
+  if (existsSync(filePath) && !opts.dry) throw new Error(`ya existe: songs/${file}`);
 
   // Cabecera ChordPro, mismo formato que el resto de songs/
   let cho = `{title:${song.title}}\n{artist:${song.artist}}\n`;
@@ -90,19 +86,26 @@ async function main() {
 
   if (lang === 'ja' || lang === 'zh') {
     cho = annotateContent(cho, lang, tokenizer);
-    console.log(`  ✓ anotado (${lang === 'ja' ? 'romaji' : 'pinyin'})`);
+    say(`  ✓ anotado (${lang === 'ja' ? 'romaji' : 'pinyin'})`);
   }
 
   const entry = { file, title: song.title, artist: song.artist };
   if (key) entry.key = key;
   if (lang) entry.lang = lang;
-  if (flags.has('--fav')) entry.fav = true;
+  if (opts.fav) entry.fav = true;
+  entry.added = new Date().toISOString().slice(0, 10);
 
-  if (flags.has('--dry')) {
-    console.log('\n--dry: no se escribe nada.\n');
-    console.log('entrada index.json:', JSON.stringify(entry, null, 2));
-    console.log(`cho: ${cho.split('\n').length} líneas, ${(cho.match(/\[[^\]]+\]/g) || []).length} acordes`);
-    return;
+  const result = {
+    slug, file, title: song.title, artist: song.artist, key, lang, entry,
+    lines: cho.split('\n').length,
+    chords: (cho.match(/\[[^\]]+\]/g) || []).length,
+  };
+
+  if (opts.dry) {
+    say('\n--dry: no se escribe nada.\n');
+    say('entrada index.json:', JSON.stringify(entry, null, 2));
+    say(`cho: ${result.lines} líneas, ${result.chords} acordes`);
+    return result;
   }
 
   writeFileSync(filePath, cho, 'utf-8');
@@ -110,7 +113,24 @@ async function main() {
   index.push(entry);
   writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2) + '\n', 'utf-8');
 
-  console.log(`\n✓ songs/${file}  (+ entrada en index.json${entry.fav ? ', favorita' : ''})`);
+  say(`\n✓ songs/${file}  (+ entrada en index.json${entry.fav ? ', favorita' : ''})`);
+  return result;
 }
 
-main().catch(e => { console.error('\n✗', e.message); process.exit(1); });
+async function main() {
+  const { flags, opts, url } = parseArgs(process.argv.slice(2));
+  if (!url) {
+    console.error('uso: node scripts/import-url.mjs <url> [--fav] [--key X] [--lang ja] [--slug s] [--dry]');
+    process.exit(1);
+  }
+  await importFromUrl(url, {
+    ...opts,
+    fav: flags.has('--fav'),
+    dry: flags.has('--dry'),
+  });
+}
+
+// Solo corre como CLI, no al importarlo desde un lote
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  main().catch(e => { console.error('\n✗', e.message); process.exit(1); });
+}

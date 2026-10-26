@@ -830,6 +830,8 @@
     "file": "aimer-brave-shine.cho",
     "title": "Brave Shine",
     "artist": "Aimer",
+    "version_label": "romaji",
+    "lang": "ja",
     "added": "2026-03-14"
   },
   {
@@ -846,6 +848,8 @@
     "title": "Hoshikuzu Venus 星屑ビーナス",
     "artist": "Aimer",
     "key": "F",
+    "version_label": "romaji",
+    "lang": "ja",
     "added": "2026-03-14"
   },
   {
@@ -1041,6 +1045,8 @@
     "title": "Stars In The Rain",
     "artist": "Aimer",
     "key": "G",
+    "version_label": "romaji",
+    "lang": "ja",
     "added": "2026-03-14"
   },
   {
@@ -1954,13 +1960,6 @@
     "artist": "春奈るな",
     "lang": "ja",
     "added": "2026-07-30"
-  },
-  {
-    "file": "rookiez-is-punk-d-konpurikeishon.cho",
-    "title": "コンプリケイション",
-    "artist": "ROOKiEZ is PUNK'D",
-    "lang": "ja",
-    "added": "2026-10-26"
   },
   {
     "file": "aimer-starringchild.cho",
@@ -3119,5 +3118,593 @@
     "artist": "Kalafina",
     "lang": "ja",
     "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-26.cho",
+    "title": "26",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-adore.cho",
+    "title": "Adore",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-aint-it-fun.cho",
+    "title": "Aint It Fun",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-all-i-wanted.cho",
+    "title": "All I Wanted",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-all-we-know.cho",
+    "title": "All We Know",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-anklebiters.cho",
+    "title": "Anklebiters",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-another-day.cho",
+    "title": "Another Day",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-be-alone.cho",
+    "title": "Be Alone",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-big-man-little-dignity.cho",
+    "title": "Big Man Little Dignity",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-born-for-this.cho",
+    "title": "Born For This",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-breathe.cho",
+    "title": "Breathe",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-brick-by-boring-brick.cho",
+    "title": "Brick By Boring Brick",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-brighter.cho",
+    "title": "Brighter",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-broken-wings.cho",
+    "title": "Broken Wings",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-burning-down-the-house.cho",
+    "title": "Burning Down The House",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-careful.cho",
+    "title": "Careful",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-caught-in-the-middle.cho",
+    "title": "Caught In The Middle",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-circle.cho",
+    "title": "Circle",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-conspiracy.cho",
+    "title": "Conspiracy",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-crave.cho",
+    "title": "Crave",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-crushcrushcrush.cho",
+    "title": "Crushcrushcrush",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-daydreaming.cho",
+    "title": "Daydreaming",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-decoy.cho",
+    "title": "Decoy",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-escape-route.cho",
+    "title": "Escape Route",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-fake-happy.cho",
+    "title": "Fake Happy",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-fast-in-my-car.cho",
+    "title": "Fast In My Car",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-feeling-sorry.cho",
+    "title": "Feeling Sorry",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-fences.cho",
+    "title": "Fences",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-figure-8.cho",
+    "title": "Figure 8",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-for-a-pessimist-im-pretty-optimistic.cho",
+    "title": "For A Pessimist Im Pretty Optimistic",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-forgiveness.cho",
+    "title": "Forgiveness",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-franklin.cho",
+    "title": "Franklin",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-future.cho",
+    "title": "Future",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-grow-up.cho",
+    "title": "Grow Up",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-hallelujah.cho",
+    "title": "Hallelujah",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-hard-times.cho",
+    "title": "Hard Times",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-hear-you-me.cho",
+    "title": "Hear You Me",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-hello-cold-world.cho",
+    "title": "Hello Cold World",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-hello-hello.cho",
+    "title": "Hello Hello",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-here-we-go-again.cho",
+    "title": "Here We Go Again",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-i-caught-myself.cho",
+    "title": "I Caught Myself",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-idle-worship.cho",
+    "title": "Idle Worship",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-ignorance.cho",
+    "title": "Ignorance",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-in-between-days.cho",
+    "title": "In Between Days",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-in-the-mourning.cho",
+    "title": "In The Mourning",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-in-the-mourning-landslide.cho",
+    "title": "In The Mourning - Landslide",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-interlude-holiday.cho",
+    "title": "Interlude Holiday",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-interlude-im-not-angry-anymore.cho",
+    "title": "Interlude Im Not Angry Anymore",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-interlude-moving-on.cho",
+    "title": "Interlude Moving On",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-just-like-me.cho",
+    "title": "Just Like Me",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-let-the-flames-begin.cho",
+    "title": "Let The Flames Begin",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-liar.cho",
+    "title": "Liar",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-looking-up.cho",
+    "title": "Looking Up",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-loves-not-a-competition-but-im-winning.cho",
+    "title": "Loves Not A Competition But Im Winning",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-miracle.cho",
+    "title": "Miracle",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-misery-business.cho",
+    "title": "Misery Business",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-misguided-ghosts.cho",
+    "title": "Misguided Ghosts",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-monster.cho",
+    "title": "Monster",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-my-heart.cho",
+    "title": "My Heart",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-my-hero.cho",
+    "title": "My Hero",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-my-number-one.cho",
+    "title": "My Number One",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-native-tongue.cho",
+    "title": "Native Tongue",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-never-let-this-go.cho",
+    "title": "Never Let This Go",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-now.cho",
+    "title": "Now",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-oh-star.cho",
+    "title": "Oh Star",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-one-of-those-crazy-girls.cho",
+    "title": "One Of Those Crazy Girls",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-part-ii.cho",
+    "title": "Part Ii",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-passionfruit.cho",
+    "title": "Passionfruit",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-plane-crash-dreams.cho",
+    "title": "Plane Crash Dreams",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-pool.cho",
+    "title": "Pool",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-pressure.cho",
+    "title": "Pressure",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-renegade.cho",
+    "title": "Renegade",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-rewind.cho",
+    "title": "Rewind",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-rose-colored-boy.cho",
+    "title": "Rose-Colored Boy",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-running-out-of-time.cho",
+    "title": "Running Out Of Time",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-sanity.cho",
+    "title": "Sanity",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-stay-away.cho",
+    "title": "Stay Away",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-stop-this-song.cho",
+    "title": "Stop This Song",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-stuck-on-you.cho",
+    "title": "Stuck On You",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-sunday-bloody-sunday.cho",
+    "title": "Sunday Bloody Sunday",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-swim-in-silence.cho",
+    "title": "Swim In Silence",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-teenagers.cho",
+    "title": "Teenagers",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "paramore-tell-me-how.cho",
+    "title": "Tell Me How",
+    "artist": "Paramore",
+    "lang": "en",
+    "added": "2026-07-30"
+  },
+  {
+    "file": "rookiez-is-punk-d-konpurikeishon.cho",
+    "title": "コンプリケイション",
+    "artist": "ROOKiEZ is PUNK'D",
+    "lang": "ja",
+    "added": "2026-10-26"
   }
 ]
